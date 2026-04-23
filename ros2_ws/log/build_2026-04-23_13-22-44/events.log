@@ -1,0 +1,668 @@
+[0.000000] (-) TimerEvent: {}
+[0.000186] (sllidar_ros2) JobQueued: {'identifier': 'sllidar_ros2', 'dependencies': OrderedDict()}
+[0.000230] (sllidar_ros2) JobStarted: {'identifier': 'sllidar_ros2'}
+[0.018634] (sllidar_ros2) JobProgress: {'identifier': 'sllidar_ros2', 'progress': 'cmake'}
+[0.019180] (sllidar_ros2) Command: {'cmd': ['/usr/bin/cmake', '/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2'], 'cwd': '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/home/altair'), ('LANGUAGE', 'ja_JP'), ('USER', 'altair'), ('VSCODE_NLS_CONFIG', '{"userLocale":"ja","osLocale":"ja-jp","resolvedLanguage":"ja","defaultMessagesFile":"/usr/share/antigravity/resources/app/out/nls.messages.json","languagePack":{"translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","messagesFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c/nls.messages.json","corruptMarkerFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"},"locale":"ja","availableLanguages":{"*":"ja"},"_languagePackId":"c079ae35ca5a109e941bb27abcf19a86.ja","_languagePackSupport":true,"_translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","_cacheRoot":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja","_resolvedLanguagePackCoreLocation":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c","_corruptedFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"}'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/usr/local/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/altair'), ('CHROME_DESKTOP', 'antigravity.desktop'), ('DESKTOP_SESSION', 'ubuntu'), ('NVM_BIN', '/home/altair/.nvm/versions/node/v14.21.3/bin'), ('NVM_INC', '/home/altair/.nvm/versions/node/v14.21.3/include/node'), ('VSCODE_IPC_HOOK', '/run/user/1000/vscode-7f2a30db-1.10-main.sock'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/antigravity.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('XDG_SEAT_PATH', '/org/freedesktop/DisplayManager/Seat0'), ('PAGER', 'cat'), ('MANAGERPID', '908'), ('SYSTEMD_EXEC_PID', '39864'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('ANTIGRAVITY_AGENT', '1'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '128580'), ('NVM_DIR', '/home/altair/.nvm'), ('IM_CONFIG_PHASE', '1'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'altair'), ('JOURNAL_STREAM', '8:84563'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('FC_FONTATIONS', '1'), ('ROS_LOCALHOST_ONLY', '0'), ('ANTIGRAVITY_EDITOR_APP_ROOT', '/usr/share/antigravity/resources/app'), ('PATH', '/home/altair/.local/bin:/home/altair/spresenseenv/usr/bin:/home/altair/.nvm/versions/node/v14.21.3/bin:/opt/ros/humble/bin:/home/altair/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/altair/command:/home/altair/.local/bin'), ('SESSION_MANAGER', 'local/altair-HCAR5000-MI:@/tmp/.ICE-unix/39835,unix/altair-HCAR5000-MI:/tmp/.ICE-unix/39835'), ('GDM_LANG', 'ja_JP'), ('INVOCATION_ID', 'fd6872f4c93d449ab8f2910c13c9098b'), ('XDG_SESSION_PATH', '/org/freedesktop/DisplayManager/Session0'), ('XDG_MENU_PREFIX', 'gnome-'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('DISPLAY', ':0'), ('LANG', 'ja_JP.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/home/altair/.Xauthority'), ('LS_COLORS', ''), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '0'), ('XDG_GREETER_DATA_DIR', '/var/lib/lightdm-data/altair'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('ANTIGRAVITY_TRAJECTORY_ID', 'c952aa16-449e-47d2-8c09-5e884129916b'), ('PWD', '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2'), ('LC_ALL', 'ja_JP.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('VSCODE_CODE_CACHE_PATH', '/home/altair/.config/Antigravity/CachedData/15487b3041e65228cae24980a3f796c905ef582c'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VSCODE_PID', '128580'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.099270] (-) TimerEvent: {}
+[0.150689] (sllidar_ros2) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.199366] (-) TimerEvent: {}
+[0.235548] (sllidar_ros2) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.249673] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.299484] (-) TimerEvent: {}
+[0.318744] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.328767] (sllidar_ros2) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.329176] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.329627] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.332967] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.399617] (-) TimerEvent: {}
+[0.409853] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.416851] (sllidar_ros2) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.417102] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.417466] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.426707] (sllidar_ros2) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.499766] (-) TimerEvent: {}
+[0.600160] (-) TimerEvent: {}
+[0.700470] (-) TimerEvent: {}
+[0.730083] (sllidar_ros2) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.791407] (sllidar_ros2) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.800587] (-) TimerEvent: {}
+[0.821567] (sllidar_ros2) StdoutLine: {'line': b'-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[0.873717] (sllidar_ros2) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.878891] (sllidar_ros2) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.888516] (sllidar_ros2) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.900684] (-) TimerEvent: {}
+[0.902561] (sllidar_ros2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.920032] (sllidar_ros2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.968753] (sllidar_ros2) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[0.971719] (sllidar_ros2) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[1.000789] (-) TimerEvent: {}
+[1.084056] (sllidar_ros2) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[1.100961] (-) TimerEvent: {}
+[1.116895] (sllidar_ros2) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[1.163659] (sllidar_ros2) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[1.174568] (sllidar_ros2) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[1.201063] (-) TimerEvent: {}
+[1.246762] (sllidar_ros2) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[1.247685] (sllidar_ros2) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[1.301176] (-) TimerEvent: {}
+[1.304415] (sllidar_ros2) StdoutLine: {'line': b'-- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[1.338220] (sllidar_ros2) StdoutLine: {'line': b'-- Found std_srvs: 4.9.1 (/opt/ros/humble/share/std_srvs/cmake)\n'}
+[1.401327] (-) TimerEvent: {}
+[1.439954] (sllidar_ros2) StdoutLine: {'line': b'-- Configuring done\n'}
+[1.457338] (sllidar_ros2) StdoutLine: {'line': b'-- Generating done\n'}
+[1.463145] (sllidar_ros2) StdoutLine: {'line': b'-- Build files have been written to: /home/altair/rplidarA1/ros2_ws/build/sllidar_ros2\n'}
+[1.475364] (sllidar_ros2) CommandEnded: {'returncode': 0}
+[1.476092] (sllidar_ros2) JobProgress: {'identifier': 'sllidar_ros2', 'progress': 'build'}
+[1.477528] (sllidar_ros2) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2', '--', '-j16', '-l16'], 'cwd': '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/home/altair'), ('LANGUAGE', 'ja_JP'), ('USER', 'altair'), ('VSCODE_NLS_CONFIG', '{"userLocale":"ja","osLocale":"ja-jp","resolvedLanguage":"ja","defaultMessagesFile":"/usr/share/antigravity/resources/app/out/nls.messages.json","languagePack":{"translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","messagesFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c/nls.messages.json","corruptMarkerFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"},"locale":"ja","availableLanguages":{"*":"ja"},"_languagePackId":"c079ae35ca5a109e941bb27abcf19a86.ja","_languagePackSupport":true,"_translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","_cacheRoot":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja","_resolvedLanguagePackCoreLocation":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c","_corruptedFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"}'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/usr/local/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/altair'), ('CHROME_DESKTOP', 'antigravity.desktop'), ('DESKTOP_SESSION', 'ubuntu'), ('NVM_BIN', '/home/altair/.nvm/versions/node/v14.21.3/bin'), ('NVM_INC', '/home/altair/.nvm/versions/node/v14.21.3/include/node'), ('VSCODE_IPC_HOOK', '/run/user/1000/vscode-7f2a30db-1.10-main.sock'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/antigravity.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('XDG_SEAT_PATH', '/org/freedesktop/DisplayManager/Seat0'), ('PAGER', 'cat'), ('MANAGERPID', '908'), ('SYSTEMD_EXEC_PID', '39864'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('ANTIGRAVITY_AGENT', '1'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '128580'), ('NVM_DIR', '/home/altair/.nvm'), ('IM_CONFIG_PHASE', '1'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'altair'), ('JOURNAL_STREAM', '8:84563'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('FC_FONTATIONS', '1'), ('ROS_LOCALHOST_ONLY', '0'), ('ANTIGRAVITY_EDITOR_APP_ROOT', '/usr/share/antigravity/resources/app'), ('PATH', '/home/altair/.local/bin:/home/altair/spresenseenv/usr/bin:/home/altair/.nvm/versions/node/v14.21.3/bin:/opt/ros/humble/bin:/home/altair/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/altair/command:/home/altair/.local/bin'), ('SESSION_MANAGER', 'local/altair-HCAR5000-MI:@/tmp/.ICE-unix/39835,unix/altair-HCAR5000-MI:/tmp/.ICE-unix/39835'), ('GDM_LANG', 'ja_JP'), ('INVOCATION_ID', 'fd6872f4c93d449ab8f2910c13c9098b'), ('XDG_SESSION_PATH', '/org/freedesktop/DisplayManager/Session0'), ('XDG_MENU_PREFIX', 'gnome-'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('DISPLAY', ':0'), ('LANG', 'ja_JP.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/home/altair/.Xauthority'), ('LS_COLORS', ''), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '0'), ('XDG_GREETER_DATA_DIR', '/var/lib/lightdm-data/altair'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('ANTIGRAVITY_TRAJECTORY_ID', 'c952aa16-449e-47d2-8c09-5e884129916b'), ('PWD', '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2'), ('LC_ALL', 'ja_JP.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('VSCODE_CODE_CACHE_PATH', '/home/altair/.config/Antigravity/CachedData/15487b3041e65228cae24980a3f796c905ef582c'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VSCODE_PID', '128580'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[1.501451] (-) TimerEvent: {}
+[1.508988] (sllidar_ros2) StdoutLine: {'line': b'[ 10%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/arch/linux/net_serial.cpp.o\x1b[0m\n'}
+[1.509230] (sllidar_ros2) StdoutLine: {'line': b'[ 10%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/src/sllidar_node.cpp.o\x1b[0m\n'}
+[1.509411] (sllidar_ros2) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/arch/linux/net_socket.cpp.o\x1b[0m\n'}
+[1.509528] (sllidar_ros2) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o\x1b[0m\n'}
+[1.509809] (sllidar_ros2) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/dataunpacker.cpp.o\x1b[0m\n'}
+[1.510095] (sllidar_ros2) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/arch/linux/timer.cpp.o\x1b[0m\n'}
+[1.511895] (sllidar_ros2) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/unpacker/handler_capsules.cpp.o\x1b[0m\n'}
+[1.512144] (sllidar_ros2) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp.o\x1b[0m\n'}
+[1.512199] (sllidar_ros2) StdoutLine: {'line': b'[ 45%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp.o\x1b[0m\n'}
+[1.513106] (sllidar_ros2) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_crc.cpp.o\x1b[0m\n'}
+[1.513363] (sllidar_ros2) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/rplidar_driver.cpp.o\x1b[0m\n'}
+[1.513465] (sllidar_ros2) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/hal/thread.cpp.o\x1b[0m\n'}
+[1.513530] (sllidar_ros2) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_async_transceiver.cpp.o\x1b[0m\n'}
+[1.514216] (sllidar_ros2) StdoutLine: {'line': b'[ 75%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_lidarprotocol_codec.cpp.o\x1b[0m\n'}
+[1.514514] (sllidar_ros2) StdoutLine: {'line': b'[ 75%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_lidar_driver.cpp.o\x1b[0m\n'}
+[1.524108] (sllidar_ros2) StdoutLine: {'line': b'[ 80%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_serial_channel.cpp.o\x1b[0m\n'}
+[1.545523] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41,\n'}
+[1.545731] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_crc.h:36,\n'}
+[1.545803] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_crc.cpp:33:\n'}
+[1.545866] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[1.545931] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[1.546003] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[1.547124] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_crc.h:36,\n'}
+[1.547309] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_crc.cpp:33:\n'}
+[1.547393] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[1.547465] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[1.547600] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[1.573554] (sllidar_ros2) StdoutLine: {'line': b'[ 85%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_tcp_channel.cpp.o\x1b[0m\n'}
+[1.605382] (-) TimerEvent: {}
+[1.705752] (-) TimerEvent: {}
+[1.806165] (-) TimerEvent: {}
+[1.906991] (-) TimerEvent: {}
+[1.912854] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41,\n'}
+[1.913120] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[1.913216] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_serial_channel.cpp:33:\n'}
+[1.913283] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[1.913400] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[1.913464] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[1.913526] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[1.913593] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_serial_channel.cpp:33:\n'}
+[1.913668] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[1.913741] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[1.913808] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[1.977792] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41,\n'}
+[1.978083] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[1.978168] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp:33:\n'}
+[1.978238] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[1.978339] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[1.978408] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[1.978471] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[1.978542] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp:33:\n'}
+[1.978606] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[1.978672] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[1.978729] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[1.983073] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp: In member function \xe2\x80\x98void sl::TcpChannel::setStatus(_u32)\xe2\x80\x99:\n'}
+[1.983865] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp:109:29: warning: unused parameter \xe2\x80\x98flag\xe2\x80\x99 [-Wunused-parameter]\n'}
+[1.984130] (sllidar_ros2) StderrLine: {'line': b'  109 |         void setStatus(_u32 flag){}\n'}
+[1.984334] (sllidar_ros2) StderrLine: {'line': b'      |                        ~~~~~^~~~\n'}
+[2.008079] (-) TimerEvent: {}
+[2.031720] (sllidar_ros2) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_udp_channel.cpp.o\x1b[0m\n'}
+[2.110432] (-) TimerEvent: {}
+[2.150408] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.150772] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.150877] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.150944] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/hal/thread.cpp:35:\n'}
+[2.151005] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.151072] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.151134] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.152567] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.152923] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.153007] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.153069] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/hal/thread.cpp:35:\n'}
+[2.153157] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.153232] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.153318] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.170902] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.171245] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.171536] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.171673] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:33:\n'}
+[2.171747] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.171824] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.171896] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.171968] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.172041] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.172112] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.172187] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:33:\n'}
+[2.172256] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.172368] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.172584] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.173088] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.173320] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.173447] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.173526] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.cpp:35:\n'}
+[2.173603] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.173679] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.173754] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.173961] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.174055] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.174132] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.174205] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.cpp:35:\n'}
+[2.174287] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.174402] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.174463] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.175915] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.176194] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.176313] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.176413] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41,\n'}
+[2.176485] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp:39:\n'}
+[2.176560] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.176641] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.176720] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.176938] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.177075] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.177155] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.177236] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41,\n'}
+[2.177345] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp:39:\n'}
+[2.177435] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.177543] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.177623] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.179923] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.180186] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.180319] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.180401] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:10:\n'}
+[2.180464] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.180532] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.180602] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.180825] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.180960] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.181045] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.181152] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:10:\n'}
+[2.181233] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.181348] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.181440] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.187763] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.188083] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.188205] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.188475] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:33:\n'}
+[2.188559] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.188633] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.188699] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.188770] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.188868] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.188936] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.189007] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:33:\n'}
+[2.189083] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.189151] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.189218] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.189780] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.190007] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.190089] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.190171] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidarprotocol_codec.cpp:35:\n'}
+[2.190250] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.190362] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.190449] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.190655] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.190772] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.190852] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49,\n'}
+[2.190925] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidarprotocol_codec.cpp:35:\n'}
+[2.191024] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.191102] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.191175] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.204159] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.204440] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.204599] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.204839] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41,\n'}
+[2.204928] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp:39:\n'}
+[2.205018] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.205094] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.205163] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.205232] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.205317] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.205419] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.205489] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41,\n'}
+[2.205559] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp:39:\n'}
+[2.205623] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.205682] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.205752] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.210587] (-) TimerEvent: {}
+[2.213720] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/hal/thread.cpp:43:\n'}
+[2.214027] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp: In static member function \xe2\x80\x98static rp::hal::Thread rp::hal::Thread::create(thread_proc_t, void*)\xe2\x80\x99:\n'}
+[2.214130] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp:52:57: warning: cast between incompatible function types from \xe2\x80\x98thread_proc_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int (*)(void*)\xe2\x80\x99} to \xe2\x80\x98void* (*)(void*)\xe2\x80\x99 [-Wcast-function-type]\n'}
+[2.214228] (sllidar_ros2) StderrLine: {'line': b'   52 |     pthread_create((pthread_t *)&newborn._handle, NULL, (void * (*)(void *))proc, data);\n'}
+[2.214331] (sllidar_ros2) StderrLine: {'line': b'      |                                                         ^~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[2.214834] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp: In member function \xe2\x80\x98u_result rp::hal::Thread::join(long unsigned int)\xe2\x80\x99:\n'}
+[2.215099] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp:176:37: warning: unused parameter \xe2\x80\x98timeout\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.215191] (sllidar_ros2) StderrLine: {'line': b'  176 | u_result Thread::join(unsigned long timeout)\n'}
+[2.215267] (sllidar_ros2) StderrLine: {'line': b'      |                       ~~~~~~~~~~~~~~^~~~~~~\n'}
+[2.216640] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.217011] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.217151] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.217233] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunnpacker_commondef.h:41,\n'}
+[2.217335] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.cpp:39:\n'}
+[2.217420] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.217520] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.217596] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.218267] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.218559] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.218672] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.218783] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunnpacker_commondef.h:41,\n'}
+[2.218860] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.cpp:39:\n'}
+[2.218928] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.219001] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.219072] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.219670] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36,\n'}
+[2.219969] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39,\n'}
+[2.220812] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.221113] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41,\n'}
+[2.221235] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:39:\n'}
+[2.221378] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.221475] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.221550] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.221626] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36,\n'}
+[2.221721] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40,\n'}
+[2.223439] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49,\n'}
+[2.223738] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41,\n'}
+[2.223860] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:39:\n'}
+[2.223943] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.224022] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.224095] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.281574] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/arch/linux/arch_linux.h:42,\n'}
+[2.281856] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:41,\n'}
+[2.281948] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:10:\n'}
+[2.282014] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp: In member function \xe2\x80\x98virtual u_result rp::arch::net::DGramSocketImpl::sendTo(const rp::net::SocketAddress*, const void*, size_t)\xe2\x80\x99:\n'}
+[2.282086] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:733:24: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[2.282172] (sllidar_ros2) StderrLine: {'line': b'  733 |             assert(ans == len);\n'}
+[2.282238] (sllidar_ros2) StderrLine: {'line': b'      |                    ~~~~^~~~~~\n'}
+[2.310704] (-) TimerEvent: {}
+[2.349975] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp: In member function \xe2\x80\x98bool rp::arch::net::raw_serial::open(const char*, uint32_t, uint32_t)\xe2\x80\x99:\n'}
+[2.350271] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:97:74: warning: unused parameter \xe2\x80\x98flags\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.350436] (sllidar_ros2) StderrLine: {'line': b'   97 | bool raw_serial::open(const char * portname, uint32_t baudrate, uint32_t flags)\n'}
+[2.350516] (sllidar_ros2) StderrLine: {'line': b'      |                                                                 ~~~~~~~~~^~~~~\n'}
+[2.351029] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp: In member function \xe2\x80\x98virtual void rp::arch::net::raw_serial::flush(_u32)\xe2\x80\x99:\n'}
+[2.351249] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:281:30: warning: unused parameter \xe2\x80\x98flags\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.351378] (sllidar_ros2) StderrLine: {'line': b'  281 | void raw_serial::flush( _u32 flags)\n'}
+[2.351463] (sllidar_ros2) StderrLine: {'line': b'      |                         ~~~~~^~~~~\n'}
+[2.351527] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp: In member function \xe2\x80\x98virtual int rp::arch::net::raw_serial::waitforsent(_u32, size_t*)\xe2\x80\x99:\n'}
+[2.351614] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:286:34: warning: unused parameter \xe2\x80\x98timeout\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.351675] (sllidar_ros2) StderrLine: {'line': b'  286 | int raw_serial::waitforsent(_u32 timeout, size_t * returned_size)\n'}
+[2.351734] (sllidar_ros2) StderrLine: {'line': b'      |                             ~~~~~^~~~~~~\n'}
+[2.351795] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp: In member function \xe2\x80\x98virtual int rp::arch::net::raw_serial::waitforrecv(_u32, size_t*)\xe2\x80\x99:\n'}
+[2.351857] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:292:34: warning: unused parameter \xe2\x80\x98timeout\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.351923] (sllidar_ros2) StderrLine: {'line': b'  292 | int raw_serial::waitforrecv(_u32 timeout, size_t * returned_size)\n'}
+[2.351986] (sllidar_ros2) StderrLine: {'line': b'      |                             ~~~~~^~~~~~~\n'}
+[2.352426] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp: In member function \xe2\x80\x98virtual void rp::arch::net::raw_serial::cancelOperation()\xe2\x80\x99:\n'}
+[2.352702] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:427:5: warning: value computed is not used [-Wunused-value]\n'}
+[2.352799] (sllidar_ros2) StderrLine: {'line': b'  427 |     (int)::write(_selfpipe[1], "x", 1);\n'}
+[2.352855] (sllidar_ros2) StderrLine: {'line': b'      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[2.361419] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.cpp:44:\n'}
+[2.361683] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h: In member function \xe2\x80\x98virtual void sl::internal::IAsyncProtocolCodec::onChannelError(u_result)\xe2\x80\x99:\n'}
+[2.361739] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:90:48: warning: unused parameter \xe2\x80\x98errCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.361785] (sllidar_ros2) StderrLine: {'line': b'   90 |         virtual void   onChannelError(u_result errCode) {}\n'}
+[2.361827] (sllidar_ros2) StderrLine: {'line': b'      |                                       ~~~~~~~~~^~~~~~~\n'}
+[2.408961] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp: In member function \xe2\x80\x98u_result rp::standalone::rplidar::RPlidarDriver::connect(const char*, _u32, _u32)\xe2\x80\x99:\n'}
+[2.409422] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:67:77: warning: unused parameter \xe2\x80\x98flag\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.409599] (sllidar_ros2) StderrLine: {'line': b'   67 |     u_result RPlidarDriver::connect(const char *path, _u32 portOrBaud, _u32 flag)\n'}
+[2.409706] (sllidar_ros2) StderrLine: {'line': b'      |                                                                        ~~~~~^~~~\n'}
+[2.409803] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp: In member function \xe2\x80\x98u_result rp::standalone::rplidar::RPlidarDriver::reset(_u32)\xe2\x80\x99:\n'}
+[2.409901] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:101:40: warning: unused parameter \xe2\x80\x98timeout\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.410001] (sllidar_ros2) StderrLine: {'line': b'  101 |     u_result RPlidarDriver::reset(_u32 timeout)\n'}
+[2.410098] (sllidar_ros2) StderrLine: {'line': b'      |                                   ~~~~~^~~~~~~\n'}
+[2.410395] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp: In member function \xe2\x80\x98u_result rp::standalone::rplidar::RPlidarDriver::getScanDataWithInterval(rplidar_response_measurement_node_t*, size_t&)\xe2\x80\x99:\n'}
+[2.410661] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:180:91: warning: unused parameter \xe2\x80\x98nodebuffer\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.410834] (-) TimerEvent: {}
+[2.411078] (sllidar_ros2) StderrLine: {'line': b'  180 |     u_result RPlidarDriver::getScanDataWithInterval(rplidar_response_measurement_node_t * nodebuffer, size_t & count)\n'}
+[2.411243] (sllidar_ros2) StderrLine: {'line': b'      |                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~\n'}
+[2.411350] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:180:112: warning: unused parameter \xe2\x80\x98count\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.411428] (sllidar_ros2) StderrLine: {'line': b'  180 |     u_result RPlidarDriver::getScanDataWithInterval(rplidar_response_measurement_node_t * nodebuffer, size_t & count)\n'}
+[2.411502] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                       ~~~~~~~~~^~~~~\n'}
+[2.418429] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidarprotocol_codec.cpp:49:\n'}
+[2.418724] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h: In member function \xe2\x80\x98virtual void sl::internal::IAsyncProtocolCodec::onChannelError(u_result)\xe2\x80\x99:\n'}
+[2.419213] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:90:48: warning: unused parameter \xe2\x80\x98errCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.419563] (sllidar_ros2) StderrLine: {'line': b'   90 |         virtual void   onChannelError(u_result errCode) {}\n'}
+[2.419652] (sllidar_ros2) StderrLine: {'line': b'      |                                       ~~~~~~~~~^~~~~~~\n'}
+[2.425024] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41,\n'}
+[2.425332] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[2.425553] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp:33:\n'}
+[2.425665] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[2.425745] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[2.425808] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[2.425873] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[2.425941] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp:33:\n'}
+[2.426005] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[2.426107] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[2.426169] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[2.431375] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp: In member function \xe2\x80\x98void sl::UdpChannel::setStatus(_u32)\xe2\x80\x99:\n'}
+[2.431863] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp:112:29: warning: unused parameter \xe2\x80\x98flag\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.432004] (sllidar_ros2) StderrLine: {'line': b'  112 |         void setStatus(_u32 flag){}\n'}
+[2.432073] (sllidar_ros2) StderrLine: {'line': b'      |                        ~~~~~^~~~\n'}
+[2.481409] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp:40:\n'}
+[2.481743] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\xe2\x80\x99:\n'}
+[2.481858] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:52: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.481932] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.481998] (sllidar_ros2) StderrLine: {'line': b'      |                                                ~~~~^~~~~~~\n'}
+[2.482059] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:66: warning: unused parameter \xe2\x80\x98customCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.482125] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.482190] (sllidar_ros2) StderrLine: {'line': b'      |                                                             ~~~~~^~~~~~~~~~\n'}
+[2.482263] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:90: warning: unused parameter \xe2\x80\x98data\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.482636] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.482719] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              ~~~~~~~~~~~~^~~~\n'}
+[2.482780] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:103: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.482842] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.482905] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                ~~~~~~~^~~~\n'}
+[2.482967] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\xe2\x80\x99:\n'}
+[2.483032] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:42: warning: unused parameter \xe2\x80\x98errMsg\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.483095] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.483158] (sllidar_ros2) StderrLine: {'line': b'      |                                      ~~~~^~~~~~\n'}
+[2.483221] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:54: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.483352] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.483423] (sllidar_ros2) StderrLine: {'line': b'      |                                                  ~~~~^~~~~~~\n'}
+[2.483488] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:75: warning: unused parameter \xe2\x80\x98payload\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.483551] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.483610] (sllidar_ros2) StderrLine: {'line': b'      |                                                               ~~~~~~~~~~~~^~~~~~~\n'}
+[2.483669] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:91: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.483731] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.483791] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    ~~~~~~~^~~~\n'}
+[2.506211] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp:40:\n'}
+[2.506528] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\xe2\x80\x99:\n'}
+[2.506618] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:52: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.506670] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.506719] (sllidar_ros2) StderrLine: {'line': b'      |                                                ~~~~^~~~~~~\n'}
+[2.506762] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:66: warning: unused parameter \xe2\x80\x98customCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.506806] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.506850] (sllidar_ros2) StderrLine: {'line': b'      |                                                             ~~~~~^~~~~~~~~~\n'}
+[2.506893] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:90: warning: unused parameter \xe2\x80\x98data\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.506937] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.506979] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              ~~~~~~~~~~~~^~~~\n'}
+[2.507023] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:103: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.507066] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.507109] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                ~~~~~~~^~~~\n'}
+[2.507159] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\xe2\x80\x99:\n'}
+[2.507205] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:42: warning: unused parameter \xe2\x80\x98errMsg\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.507248] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.507314] (sllidar_ros2) StderrLine: {'line': b'      |                                      ~~~~^~~~~~\n'}
+[2.507376] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:54: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.507421] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.507464] (sllidar_ros2) StderrLine: {'line': b'      |                                                  ~~~~^~~~~~~\n'}
+[2.507509] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:75: warning: unused parameter \xe2\x80\x98payload\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.507552] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.507596] (sllidar_ros2) StderrLine: {'line': b'      |                                                               ~~~~~~~~~~~~^~~~~~~\n'}
+[2.507639] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:91: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.507693] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.507737] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    ~~~~~~~^~~~\n'}
+[2.510951] (-) TimerEvent: {}
+[2.522464] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:40:\n'}
+[2.522817] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\xe2\x80\x99:\n'}
+[2.522890] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:52: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.522948] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.523003] (sllidar_ros2) StderrLine: {'line': b'      |                                                ~~~~^~~~~~~\n'}
+[2.523057] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:66: warning: unused parameter \xe2\x80\x98customCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.523129] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.523190] (sllidar_ros2) StderrLine: {'line': b'      |                                                             ~~~~~^~~~~~~~~~\n'}
+[2.523251] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:90: warning: unused parameter \xe2\x80\x98data\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.523336] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.523398] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              ~~~~~~~~~~~~^~~~\n'}
+[2.523459] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:103: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.523514] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.523568] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                ~~~~~~~^~~~\n'}
+[2.523623] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\xe2\x80\x99:\n'}
+[2.523681] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:42: warning: unused parameter \xe2\x80\x98errMsg\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.523763] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.523821] (sllidar_ros2) StderrLine: {'line': b'      |                                      ~~~~^~~~~~\n'}
+[2.523876] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:54: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.523939] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.523995] (sllidar_ros2) StderrLine: {'line': b'      |                                                  ~~~~^~~~~~~\n'}
+[2.524052] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:75: warning: unused parameter \xe2\x80\x98payload\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.524110] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.524167] (sllidar_ros2) StderrLine: {'line': b'      |                                                               ~~~~~~~~~~~~^~~~~~~\n'}
+[2.524224] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:91: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.524282] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.524397] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    ~~~~~~~^~~~\n'}
+[2.530808] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.cpp:40:\n'}
+[2.531106] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\xe2\x80\x99:\n'}
+[2.531213] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:52: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.531328] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.531411] (sllidar_ros2) StderrLine: {'line': b'      |                                                ~~~~^~~~~~~\n'}
+[2.531481] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:66: warning: unused parameter \xe2\x80\x98customCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.531552] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.531621] (sllidar_ros2) StderrLine: {'line': b'      |                                                             ~~~~~^~~~~~~~~~\n'}
+[2.531689] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:90: warning: unused parameter \xe2\x80\x98data\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.531783] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.531853] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              ~~~~~~~~~~~~^~~~\n'}
+[2.531948] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:103: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.532023] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.532097] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                ~~~~~~~^~~~\n'}
+[2.532159] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\xe2\x80\x99:\n'}
+[2.532231] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:42: warning: unused parameter \xe2\x80\x98errMsg\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.532339] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.532419] (sllidar_ros2) StderrLine: {'line': b'      |                                      ~~~~^~~~~~\n'}
+[2.532487] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:54: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.532558] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.532627] (sllidar_ros2) StderrLine: {'line': b'      |                                                  ~~~~^~~~~~~\n'}
+[2.532764] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:75: warning: unused parameter \xe2\x80\x98payload\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.532852] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.532922] (sllidar_ros2) StderrLine: {'line': b'      |                                                               ~~~~~~~~~~~~^~~~~~~\n'}
+[2.532991] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:91: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.533059] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.533148] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    ~~~~~~~^~~~\n'}
+[2.537647] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp: In member function \xe2\x80\x98void sl::internal::unpacker::UnpackerHandler_DenseCapsuleNode::_onScanNodeDenseCapsuleData(rplidar_response_dense_capsule_measurement_nodes_t&, sl::internal::LIDARSampleDataUnpackerInner*)\xe2\x80\x99:\n'}
+[2.537958] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:763:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]\n'}
+[2.538042] (sllidar_ros2) StderrLine: {'line': b'  763 |             const int dist = static_cast<const int>(_cached_previous_dense_capsuledata.cabins[pos].distance);\n'}
+[2.538098] (sllidar_ros2) StderrLine: {'line': b'      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[2.556824] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:50:\n'}
+[2.557109] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\xe2\x80\x99:\n'}
+[2.557186] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:52: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.557236] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.557279] (sllidar_ros2) StderrLine: {'line': b'      |                                                ~~~~^~~~~~~\n'}
+[2.557342] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:66: warning: unused parameter \xe2\x80\x98customCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.557393] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.557435] (sllidar_ros2) StderrLine: {'line': b'      |                                                             ~~~~~^~~~~~~~~~\n'}
+[2.557478] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:90: warning: unused parameter \xe2\x80\x98data\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.557535] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.557578] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              ~~~~~~~~~~~~^~~~\n'}
+[2.557626] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:103: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.557671] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, size_t size) {}\n'}
+[2.557714] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                ~~~~~~~^~~~\n'}
+[2.557765] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h: In member function \xe2\x80\x98virtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\xe2\x80\x99:\n'}
+[2.557827] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:42: warning: unused parameter \xe2\x80\x98errMsg\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.557878] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.557920] (sllidar_ros2) StderrLine: {'line': b'      |                                      ~~~~^~~~~~\n'}
+[2.557962] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:54: warning: unused parameter \xe2\x80\x98ansType\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.558004] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.558048] (sllidar_ros2) StderrLine: {'line': b'      |                                                  ~~~~^~~~~~~\n'}
+[2.558092] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:75: warning: unused parameter \xe2\x80\x98payload\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.558136] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.558179] (sllidar_ros2) StderrLine: {'line': b'      |                                                               ~~~~~~~~~~~~^~~~~~~\n'}
+[2.558223] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:91: warning: unused parameter \xe2\x80\x98size\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.558267] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, size_t size) {}\n'}
+[2.558335] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    ~~~~~~~^~~~\n'}
+[2.569130] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:51:\n'}
+[2.569406] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h: In member function \xe2\x80\x98virtual void sl::internal::IAsyncProtocolCodec::onChannelError(u_result)\xe2\x80\x99:\n'}
+[2.569502] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:90:48: warning: unused parameter \xe2\x80\x98errCode\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.569569] (sllidar_ros2) StderrLine: {'line': b'   90 |         virtual void   onChannelError(u_result errCode) {}\n'}
+[2.569633] (sllidar_ros2) StderrLine: {'line': b'      |                                       ~~~~~~~~~^~~~~~~\n'}
+[2.595952] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In member function \xe2\x80\x98virtual sl_result sl::SlamtecLidarDriver::reset(sl_u32)\xe2\x80\x99:\n'}
+[2.596129] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:511:32: warning: unused parameter \xe2\x80\x98timeoutInMs\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.596179] (sllidar_ros2) StderrLine: {'line': b'  511 |         sl_result reset(sl_u32 timeoutInMs = DEFAULT_TIMEOUT)\n'}
+[2.596223] (sllidar_ros2) StderrLine: {'line': b'      |                         ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[2.599814] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In member function \xe2\x80\x98virtual sl_result sl::SlamtecLidarDriver::startScan(bool, bool, sl_u32, sl::LidarScanMode*)\xe2\x80\x99:\n'}
+[2.600002] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:586:69: warning: unused parameter \xe2\x80\x98options\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.600050] (sllidar_ros2) StderrLine: {'line': b'  586 |         sl_result startScan(bool force, bool useTypicalScan, sl_u32 options = 0, LidarScanMode* outUsedScanMode = nullptr)\n'}
+[2.600110] (sllidar_ros2) StderrLine: {'line': b'      |                                                              ~~~~~~~^~~~~~~~~~~\n'}
+[2.601477] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In member function \xe2\x80\x98virtual sl_result sl::SlamtecLidarDriver::stop(sl_u32)\xe2\x80\x99:\n'}
+[2.601634] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:763:31: warning: unused parameter \xe2\x80\x98timeout\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.601683] (sllidar_ros2) StderrLine: {'line': b'  763 |         sl_result stop(sl_u32 timeout = DEFAULT_TIMEOUT)\n'}
+[2.601728] (sllidar_ros2) StderrLine: {'line': b'      |                        ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[2.603314] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In member function \xe2\x80\x98virtual sl_result sl::SlamtecLidarDriver::getFrequency(const sl::LidarScanMode&, const sl_lidar_response_measurement_node_hq_t*, size_t, float&)\xe2\x80\x99:\n'}
+[2.603561] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:880:110: warning: unused parameter \xe2\x80\x98nodes\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.603643] (sllidar_ros2) StderrLine: {'line': b'  880 |         sl_result getFrequency(const LidarScanMode& scanMode, const sl_lidar_response_measurement_node_hq_t* nodes, size_t count, float& frequency)\n'}
+[2.603712] (sllidar_ros2) StderrLine: {'line': b'      |                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~\n'}
+[2.605684] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In member function \xe2\x80\x98virtual sl_result sl::SlamtecLidarDriver::getMotorInfo(sl::LidarMotorInfo&, sl_u32)\xe2\x80\x99:\n'}
+[2.605915] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:1023:66: warning: unused parameter \xe2\x80\x98timeoutInMs\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.605965] (sllidar_ros2) StderrLine: {'line': b' 1023 |         sl_result getMotorInfo(LidarMotorInfo &motorInfo, sl_u32 timeoutInMs)\n'}
+[2.606008] (sllidar_ros2) StderrLine: {'line': b'      |                                                           ~~~~~~~^~~~~~~~~~~\n'}
+[2.606842] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In member function \xe2\x80\x98u_result sl::SlamtecLidarDriver::getScanModeCount(sl_u16&, sl_u32)\xe2\x80\x99:\n'}
+[2.607012] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:1199:61: warning: unused parameter \xe2\x80\x98timeoutInMs\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.607057] (sllidar_ros2) StderrLine: {'line': b' 1199 |         u_result getScanModeCount(sl_u16& modeCount, sl_u32 timeoutInMs = DEFAULT_TIMEOUT)\n'}
+[2.607100] (sllidar_ros2) StderrLine: {'line': b'      |                                                      ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[2.611047] (-) TimerEvent: {}
+[2.643881] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In instantiation of \xe2\x80\x98void sl::RawSampleNodeHolder<T>::pushNode(_u64, const T*) [with T = sl_lidar_response_measurement_node_hq_t; _u64 = long unsigned int]\xe2\x80\x99:\n'}
+[2.644124] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:1648:42:   required from here\n'}
+[2.644225] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:202:28: warning: unused parameter \xe2\x80\x98timestamp_uS\xe2\x80\x99 [-Wunused-parameter]\n'}
+[2.644375] (sllidar_ros2) StderrLine: {'line': b'  202 |         void pushNode(_u64 timestamp_uS, const T* node)\n'}
+[2.644474] (sllidar_ros2) StderrLine: {'line': b'      |                       ~~~~~^~~~~~~~~~~~\n'}
+[2.711154] (-) TimerEvent: {}
+[2.745774] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: At global scope:\n'}
+[2.745956] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:83:17: warning: \xe2\x80\x98void sl::convert(const sl_lidar_response_measurement_node_hq_t&, sl_lidar_response_measurement_node_t&)\xe2\x80\x99 defined but not used [-Wunused-function]\n'}
+[2.746003] (sllidar_ros2) StderrLine: {'line': b'   83 |     static void convert(const sl_lidar_response_measurement_node_hq_t& from, sl_lidar_response_measurement_node_t& to)\n'}
+[2.746043] (sllidar_ros2) StderrLine: {'line': b'      |                 ^~~~~~~\n'}
+[2.746082] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:75:17: warning: \xe2\x80\x98void sl::convert(const sl_lidar_response_measurement_node_t&, sl_lidar_response_measurement_node_hq_t&)\xe2\x80\x99 defined but not used [-Wunused-function]\n'}
+[2.746121] (sllidar_ros2) StderrLine: {'line': b'   75 |     static void convert(const sl_lidar_response_measurement_node_t& from, sl_lidar_response_measurement_node_hq_t& to)\n'}
+[2.746159] (sllidar_ros2) StderrLine: {'line': b'      |                 ^~~~~~~\n'}
+[2.746197] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:70:17: warning: \xe2\x80\x98void sl::printDeprecationWarn(const char*, const char*)\xe2\x80\x99 defined but not used [-Wunused-function]\n'}
+[2.746253] (sllidar_ros2) StderrLine: {'line': b'   70 |     static void printDeprecationWarn(const char* fn, const char* replacement)\n'}
+[2.746312] (sllidar_ros2) StderrLine: {'line': b'      |                 ^~~~~~~~~~~~~~~~~~~~\n'}
+[2.811264] (-) TimerEvent: {}
+[2.911609] (-) TimerEvent: {}
+[3.011886] (-) TimerEvent: {}
+[3.112163] (-) TimerEvent: {}
+[3.212485] (-) TimerEvent: {}
+[3.312753] (-) TimerEvent: {}
+[3.413087] (-) TimerEvent: {}
+[3.513365] (-) TimerEvent: {}
+[3.613627] (-) TimerEvent: {}
+[3.713956] (-) TimerEvent: {}
+[3.814325] (-) TimerEvent: {}
+[3.914697] (-) TimerEvent: {}
+[4.015039] (-) TimerEvent: {}
+[4.115374] (-) TimerEvent: {}
+[4.215714] (-) TimerEvent: {}
+[4.246878] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41,\n'}
+[4.247142] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[4.247240] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar.h:36,\n'}
+[4.247352] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/src/sllidar_node.cpp:38:\n'}
+[4.247443] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16: warning: ISO C++ forbids zero-size array \xe2\x80\x98data\xe2\x80\x99 [-Wpedantic]\n'}
+[4.247529] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[0];\n'}
+[4.247614] (sllidar_ros2) StderrLine: {'line': b'      |                ^\n'}
+[4.247696] (sllidar_ros2) StderrLine: {'line': b'In file included from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54,\n'}
+[4.247792] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar.h:36,\n'}
+[4.247907] (sllidar_ros2) StderrLine: {'line': b'                 from /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/src/sllidar_node.cpp:38:\n'}
+[4.248025] (sllidar_ros2) StderrLine: {'line': b'/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20: warning: ISO C++ forbids zero-size array \xe2\x80\x98payload\xe2\x80\x99 [-Wpedantic]\n'}
+[4.248179] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[0];\n'}
+[4.248286] (sllidar_ros2) StderrLine: {'line': b'      |                    ^\n'}
+[4.315822] (-) TimerEvent: {}
+[4.416156] (-) TimerEvent: {}
+[4.516527] (-) TimerEvent: {}
+[4.616845] (-) TimerEvent: {}
+[4.717102] (-) TimerEvent: {}
+[4.817356] (-) TimerEvent: {}
+[4.917645] (-) TimerEvent: {}
+[5.017955] (-) TimerEvent: {}
+[5.118278] (-) TimerEvent: {}
+[5.218550] (-) TimerEvent: {}
+[5.318838] (-) TimerEvent: {}
+[5.419153] (-) TimerEvent: {}
+[5.519493] (-) TimerEvent: {}
+[5.619807] (-) TimerEvent: {}
+[5.720141] (-) TimerEvent: {}
+[5.820367] (-) TimerEvent: {}
+[5.920627] (-) TimerEvent: {}
+[6.020918] (-) TimerEvent: {}
+[6.121261] (-) TimerEvent: {}
+[6.221623] (-) TimerEvent: {}
+[6.321954] (-) TimerEvent: {}
+[6.422342] (-) TimerEvent: {}
+[6.522703] (-) TimerEvent: {}
+[6.538546] (sllidar_ros2) StdoutLine: {'line': b'[ 95%] \x1b[32m\x1b[1mLinking CXX executable sllidar_node\x1b[0m\n'}
+[6.622818] (-) TimerEvent: {}
+[6.723103] (-) TimerEvent: {}
+[6.823400] (-) TimerEvent: {}
+[6.866953] (sllidar_ros2) StdoutLine: {'line': b'[ 95%] Built target sllidar_node\n'}
+[6.923555] (-) TimerEvent: {}
+[7.023943] (-) TimerEvent: {}
+[7.124279] (-) TimerEvent: {}
+[7.224644] (-) TimerEvent: {}
+[7.324996] (-) TimerEvent: {}
+[7.425350] (-) TimerEvent: {}
+[7.525740] (-) TimerEvent: {}
+[7.626057] (-) TimerEvent: {}
+[7.726312] (-) TimerEvent: {}
+[7.826550] (-) TimerEvent: {}
+[7.926840] (-) TimerEvent: {}
+[8.027199] (-) TimerEvent: {}
+[8.127496] (-) TimerEvent: {}
+[8.228013] (-) TimerEvent: {}
+[8.328349] (-) TimerEvent: {}
+[8.428643] (-) TimerEvent: {}
+[8.528926] (-) TimerEvent: {}
+[8.629229] (-) TimerEvent: {}
+[8.729629] (-) TimerEvent: {}
+[8.829979] (-) TimerEvent: {}
+[8.930388] (-) TimerEvent: {}
+[8.944548] (sllidar_ros2) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable sllidar_client\x1b[0m\n'}
+[9.030552] (-) TimerEvent: {}
+[9.130934] (-) TimerEvent: {}
+[9.231275] (-) TimerEvent: {}
+[9.331667] (-) TimerEvent: {}
+[9.369331] (sllidar_ros2) StdoutLine: {'line': b'[100%] Built target sllidar_client\n'}
+[9.377511] (sllidar_ros2) CommandEnded: {'returncode': 0}
+[9.378284] (sllidar_ros2) JobProgress: {'identifier': 'sllidar_ros2', 'progress': 'install'}
+[9.382831] (sllidar_ros2) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2'], 'cwd': '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/home/altair'), ('LANGUAGE', 'ja_JP'), ('USER', 'altair'), ('VSCODE_NLS_CONFIG', '{"userLocale":"ja","osLocale":"ja-jp","resolvedLanguage":"ja","defaultMessagesFile":"/usr/share/antigravity/resources/app/out/nls.messages.json","languagePack":{"translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","messagesFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c/nls.messages.json","corruptMarkerFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"},"locale":"ja","availableLanguages":{"*":"ja"},"_languagePackId":"c079ae35ca5a109e941bb27abcf19a86.ja","_languagePackSupport":true,"_translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","_cacheRoot":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja","_resolvedLanguagePackCoreLocation":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c","_corruptedFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"}'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/usr/local/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/altair'), ('CHROME_DESKTOP', 'antigravity.desktop'), ('DESKTOP_SESSION', 'ubuntu'), ('NVM_BIN', '/home/altair/.nvm/versions/node/v14.21.3/bin'), ('NVM_INC', '/home/altair/.nvm/versions/node/v14.21.3/include/node'), ('VSCODE_IPC_HOOK', '/run/user/1000/vscode-7f2a30db-1.10-main.sock'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/antigravity.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('XDG_SEAT_PATH', '/org/freedesktop/DisplayManager/Seat0'), ('PAGER', 'cat'), ('MANAGERPID', '908'), ('SYSTEMD_EXEC_PID', '39864'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('ANTIGRAVITY_AGENT', '1'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '128580'), ('NVM_DIR', '/home/altair/.nvm'), ('IM_CONFIG_PHASE', '1'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'altair'), ('JOURNAL_STREAM', '8:84563'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('FC_FONTATIONS', '1'), ('ROS_LOCALHOST_ONLY', '0'), ('ANTIGRAVITY_EDITOR_APP_ROOT', '/usr/share/antigravity/resources/app'), ('PATH', '/home/altair/.local/bin:/home/altair/spresenseenv/usr/bin:/home/altair/.nvm/versions/node/v14.21.3/bin:/opt/ros/humble/bin:/home/altair/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/altair/command:/home/altair/.local/bin'), ('SESSION_MANAGER', 'local/altair-HCAR5000-MI:@/tmp/.ICE-unix/39835,unix/altair-HCAR5000-MI:/tmp/.ICE-unix/39835'), ('GDM_LANG', 'ja_JP'), ('INVOCATION_ID', 'fd6872f4c93d449ab8f2910c13c9098b'), ('XDG_SESSION_PATH', '/org/freedesktop/DisplayManager/Session0'), ('XDG_MENU_PREFIX', 'gnome-'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('DISPLAY', ':0'), ('LANG', 'ja_JP.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/home/altair/.Xauthority'), ('LS_COLORS', ''), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '0'), ('XDG_GREETER_DATA_DIR', '/var/lib/lightdm-data/altair'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('ANTIGRAVITY_TRAJECTORY_ID', 'c952aa16-449e-47d2-8c09-5e884129916b'), ('PWD', '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2'), ('LC_ALL', 'ja_JP.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('VSCODE_CODE_CACHE_PATH', '/home/altair/.config/Antigravity/CachedData/15487b3041e65228cae24980a3f796c905ef582c'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VSCODE_PID', '128580'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[9.386983] (sllidar_ros2) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[9.387369] (sllidar_ros2) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[9.387979] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a1_launch.py\n'}
+[9.392895] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a2m12_launch .py\n'}
+[9.397090] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a2m7_launch.py\n'}
+[9.401882] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a2m8_launch.py\n'}
+[9.406275] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a3_launch.py\n'}
+[9.410341] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_c1_launch.py\n'}
+[9.414847] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s1_launch.py\n'}
+[9.419195] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s1_tcp_launch.py\n'}
+[9.423099] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s2_launch.py\n'}
+[9.427092] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s2e_launch.py\n'}
+[9.431229] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s3_launch.py\n'}
+[9.431738] (-) TimerEvent: {}
+[9.435420] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_t1_launch.py\n'}
+[9.439065] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a1_launch.py\n'}
+[9.443091] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a2m12_launch.py\n'}
+[9.447052] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a2m7_launch.py\n'}
+[9.451288] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a2m8_launch.py\n'}
+[9.455533] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a3_launch.py\n'}
+[9.460440] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_c1_launch.py\n'}
+[9.464286] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s1_launch.py\n'}
+[9.468127] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s1_tcp_launch.py\n'}
+[9.472350] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s2_launch.py\n'}
+[9.476297] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s2e_launch.py\n'}
+[9.480298] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s3_launch.py\n'}
+[9.484611] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_t1_launch.py\n'}
+[9.489806] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/rviz/sllidar_ros2.rviz\n'}
+[9.494857] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib/sllidar_ros2/sllidar_node\n'}
+[9.499684] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib/sllidar_ros2/sllidar_client\n'}
+[9.505084] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/ament_index/resource_index/package_run_dependencies/sllidar_ros2\n'}
+[9.509996] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/ament_index/resource_index/parent_prefix_path/sllidar_ros2\n'}
+[9.514421] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/environment/ament_prefix_path.sh\n'}
+[9.518459] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/environment/ament_prefix_path.dsv\n'}
+[9.523009] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/environment/path.sh\n'}
+[9.527786] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/environment/path.dsv\n'}
+[9.531396] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.bash\n'}
+[9.531843] (-) TimerEvent: {}
+[9.536386] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.sh\n'}
+[9.540699] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.zsh\n'}
+[9.545259] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.dsv\n'}
+[9.549131] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.dsv\n'}
+[9.556669] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/ament_index/resource_index/packages/sllidar_ros2\n'}
+[9.561425] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[9.565529] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[9.569543] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/sllidar_ros2Config.cmake\n'}
+[9.574174] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/sllidar_ros2Config-version.cmake\n'}
+[9.578660] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.xml\n'}
+[9.585688] (sllidar_ros2) CommandEnded: {'returncode': 0}
+[9.602048] (sllidar_ros2) JobEnded: {'identifier': 'sllidar_ros2', 'rc': 0}
+[9.603897] (-) EventReactorShutdown: {}

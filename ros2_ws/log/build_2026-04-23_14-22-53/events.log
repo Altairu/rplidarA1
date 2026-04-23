@@ -1,0 +1,45 @@
+[0.000000] (-) TimerEvent: {}
+[0.000190] (-) JobUnselected: {'identifier': 'sllidar_ros2'}
+[0.000239] (lidar_processing) JobQueued: {'identifier': 'lidar_processing', 'dependencies': OrderedDict()}
+[0.000272] (lidar_processing) JobStarted: {'identifier': 'lidar_processing'}
+[0.096706] (-) TimerEvent: {}
+[0.197042] (-) TimerEvent: {}
+[0.297395] (-) TimerEvent: {}
+[0.397713] (-) TimerEvent: {}
+[0.498008] (-) TimerEvent: {}
+[0.598378] (-) TimerEvent: {}
+[0.698799] (-) TimerEvent: {}
+[0.799117] (-) TimerEvent: {}
+[0.899438] (-) TimerEvent: {}
+[0.999754] (-) TimerEvent: {}
+[1.100169] (lidar_processing) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/altair/rplidarA1/ros2_ws/build/lidar_processing/build', '--no-deps', 'symlink_data'], 'cwd': '/home/altair/rplidarA1/ros2_ws/build/lidar_processing', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/home/altair', 'LANGUAGE': 'ja_JP', 'USER': 'altair', 'VSCODE_NLS_CONFIG': '{"userLocale":"ja","osLocale":"ja-jp","resolvedLanguage":"ja","defaultMessagesFile":"/usr/share/antigravity/resources/app/out/nls.messages.json","languagePack":{"translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","messagesFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c/nls.messages.json","corruptMarkerFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"},"locale":"ja","availableLanguages":{"*":"ja"},"_languagePackId":"c079ae35ca5a109e941bb27abcf19a86.ja","_languagePackSupport":true,"_translationsConfigFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","_cacheRoot":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja","_resolvedLanguagePackCoreLocation":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/15487b3041e65228cae24980a3f796c905ef582c","_corruptedFile":"/home/altair/.config/Antigravity/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"}', 'XDG_SESSION_TYPE': 'x11', 'SHLVL': '0', 'LD_LIBRARY_PATH': '/usr/local/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/altair', 'CHROME_DESKTOP': 'antigravity.desktop', 'DESKTOP_SESSION': 'ubuntu', 'NVM_BIN': '/home/altair/.nvm/versions/node/v14.21.3/bin', 'NVM_INC': '/home/altair/.nvm/versions/node/v14.21.3/include/node', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-7f2a30db-1.10-main.sock', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/antigravity.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'XDG_SEAT_PATH': '/org/freedesktop/DisplayManager/Seat0', 'PAGER': 'cat', 'MANAGERPID': '908', 'SYSTEMD_EXEC_PID': '39864', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'ANTIGRAVITY_AGENT': '1', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '128580', 'NVM_DIR': '/home/altair/.nvm', 'IM_CONFIG_PHASE': '1', 'ROS_DISTRO': 'humble', 'GTK_IM_MODULE': 'ibus', 'LOGNAME': 'altair', 'JOURNAL_STREAM': '8:84563', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'dumb', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'FC_FONTATIONS': '1', 'ROS_LOCALHOST_ONLY': '0', 'ANTIGRAVITY_EDITOR_APP_ROOT': '/usr/share/antigravity/resources/app', 'PATH': '/home/altair/.local/bin:/home/altair/spresenseenv/usr/bin:/home/altair/.nvm/versions/node/v14.21.3/bin:/opt/ros/humble/bin:/home/altair/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/altair/command:/home/altair/.local/bin', 'SESSION_MANAGER': 'local/altair-HCAR5000-MI:@/tmp/.ICE-unix/39835,unix/altair-HCAR5000-MI:/tmp/.ICE-unix/39835', 'GDM_LANG': 'ja_JP', 'INVOCATION_ID': 'fd6872f4c93d449ab8f2910c13c9098b', 'XDG_SESSION_PATH': '/org/freedesktop/DisplayManager/Session0', 'XDG_MENU_PREFIX': 'gnome-', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'x11', 'DISPLAY': ':0', 'LANG': 'ja_JP.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/home/altair/.Xauthority', 'LS_COLORS': '', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'ROS_DOMAIN_ID': '0', 'XDG_GREETER_DATA_DIR': '/var/lib/lightdm-data/altair', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'GJS_DEBUG_OUTPUT': 'stderr', 'QT_IM_MODULE': 'ibus', 'ANTIGRAVITY_TRAJECTORY_ID': 'dcc6aeb3-0cf9-400c-afb8-6a60dad2170a', 'PWD': '/home/altair/rplidarA1/ros2_ws/build/lidar_processing', 'LC_ALL': 'ja_JP.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'VSCODE_CODE_CACHE_PATH': '/home/altair/.config/Antigravity/CachedData/15487b3041e65228cae24980a3f796c905ef582c', 'NVM_CD_FLAGS': '', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/altair/rplidarA1/ros2_ws/build/lidar_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'VSCODE_PID': '128580'}, 'shell': False}
+[1.103247] (-) TimerEvent: {}
+[1.203491] (-) TimerEvent: {}
+[1.303954] (-) TimerEvent: {}
+[1.404353] (-) TimerEvent: {}
+[1.504736] (-) TimerEvent: {}
+[1.541024] (lidar_processing) StdoutLine: {'line': b'running develop\n'}
+[1.604886] (-) TimerEvent: {}
+[1.705318] (-) TimerEvent: {}
+[1.805296] (lidar_processing) StdoutLine: {'line': b'running egg_info\n'}
+[1.805634] (-) TimerEvent: {}
+[1.825166] (lidar_processing) StdoutLine: {'line': b'writing lidar_processing.egg-info/PKG-INFO\n'}
+[1.825806] (lidar_processing) StdoutLine: {'line': b'writing dependency_links to lidar_processing.egg-info/dependency_links.txt\n'}
+[1.826104] (lidar_processing) StdoutLine: {'line': b'writing entry points to lidar_processing.egg-info/entry_points.txt\n'}
+[1.826325] (lidar_processing) StdoutLine: {'line': b'writing requirements to lidar_processing.egg-info/requires.txt\n'}
+[1.826447] (lidar_processing) StdoutLine: {'line': b'writing top-level names to lidar_processing.egg-info/top_level.txt\n'}
+[1.870446] (lidar_processing) StdoutLine: {'line': b"reading manifest file 'lidar_processing.egg-info/SOURCES.txt'\n"}
+[1.871563] (lidar_processing) StdoutLine: {'line': b"writing manifest file 'lidar_processing.egg-info/SOURCES.txt'\n"}
+[1.892809] (lidar_processing) StdoutLine: {'line': b'running build_ext\n'}
+[1.893075] (lidar_processing) StdoutLine: {'line': b'Creating /home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages/lidar-processing.egg-link (link to .)\n'}
+[1.893865] (lidar_processing) StdoutLine: {'line': b'Installing icp_slam_node script to /home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/lidar_processing\n'}
+[1.894089] (lidar_processing) StdoutLine: {'line': b'Installing ransac_node script to /home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/lidar_processing\n'}
+[1.894281] (lidar_processing) StdoutLine: {'line': b'\n'}
+[1.894377] (lidar_processing) StdoutLine: {'line': b'Installed /home/altair/rplidarA1/ros2_ws/build/lidar_processing\n'}
+[1.894531] (lidar_processing) StdoutLine: {'line': b'running symlink_data\n'}
+[1.894900] (lidar_processing) StdoutLine: {'line': b'creating /home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/config\n'}
+[1.895051] (lidar_processing) StdoutLine: {'line': b'symbolically linking /home/altair/rplidarA1/ros2_ws/build/lidar_processing/config/custom_mapper_params.yaml -> /home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/config\n'}
+[1.905779] (-) TimerEvent: {}
+[1.982644] (lidar_processing) CommandEnded: {'returncode': 0}
+[1.992412] (lidar_processing) JobEnded: {'identifier': 'lidar_processing', 'rc': 0}
+[1.993347] (-) EventReactorShutdown: {}

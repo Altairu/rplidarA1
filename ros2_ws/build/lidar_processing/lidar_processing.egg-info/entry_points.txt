@@ -1,0 +1,3 @@
+[console_scripts]
+icp_slam_node = lidar_processing.icp_slam_node:main
+ransac_node = lidar_processing.ransac_node:main

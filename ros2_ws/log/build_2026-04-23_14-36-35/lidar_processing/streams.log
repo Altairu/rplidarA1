@@ -1,0 +1,19 @@
+[1.095s] Invoking command in '/home/altair/rplidarA1/ros2_ws/build/lidar_processing': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/lidar_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/lidar_processing/build --no-deps symlink_data
+[1.576s] running develop
+[1.847s] running egg_info
+[1.867s] writing lidar_processing.egg-info/PKG-INFO
+[1.868s] writing dependency_links to lidar_processing.egg-info/dependency_links.txt
+[1.868s] writing entry points to lidar_processing.egg-info/entry_points.txt
+[1.869s] writing requirements to lidar_processing.egg-info/requires.txt
+[1.869s] writing top-level names to lidar_processing.egg-info/top_level.txt
+[1.914s] reading manifest file 'lidar_processing.egg-info/SOURCES.txt'
+[1.914s] writing manifest file 'lidar_processing.egg-info/SOURCES.txt'
+[1.936s] running build_ext
+[1.936s] Creating /home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages/lidar-processing.egg-link (link to .)
+[1.936s] Installing icp_slam_node script to /home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/lidar_processing
+[1.936s] Installing ransac_node script to /home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/lidar_processing
+[1.937s] 
+[1.937s] Installed /home/altair/rplidarA1/ros2_ws/build/lidar_processing
+[1.937s] running symlink_data
+[1.937s] symbolically linking /home/altair/rplidarA1/ros2_ws/build/lidar_processing/config/lidar_only_2d.lua -> /home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/config
+[2.024s] Invoked command in '/home/altair/rplidarA1/ros2_ws/build/lidar_processing' returned '0': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/lidar_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/lidar_processing/build --no-deps symlink_data
