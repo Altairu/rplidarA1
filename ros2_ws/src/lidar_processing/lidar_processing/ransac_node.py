@@ -5,6 +5,11 @@ from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point
 import numpy as np
 from sklearn.linear_model import RANSACRegressor
+import warnings
+from sklearn.exceptions import UndefinedMetricWarning
+
+# Suppress R^2 undefined warnings when sample size is too small
+warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 
 class RansacNode(Node):
     def __init__(self):
@@ -90,10 +95,12 @@ def main(args=None):
     node = RansacNode()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, Exception):
         pass
-    node.destroy_node()
-    rclpy.shutdown()
+    finally:
+        node.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

@@ -46,14 +46,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "sllidar_client::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-sllidar_client-d08b602be97bdd05bdaf.json",
+					"jsonFile" : "target-sllidar_client-d01188cfae6d1dff40b8.json",
 					"name" : "sllidar_client",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "sllidar_node::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-sllidar_node-13082899070bb7a80578.json",
+					"jsonFile" : "target-sllidar_node-349b74a7440427e20840.json",
 					"name" : "sllidar_node",
 					"projectIndex" : 0
 				},
@@ -83,6 +83,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 3
 	}
 }

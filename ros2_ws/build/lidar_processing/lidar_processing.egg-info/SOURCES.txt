@@ -3,6 +3,7 @@ setup.cfg
 setup.py
 config/custom_mapper_params.yaml
 config/lidar_only_2d.lua
+config/slam_view.rviz
 launch/rplidar_slam_launch.py
 lidar_processing/__init__.py
 lidar_processing/icp_slam_node.py

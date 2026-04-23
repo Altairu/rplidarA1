@@ -1,7 +1,7 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
@@ -51,12 +51,18 @@ def generate_launch_description():
         ),
         
         # Cartographer Occupancy Grid Node
-        Node(
-            package='cartographer_ros',
-            executable='cartographer_occupancy_grid_node',
-            name='cartographer_occupancy_grid_node',
-            output='screen',
-            arguments=['-resolution', '0.05', '-publish_period_sec', '1.0']
+        # 5秒遅延: 前回実行の DDS Transient Local キャッシュが期限切れになるのを待つ
+        TimerAction(
+            period=5.0,
+            actions=[
+                Node(
+                    package='cartographer_ros',
+                    executable='cartographer_occupancy_grid_node',
+                    name='cartographer_occupancy_grid_node',
+                    output='screen',
+                    arguments=['-resolution', '0.05', '-publish_period_sec', '1.0']
+                )
+            ]
         ),
         
         # RViz2 Node
@@ -65,5 +71,8 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             output='screen',
+            arguments=[
+                '-d', PathJoinSubstitution([FindPackageShare('lidar_processing'), 'config', 'slam_view.rviz'])
+            ]
         )
     ])
