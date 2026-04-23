@@ -1,50 +1,73 @@
 # RPLIDAR A1 + Cartographer 2D SLAM for ROS2 Humble
 
-このプロジェクトは、ROS2 Humble 環境において、タイヤの回転情報（オドメトリ）を使用せず、RPLIDAR A1 のスキャンデータのみで高精度な自己位置推定および地図生成(SLAM)を行うためのパッケージ群です。
+このプロジェクトは、ROS2 Humble環境において、オドメトリ（車輪のエンコーダー情報など）を使用せず、**RPLIDAR A1 のスキャンデータのみ**で高精度な2D自己位置推定および地図生成（SLAM）を行うためのパッケージです。
 
-SLAMアルゴリズムとしてGoogleが開発した強力な **Cartographer** を採用しており、LiDARを手で持って歩くような環境でも、スキャン形状を自動的にマッチングさせて追従・地図作成を行います。
-
-## 📁 パッケージ構成
-
-- `sllidar_ros2`: Slamtec公式のRPLIDAR ROS2ドライバー。
-- `lidar_processing`: 独自パッケージ。
-  - `launch/rplidar_slam_launch.py`: LiDARとCartographerを一括起動するファイル。
-  - `config/lidar_only_2d.lua`: オドメトリレスで動かすためのCartographer専用チューニング設定。
-  - `lidar_processing/ransac_node.py`: 点群から直線を抽出する解析ノード。
+SLAMアルゴリズムとしてGoogleの **Cartographer** を採用しており、LiDARを手で持って歩くような環境でも、スキャン形状を自動的にマッチングさせて追従・地図作成を行います。さらに、RANSACを用いた直線（壁）抽出機能も含まれています。
 
 ---
 
 ## 🛠 環境構築 (Setup)
 
-### 1. 前提条件
+他のPCで一から環境を構築し、このパッケージを動かすための手順です。
+
+### 1. 前提条件 (Requirements)
 - **OS**: Ubuntu 22.04
 - **ROS2**: Humble
 - **ハードウェア**: RPLIDAR A1 (USB接続)
 
-### 2. 必要なライブラリ・パッケージのインストール
-ターミナルを開き、以下のコマンドで必要な依存関係をインストールします。
+### 2. 依存パッケージのインストール
+まず、SLAMのコアとなるCartographerや、Pythonの解析ライブラリをインストールします。
 
 ```bash
-# Cartographer パッケージのインストール
+# パッケージリストの更新
 sudo apt update
+
+# Cartographer パッケージのインストール
 sudo apt install ros-humble-cartographer-ros
 
 # RANSAC直線抽出用のPythonライブラリ
-pip install scikit-learn numpy scipy
+pip3 install scikit-learn numpy scipy
 ```
 
-### 3. USBポートへの権限付与
-RPLIDARはデフォルトで `/dev/ttyUSB1` (または `ttyUSB0`) として認識されます。読み書き権限を与えてください。
+### 3. ワークスペースの構築とリポジトリのクローン
+ROS2のワークスペースを作成し、本リポジトリと、RPLIDARを動かすための公式ドライバー（`sllidar_ros2`）を `src` ディレクトリ内にクローンします。
 
 ```bash
+# ワークスペースとsrcディレクトリの作成
+mkdir -p ~/rplidar_ws/src
+cd ~/rplidar_ws/src
+
+# 本リポジトリのクローン (※URLはご自身の公開リポジトリのURLに変更してください)
+git clone <YOUR_GITHUB_REPOSITORY_URL>
+
+# Slamtec公式ドライバー (sllidar_ros2) のクローン
+git clone https://github.com/Slamtec/sllidar_ros2.git
+```
+
+### 4. ハードウェア(USBポート)の権限付与
+RPLIDARをPCのUSBポートに接続します。通常 `/dev/ttyUSB0` または `/dev/ttyUSB1` として認識されます。
+LiDARのデータを読み書きできるように権限を付与してください。
+
+```bash
+# ポート番号が ttyUSB0 の場合
+sudo chmod 666 /dev/ttyUSB0
+
+# ポート番号が ttyUSB1 の場合
 sudo chmod 666 /dev/ttyUSB1
 ```
-*(※接続ポートが `ttyUSB0` の場合は数字を読み替えてください)*
+> **注意**: `launch` ファイルではデフォルトで `/dev/ttyUSB1` を参照するように設定されている場合があります。もし `ttyUSB0` に接続されている場合は、Launchファイル内のパラメータを変更するか、一時的にポートをリンクさせてください。
 
-### 4. ワークスペースのビルド
+### 5. ビルドとセットアップ
 ```bash
-cd ~/rplidarA1/ros2_ws
+cd ~/rplidar_ws
+# 依存関係の解決 (初回のみ)
+rosdep update
+rosdep install --from-paths src -y --ignore-src
+
+# ビルド
 colcon build --symlink-install
+
+# 設定の反映
 source install/setup.bash
 ```
 
@@ -60,27 +83,30 @@ ros2 launch lidar_processing rplidar_slam_launch.py
 ```
 
 ### 2. RViz2 での可視化設定
-RViz2のウィンドウが開いたら、左側のパネルで以下の設定を行ってください。
+起動後、自動的に開いたRViz2ウィンドウで以下の設定を行ってください。
 
 1. **Fixed Frame の変更**:
-   - `Global Options` > `Fixed Frame` を `laser` から **`map`** に変更します。（必須）
+   - `Global Options` > `Fixed Frame` を `laser` 等から **`map`** に変更します。（**必須**: これを行わないと地図が追従しません）
 2. **マップ (地図) の表示**:
    - 左下の `Add` ボタンをクリック -> `By topic` タブ -> `/map` の `Map` (OccupancyGrid) を選択。
 3. **レーザースキャン (点群) の表示**:
    - `Add` ボタン -> `By topic` タブ -> `/scan` の `LaserScan` を選択。
-   - ※見やすくするために、設定ツリーの中の `Size (m)` を `0.05` などに変更すると良いです。
+   - ※見やすくするために、追加されたLaserScanの設定ツリーの中の `Size (m)` を `0.05` などに変更すると良いです。
 4. **抽出された直線の表示 (任意)**:
    - `Add` ボタン -> `By topic` タブ -> `/ransac_lines` の `MarkerArray` を選択。
 
-### 3. マッピングのコツ
+### 3. マッピングのコツ (LiDARオンリーSLAM)
 オドメトリ（車輪の回転情報）がないため、Cartographerは壁の形状だけを頼りに現在位置を割り出します。
-そのため、以下の点に注意してLiDARを動かしてください。
-- **ゆっくり動かす**: 急に振り向いたり、走ったりするとスキャンが追いつかず見失います。
-- **特徴のある場所を歩く**: まっすぐで何もない長い廊下などでは「滑り」が発生することがあります。角や家具がある部屋のほうが精度が高くなります。
+- **ゆっくり動かす**: 急に振り向いたり、走ったりするとスキャンマッチングが追いつかず、現在地を見失う（地図が破綻する）原因になります。
+- **特徴のある場所を歩く**: 何もない長い廊下などでは、LiDARのデータだけでは前後の移動を検知できず「滑り」が発生することがあります。角や家具がある部屋のほうが精度が高くなります。
 
 ---
 
-## 🔧 カスタマイズ
+## 📁 主要なファイル構成
 
-Cartographerの挙動（探索範囲やペナルティ）を調整したい場合は、以下のファイルを編集して再ビルドしてください。
-`~/rplidarA1/ros2_ws/src/lidar_processing/config/lidar_only_2d.lua`
+- **`launch/rplidar_slam_launch.py`**:
+  LiDARドライバー、Cartographer、RANSAC、RViz2をすべて起動する一括起動ファイル。
+- **`config/lidar_only_2d.lua`**:
+  オドメトリを無効化(`use_odometry = false`)し、LiDARのデータのみで地図を作成・更新するためのCartographer専用チューニング設定。
+- **`lidar_processing/ransac_node.py`**:
+  `/scan` トピックを受信し、scikit-learnを用いて点群から直線（壁）を抽出する解析ノード。
