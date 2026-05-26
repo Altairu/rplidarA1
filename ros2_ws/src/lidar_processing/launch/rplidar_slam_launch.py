@@ -8,12 +8,12 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
-    serial_port = LaunchConfiguration('serial_port', default='/dev/ttyUSB1')
+    serial_port = LaunchConfiguration('serial_port', default='/dev/ttyUSB0')
     
     return LaunchDescription([
         DeclareLaunchArgument(
             'serial_port',
-            default_value='/dev/ttyUSB1',
+            default_value='/dev/ttyUSB0',
             description='Specifying usb port to connected lidar'
         ),
         

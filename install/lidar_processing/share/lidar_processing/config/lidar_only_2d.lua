@@ -1,0 +1,1 @@
+/home/altair/rplidarA1/build/lidar_processing/config/lidar_only_2d.lua

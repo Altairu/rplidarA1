@@ -1,0 +1,295 @@
+[0.091s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--symlink-install']
+[0.091s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=16, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x78aa3008d870>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x78aa301bef50>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x78aa301bef50>>)
+[0.121s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.121s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.121s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.121s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.121s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.121s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.121s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/altair/rplidarA1/ros2_ws'
+[0.121s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.121s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.122s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.122s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.122s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.122s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.122s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.122s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.122s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.146s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extensions ['ignore', 'ignore_ament_install']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'ignore'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'ignore_ament_install'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extensions ['colcon_pkg']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'colcon_pkg'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extensions ['colcon_meta']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'colcon_meta'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extensions ['ros']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'ros'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extensions ['cmake', 'python']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'cmake'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'python'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extensions ['python_setup_py']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot) by extension 'python_setup_py'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extensions ['ignore', 'ignore_ament_install']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'ignore'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'ignore_ament_install'
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extensions ['colcon_pkg']
+[0.147s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'colcon_pkg'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extensions ['colcon_meta']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'colcon_meta'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extensions ['ros']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'ros'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extensions ['cmake', 'python']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'cmake'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'python'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extensions ['python_setup_py']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/altair_robot) by extension 'python_setup_py'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extensions ['ignore', 'ignore_ament_install']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'ignore'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'ignore_ament_install'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extensions ['colcon_pkg']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'colcon_pkg'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extensions ['colcon_meta']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'colcon_meta'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extensions ['ros']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'ros'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extensions ['cmake', 'python']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'cmake'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'python'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extensions ['python_setup_py']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/config) by extension 'python_setup_py'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extensions ['ignore', 'ignore_ament_install']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'ignore'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'ignore_ament_install'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extensions ['colcon_pkg']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'colcon_pkg'
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extensions ['colcon_meta']
+[0.148s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'colcon_meta'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extensions ['ros']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'ros'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extensions ['cmake', 'python']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'cmake'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'python'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extensions ['python_setup_py']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/html) by extension 'python_setup_py'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extensions ['ignore', 'ignore_ament_install']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'ignore'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'ignore_ament_install'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extensions ['colcon_pkg']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'colcon_pkg'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extensions ['colcon_meta']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'colcon_meta'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extensions ['ros']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'ros'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extensions ['cmake', 'python']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'cmake'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'python'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extensions ['python_setup_py']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/launch) by extension 'python_setup_py'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extensions ['ignore', 'ignore_ament_install']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'ignore'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'ignore_ament_install'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extensions ['colcon_pkg']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'colcon_pkg'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extensions ['colcon_meta']
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'colcon_meta'
+[0.149s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extensions ['ros']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'ros'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extensions ['cmake', 'python']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'cmake'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'python'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extensions ['python_setup_py']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/resource) by extension 'python_setup_py'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extensions ['ignore', 'ignore_ament_install']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'ignore'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'ignore_ament_install'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extensions ['colcon_pkg']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'colcon_pkg'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extensions ['colcon_meta']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'colcon_meta'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extensions ['ros']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'ros'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extensions ['cmake', 'python']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'cmake'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'python'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extensions ['python_setup_py']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/altair_robot/test) by extension 'python_setup_py'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extensions ['ignore', 'ignore_ament_install']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extension 'ignore'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extension 'ignore_ament_install'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extensions ['colcon_pkg']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extension 'colcon_pkg'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extensions ['colcon_meta']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extension 'colcon_meta'
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extensions ['ros']
+[0.150s] Level 1:colcon.colcon_core.package_identification:_identify(src/lidar_processing) by extension 'ros'
+[0.153s] DEBUG:colcon.colcon_core.package_identification:Package 'src/lidar_processing' with type 'ros.ament_python' and name 'lidar_processing'
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['ignore', 'ignore_ament_install']
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'ignore'
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'ignore_ament_install'
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['colcon_pkg']
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'colcon_pkg'
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['colcon_meta']
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'colcon_meta'
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['ros']
+[0.153s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'ros'
+[0.153s] DEBUG:colcon.colcon_core.package_identification:Package 'src/sllidar_ros2' with type 'ros.ament_cmake' and name 'sllidar_ros2'
+[0.153s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.154s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.154s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.154s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.154s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.170s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.170s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.171s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 2 installed packages in /home/altair/rplidarA1/ros2_ws/install
+[0.173s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 287 installed packages in /opt/ros/humble
+[0.174s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'cmake_args' from command line to 'None'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'cmake_target' from command line to 'None'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'cmake_clean_cache' from command line to 'False'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'cmake_clean_first' from command line to 'False'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'cmake_force_configure' from command line to 'False'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'ament_cmake_args' from command line to 'None'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'catkin_cmake_args' from command line to 'None'
+[0.214s] Level 5:colcon.colcon_core.verb:set package 'lidar_processing' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.214s] DEBUG:colcon.colcon_core.verb:Building package 'lidar_processing' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/altair/rplidarA1/ros2_ws/build/lidar_processing', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/altair/rplidarA1/ros2_ws/install/lidar_processing', 'merge_install': False, 'path': '/home/altair/rplidarA1/ros2_ws/src/lidar_processing', 'symlink_install': True, 'test_result_base': None}
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_args' from command line to 'None'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_target' from command line to 'None'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_clean_cache' from command line to 'False'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_clean_first' from command line to 'False'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_force_configure' from command line to 'False'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'ament_cmake_args' from command line to 'None'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'catkin_cmake_args' from command line to 'None'
+[0.215s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.215s] DEBUG:colcon.colcon_core.verb:Building package 'sllidar_ros2' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2', 'merge_install': False, 'path': '/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2', 'symlink_install': True, 'test_result_base': None}
+[0.215s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.216s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.216s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/altair/rplidarA1/ros2_ws/src/lidar_processing' with build type 'ament_python'
+[0.216s] Level 1:colcon.colcon_core.shell:create_environment_hook('lidar_processing', 'ament_prefix_path')
+[0.218s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.218s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/hook/ament_prefix_path.ps1'
+[0.219s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/hook/ament_prefix_path.dsv'
+[0.219s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/hook/ament_prefix_path.sh'
+[0.220s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.220s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.223s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2' with build type 'ament_cmake'
+[0.223s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/altair/rplidarA1/ros2_ws/src/sllidar_ros2'
+[0.223s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.223s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.553s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/altair/rplidarA1/ros2_ws/src/lidar_processing'
+[0.553s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.553s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.559s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/altair/rplidarA1/ros2_ws/install/lidar_processing:/opt/ros/humble /usr/bin/cmake /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2
+[1.283s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/altair/rplidarA1/ros2_ws/build/lidar_processing': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/lidar_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/lidar_processing/build --no-deps symlink_data
+[1.798s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/altair/rplidarA1/ros2_ws/install/lidar_processing:/opt/ros/humble /usr/bin/cmake /home/altair/rplidarA1/ros2_ws/src/sllidar_ros2 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2
+[1.800s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/altair/rplidarA1/ros2_ws/install/lidar_processing:/opt/ros/humble /usr/bin/cmake --build /home/altair/rplidarA1/ros2_ws/build/sllidar_ros2 -- -j16 -l16
+[2.683s] Level 1:colcon.colcon_core.shell:create_environment_hook('lidar_processing', 'pythonpath_develop')
+[2.684s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/build/lidar_processing/share/lidar_processing/hook/pythonpath_develop.ps1'
+[2.686s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/altair/rplidarA1/ros2_ws/build/lidar_processing/share/lidar_processing/hook/pythonpath_develop.dsv'
+[2.687s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/altair/rplidarA1/ros2_ws/build/lidar_processing' returned '0': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/lidar_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/lidar_processing/build --no-deps symlink_data
+[2.689s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/build/lidar_processing/share/lidar_processing/hook/pythonpath_develop.sh'
+[2.696s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/lidar_processing' for CMake module files
+[2.697s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/lidar_processing' for CMake config files
+[2.699s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib'
+[2.700s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/bin'
+[2.700s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/pkgconfig/lidar_processing.pc'
+[2.700s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/lib/python3.10/site-packages'
+[2.700s] Level 1:colcon.colcon_core.shell:create_environment_hook('lidar_processing', 'pythonpath')
+[2.701s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/hook/pythonpath.ps1'
+[2.702s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/hook/pythonpath.dsv'
+[2.703s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/hook/pythonpath.sh'
+[2.706s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/bin'
+[2.706s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(lidar_processing)
+[2.707s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/package.ps1'
+[2.710s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/package.dsv'
+[2.712s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/package.sh'
+[2.714s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/package.bash'
+[2.717s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/lidar_processing/package.zsh'
+[2.719s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/altair/rplidarA1/ros2_ws/install/lidar_processing/share/colcon-core/packages/lidar_processing)
+[9.296s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/altair/rplidarA1/ros2_ws/install/lidar_processing:/opt/ros/humble /usr/bin/cmake --build /home/altair/rplidarA1/ros2_ws/build/sllidar_ros2 -- -j16 -l16
+[9.302s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/altair/rplidarA1/ros2_ws/install/lidar_processing:/opt/ros/humble /usr/bin/cmake --install /home/altair/rplidarA1/ros2_ws/build/sllidar_ros2
+[9.317s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sllidar_ros2)
+[9.317s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2' for CMake module files
+[9.318s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/altair/rplidarA1/ros2_ws/build/sllidar_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/altair/rplidarA1/ros2_ws/install/lidar_processing:/opt/ros/humble /usr/bin/cmake --install /home/altair/rplidarA1/ros2_ws/build/sllidar_ros2
+[9.318s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2' for CMake config files
+[9.318s] Level 1:colcon.colcon_core.shell:create_environment_hook('sllidar_ros2', 'cmake_prefix_path')
+[9.319s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.ps1'
+[9.319s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.dsv'
+[9.319s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.sh'
+[9.320s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib'
+[9.320s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/bin'
+[9.320s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib/pkgconfig/sllidar_ros2.pc'
+[9.320s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib/python3.10/site-packages'
+[9.320s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/bin'
+[9.320s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.ps1'
+[9.321s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.dsv'
+[9.321s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.sh'
+[9.321s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.bash'
+[9.322s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.zsh'
+[9.322s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/colcon-core/packages/sllidar_ros2)
+[9.322s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sllidar_ros2)
+[9.323s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2' for CMake module files
+[9.323s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2' for CMake config files
+[9.323s] Level 1:colcon.colcon_core.shell:create_environment_hook('sllidar_ros2', 'cmake_prefix_path')
+[9.323s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.ps1'
+[9.324s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.dsv'
+[9.324s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.sh'
+[9.324s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib'
+[9.324s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/bin'
+[9.325s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib/pkgconfig/sllidar_ros2.pc'
+[9.325s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/lib/python3.10/site-packages'
+[9.325s] Level 1:colcon.colcon_core.environment:checking '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/bin'
+[9.325s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.ps1'
+[9.326s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.dsv'
+[9.326s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.sh'
+[9.326s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.bash'
+[9.327s] INFO:colcon.colcon_core.shell:Creating package script '/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/sllidar_ros2/package.zsh'
+[9.327s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/altair/rplidarA1/ros2_ws/install/sllidar_ros2/share/colcon-core/packages/sllidar_ros2)
+[9.327s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[9.328s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[9.328s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[9.328s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[9.333s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[9.333s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[9.333s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[9.342s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[9.342s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/altair/rplidarA1/ros2_ws/install/local_setup.ps1'
+[9.343s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/altair/rplidarA1/ros2_ws/install/_local_setup_util_ps1.py'
+[9.345s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/altair/rplidarA1/ros2_ws/install/setup.ps1'
+[9.346s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/altair/rplidarA1/ros2_ws/install/local_setup.sh'
+[9.347s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/altair/rplidarA1/ros2_ws/install/_local_setup_util_sh.py'
+[9.347s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/altair/rplidarA1/ros2_ws/install/setup.sh'
+[9.348s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/altair/rplidarA1/ros2_ws/install/local_setup.bash'
+[9.349s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/altair/rplidarA1/ros2_ws/install/setup.bash'
+[9.350s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/altair/rplidarA1/ros2_ws/install/local_setup.zsh'
+[9.350s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/altair/rplidarA1/ros2_ws/install/setup.zsh'

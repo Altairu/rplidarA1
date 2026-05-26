@@ -1,0 +1,18 @@
+[1.066s] Invoking command in '/home/altair/rplidarA1/ros2_ws/build/altair_robot': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/altair_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/altair_robot/build --no-deps symlink_data
+[1.508s] running develop
+[1.782s] running egg_info
+[1.802s] writing altair_robot.egg-info/PKG-INFO
+[1.803s] writing dependency_links to altair_robot.egg-info/dependency_links.txt
+[1.803s] writing entry points to altair_robot.egg-info/entry_points.txt
+[1.803s] writing requirements to altair_robot.egg-info/requires.txt
+[1.803s] writing top-level names to altair_robot.egg-info/top_level.txt
+[1.847s] reading manifest file 'altair_robot.egg-info/SOURCES.txt'
+[1.848s] writing manifest file 'altair_robot.egg-info/SOURCES.txt'
+[1.871s] running build_ext
+[1.871s] Creating /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair-robot.egg-link (link to .)
+[1.872s] Installing mdd_can_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[1.872s] Installing websocket_bridge_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[1.872s] 
+[1.872s] Installed /home/altair/rplidarA1/ros2_ws/build/altair_robot
+[1.873s] running symlink_data
+[1.959s] Invoked command in '/home/altair/rplidarA1/ros2_ws/build/altair_robot' returned '0': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/altair_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/altair_robot/build --no-deps symlink_data
