@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-WebSocket ブリッジノード (ROS2) - シンプル版 (地図なし)
-
-Android タブレット ↔ ロボット間の WebSocket 通信。
+WebSocket ブリッジノード (ROS2) - 自己位置可視化専用
 
 クライアント → ロボット (JSON):
-  {"type": "cmd_vel", "linear_x": 0.5, "angular_z": 0.3}
-  {"type": "stop"}
+    {"type": "reset_pose"}  # 表示上の自己位置原点を現在位置へリセット
+    {"type": "full_reset"}  # Cartographer の軌跡を再作成し地図をリセット
 
-ロボット → クライアント (JSON, 10Hz):
-  {"type": "pose", "x": X, "y": Y, "theta": T, "v": V, "w": W}
+ロボット → クライアント (JSON):
+    {"type": "pose", "x": X, "y": Y, "theta": T}
+    {"type": "status", "ok": true/false, "message": "..."}
 """
 
 import asyncio
@@ -21,8 +20,15 @@ import threading
 
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
-from nav_msgs.msg import Odometry
+from rclpy.time import Time
+from geometry_msgs.msg import PoseStamped
+from tf2_ros import Buffer, TransformListener, TransformException
+
+try:
+        from cartographer_ros_msgs.srv import FinishTrajectory, StartTrajectory
+        CARTOGRAPHER_SRVS_AVAILABLE = True
+except ImportError:
+        CARTOGRAPHER_SRVS_AVAILABLE = False
 
 try:
     import websockets
@@ -36,24 +42,56 @@ class WebSocketBridgeNode(Node):
     def __init__(self):
         super().__init__('websocket_bridge_node')
 
-        self.declare_parameter('port',           8765)
-        self.declare_parameter('max_linear',     2.0)
-        self.declare_parameter('max_angular',    10.0)
+        self.declare_parameter('port', 8876)
+        self.declare_parameter('pose_topic', 'tracked_pose')
+        self.declare_parameter('cartographer_config_dir', '')
+        self.declare_parameter('cartographer_config_basename', 'lidar_only_2d.lua')
+        self.declare_parameter('map_frame', 'map')
+        self.declare_parameter('tracking_frame', 'laser')
+        self.declare_parameter('pose_publish_period_sec', 0.1)
 
-        self._port    = self.get_parameter('port').value
-        self._max_lin = self.get_parameter('max_linear').value
-        self._max_ang = self.get_parameter('max_angular').value
+        self._port = int(self.get_parameter('port').value)
+        self._pose_topic = str(self.get_parameter('pose_topic').value)
+        self._cfg_dir = str(self.get_parameter('cartographer_config_dir').value)
+        self._cfg_base = str(self.get_parameter('cartographer_config_basename').value)
+        self._map_frame = str(self.get_parameter('map_frame').value)
+        self._tracking_frame = str(self.get_parameter('tracking_frame').value)
+        self._pose_publish_period_sec = float(self.get_parameter('pose_publish_period_sec').value)
 
-        self._cmd_pub  = self.create_publisher(Twist, '/cmd_vel', 10)
-        self._odom_sub = self.create_subscription(
-            Odometry, '/odom', self._on_odom, 10)
+        self._pose_sub = self.create_subscription(
+            PoseStamped, self._pose_topic, self._on_pose, 10)
+        self._tf_buffer = Buffer()
+        self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
+        self._tf_pose_timer = self.create_timer(self._pose_publish_period_sec, self._update_pose_from_tf)
 
-        # asyncio スレッド → ROS2 main スレッドへコマンドを渡すキュー
-        # (asyncio スレッドから直接 rclpy publish すると DDS スレッド競合でクラッシュ)
-        self._cmd_q: queue.Queue = queue.Queue(maxsize=5)
-        self._cmd_timer = self.create_timer(0.02, self._process_cmd_queue)
+        self._raw_x = 0.0
+        self._raw_y = 0.0
+        self._raw_th = 0.0
+        self._has_pose = False
+        self._last_pose_source = 'none'
+        self._last_tf_warn_ns = 0
+
+        self._origin_x = 0.0
+        self._origin_y = 0.0
+        self._origin_th = 0.0
+        self._pose_seq = 0
+
+        self._active_trajectory_id = 0
+        self._full_reset_in_progress = False
+
+        # asyncio スレッド → ROS2 main スレッドへ制御を渡すキュー
+        self._control_q: queue.Queue = queue.Queue(maxsize=10)
+        self._control_timer = self.create_timer(0.05, self._process_control_queue)
 
         self._send_q: queue.Queue = queue.Queue(maxsize=30)
+
+        self._finish_client = None
+        self._start_client = None
+        if CARTOGRAPHER_SRVS_AVAILABLE:
+            self._finish_client = self.create_client(FinishTrajectory, 'finish_trajectory')
+            self._start_client = self.create_client(StartTrajectory, 'start_trajectory')
+        else:
+            self.get_logger().warn('cartographer_ros_msgs が未検出のため full_reset は無効です')
 
         if not WS_AVAILABLE:
             self.get_logger().error(
@@ -65,7 +103,8 @@ class WebSocketBridgeNode(Node):
         threading.Thread(target=self._run_loop, daemon=True,
                          name='ws_loop').start()
         self.get_logger().info(
-            f'WebSocket サーバー起動: ws://0.0.0.0:{self._port}')
+            f'WebSocket サーバー起動: ws://0.0.0.0:{self._port} '
+            f'(pose_topic={self._pose_topic}, tf={self._map_frame}->{self._tracking_frame})')
 
     # ── asyncio スレッド ─────────────────────────────────
     def _run_loop(self):
@@ -98,8 +137,6 @@ class WebSocketBridgeNode(Node):
         finally:
             self._ws_clients.discard(websocket)
             self.get_logger().info(f'クライアント切断: {addr}')
-            if not self._ws_clients:
-                self._pub_stop()
 
     async def _broadcast(self, message: str):
         dead = set()
@@ -110,16 +147,17 @@ class WebSocketBridgeNode(Node):
                 dead.add(ws)
         self._ws_clients -= dead
 
-    # ── ROS2 タイマー: コマンドキューを main スレッドで処理 ──────
-    # asyncio スレッドから直接 rclpy.publish() するとクラッシュするため
-    # キュー経由で main スレッド（spin）に委ねる
-    def _process_cmd_queue(self):
+    # ── ROS2 タイマー: 制御キューを main スレッドで処理 ─────────
+    def _process_control_queue(self):
         while True:
             try:
-                twist = self._cmd_q.get_nowait()
-                self._cmd_pub.publish(twist)
+                cmd = self._control_q.get_nowait()
             except queue.Empty:
                 break
+            if cmd == 'reset_pose':
+                self._reset_pose_origin()
+            elif cmd == 'full_reset':
+                self._full_reset_map_and_pose()
 
     # ── WebSocket 受信 ───────────────────────────────────
     def _handle_ws_msg(self, raw: str):
@@ -128,57 +166,172 @@ class WebSocketBridgeNode(Node):
         except json.JSONDecodeError:
             return
         t = data.get('type', '')
-        if t == 'cmd_vel':
-            lin = max(-self._max_lin, min(self._max_lin, float(data.get('linear_x',  0.0))))
-            ang = max(-self._max_ang, min(self._max_ang, float(data.get('angular_z', 0.0))))
-            twist = Twist()
-            twist.linear.x  = lin
-            twist.angular.z = ang
+        if t in ('reset_pose', 'full_reset'):
             try:
-                self._cmd_q.put_nowait(twist)
+                self._control_q.put_nowait(t)
             except queue.Full:
-                pass  # キュー満杯時は最新コマンドを優先して古いものを破棄
-        elif t == 'stop':
-            try:
-                # キューをクリアして停止コマンドのみにする
-                while not self._cmd_q.empty():
-                    self._cmd_q.get_nowait()
-                self._cmd_q.put_nowait(Twist())
-            except (queue.Empty, queue.Full):
                 pass
 
-    def _pub_stop(self):
-        try:
-            while not self._cmd_q.empty():
-                self._cmd_q.get_nowait()
-            self._cmd_q.put_nowait(Twist())
-        except (queue.Empty, queue.Full):
-            pass
-
-    # ── /odom 受信 ───────────────────────────────────────
-    def _on_odom(self, msg: Odometry):
-        x  = msg.pose.pose.position.x
-        y  = msg.pose.pose.position.y
-        qz = msg.pose.pose.orientation.z
-        qw = msg.pose.pose.orientation.w
+    # ── tracked_pose 受信 ─────────────────────────────────
+    def _on_pose(self, msg: PoseStamped):
+        x = float(msg.pose.position.x)
+        y = float(msg.pose.position.y)
+        qz = float(msg.pose.orientation.z)
+        qw = float(msg.pose.orientation.w)
         theta = 2.0 * math.atan2(qz, qw)
-        v = msg.twist.twist.linear.x
-        w = msg.twist.twist.angular.z
+
+        self._last_pose_source = 'topic'
+
+        self._update_pose_state(x, y, theta)
+
+    def _update_pose_from_tf(self):
+        # Prefer topic data if available, but fall back to TF when no topic publisher exists.
+        if self._last_pose_source == 'topic':
+            return
+        try:
+            transform = self._tf_buffer.lookup_transform(
+                self._map_frame,
+                self._tracking_frame,
+                Time())
+        except TransformException as exc:
+            now_ns = self.get_clock().now().nanoseconds
+            if now_ns - self._last_tf_warn_ns >= 5_000_000_000:
+                self._last_tf_warn_ns = now_ns
+                self.get_logger().warn(
+                    f'TF lookup待ち: {self._map_frame} -> {self._tracking_frame} ({exc})')
+            return
+
+        x = float(transform.transform.translation.x)
+        y = float(transform.transform.translation.y)
+        qz = float(transform.transform.rotation.z)
+        qw = float(transform.transform.rotation.w)
+        theta = 2.0 * math.atan2(qz, qw)
+        self._last_pose_source = 'tf'
+        self._update_pose_state(x, y, theta)
+
+    def _update_pose_state(self, x: float, y: float, theta: float):
+
+        self._raw_x = x
+        self._raw_y = y
+        self._raw_th = theta
+        self._has_pose = True
+
+        px, py, pth = self._pose_in_reset_frame()
+
         payload = json.dumps({
-            'type':  'pose',
-            'x':     round(x, 3),
-            'y':     round(y, 3),
-            'theta': round(theta, 4),
-            'v':     round(v, 3),
-            'w':     round(w, 3),
+            'type': 'pose',
+            'x': round(px, 3),
+            'y': round(py, 3),
+            'theta': round(pth, 4),
+            'seq': self._pose_seq,
+            'source': self._last_pose_source,
         })
         try:
             self._send_q.put_nowait(payload)
         except queue.Full:
             pass
 
+    def _pose_in_reset_frame(self):
+        dx = self._raw_x - self._origin_x
+        dy = self._raw_y - self._origin_y
+        c = math.cos(self._origin_th)
+        s = math.sin(self._origin_th)
+        x = c * dx + s * dy
+        y = -s * dx + c * dy
+        th = self._normalize_angle(self._raw_th - self._origin_th)
+        return x, y, th
+
+    def _reset_pose_origin(self):
+        if not self._has_pose:
+            self._enqueue_status(False, '自己位置が未受信のためリセットできません')
+            return
+        self._origin_x = self._raw_x
+        self._origin_y = self._raw_y
+        self._origin_th = self._raw_th
+        self._pose_seq += 1
+        self._enqueue_status(True, '自己位置原点をリセットしました')
+
+    def _full_reset_map_and_pose(self):
+        if self._full_reset_in_progress:
+            self._enqueue_status(False, '完全リセット処理が実行中です')
+            return
+        if not CARTOGRAPHER_SRVS_AVAILABLE:
+            self._enqueue_status(False, 'cartographer_ros_msgs 未導入のため full_reset 非対応')
+            return
+        if not self._cfg_dir:
+            self._enqueue_status(False, 'cartographer_config_dir が未設定です')
+            return
+        if self._finish_client is None or self._start_client is None:
+            self._enqueue_status(False, 'Cartographer サービスクライアント初期化失敗')
+            return
+
+        if not self._finish_client.wait_for_service(timeout_sec=1.0):
+            self._enqueue_status(False, 'finish_trajectory サービスが見つかりません')
+            return
+        if not self._start_client.wait_for_service(timeout_sec=1.0):
+            self._enqueue_status(False, 'start_trajectory サービスが見つかりません')
+            return
+
+        try:
+            self._full_reset_in_progress = True
+            finish_req = FinishTrajectory.Request()
+            finish_req.trajectory_id = int(self._active_trajectory_id)
+            finish_fut = self._finish_client.call_async(finish_req)
+            finish_fut.add_done_callback(self._on_finish_trajectory_done)
+        except Exception as e:
+            self._full_reset_in_progress = False
+            self._enqueue_status(False, f'完全リセット失敗: {e}')
+
+    def _on_finish_trajectory_done(self, future):
+        try:
+            _ = future.result()
+        except Exception as e:
+            self._full_reset_in_progress = False
+            self._enqueue_status(False, f'finish_trajectory 失敗: {e}')
+            return
+
+        try:
+            start_req = StartTrajectory.Request()
+            start_req.configuration_directory = self._cfg_dir
+            start_req.configuration_basename = self._cfg_base
+            start_req.use_initial_pose = False
+            start_req.relative_to_trajectory_id = 0
+            start_fut = self._start_client.call_async(start_req)
+            start_fut.add_done_callback(self._on_start_trajectory_done)
+        except Exception as e:
+            self._full_reset_in_progress = False
+            self._enqueue_status(False, f'start_trajectory 要求失敗: {e}')
+
+    def _on_start_trajectory_done(self, future):
+        try:
+            result = future.result()
+            if result is None:
+                self._enqueue_status(False, 'start_trajectory の応答を取得できませんでした')
+                return
+            self._active_trajectory_id = int(result.trajectory_id)
+            self._reset_pose_origin()
+            self._enqueue_status(True, f'完全リセット完了 (trajectory_id={self._active_trajectory_id})')
+        except Exception as e:
+            self._enqueue_status(False, f'start_trajectory 失敗: {e}')
+        finally:
+            self._full_reset_in_progress = False
+
+    def _enqueue_status(self, ok: bool, message: str):
+        payload = json.dumps({
+            'type': 'status',
+            'ok': bool(ok),
+            'message': str(message),
+        })
+        try:
+            self._send_q.put_nowait(payload)
+        except queue.Full:
+            pass
+
+    @staticmethod
+    def _normalize_angle(rad: float) -> float:
+        return math.atan2(math.sin(rad), math.cos(rad))
+
     def destroy_node(self):
-        self._pub_stop()
         super().destroy_node()
 
 

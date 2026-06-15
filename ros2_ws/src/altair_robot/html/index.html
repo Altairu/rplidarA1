@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>Altair Robot</title>
+    <title>RPLidar Localization Monitor</title>
     <style>
         * {
             box-sizing: border-box;
@@ -20,7 +20,6 @@
             flex-direction: column;
             height: 100dvh;
             overflow: hidden;
-            touch-action: none;
         }
 
         /* ── ヘッダー ── */
@@ -54,81 +53,63 @@
         #pose-panel {
             background: #0f3460;
             padding: 6px 12px;
-            font-size: 13px;
+            font-size: 16px;
             flex-shrink: 0;
             display: flex;
             gap: 20px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         #pose-panel span {
             white-space: nowrap;
         }
 
-        /* ── ジョイスティックエリア ── */
-        #joy-area {
+        #main-area {
             flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
+            gap: 14px;
+            padding: 18px;
         }
 
-        #joy-base {
-            width: min(300px, 75vw);
-            height: min(300px, 75vw);
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.07);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            touch-action: none;
+        #status-box {
+            width: min(720px, 92vw);
+            min-height: 120px;
+            background: #0c2845;
+            border: 1px solid #295a86;
+            border-radius: 10px;
+            padding: 12px;
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
-        #joy-handle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 40% 35%, #5dade2, #1a5276);
-            border: 3px solid #aed6f1;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            transition: background 0.1s;
+        #btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        /* ── 速度表示 ── */
-        #vel-display {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 12px;
-            color: #85c1e9;
-            pointer-events: none;
-        }
-
-        /* ── STOPボタン ── */
-        #stop-btn {
-            position: absolute;
-            bottom: 14px;
-            right: 14px;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 40% 35%, #e74c3c, #922b21);
-            border: 3px solid #f1948a;
+        .btn {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
             color: #fff;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        }
+
+        #btn-reset-pose {
+            background: #1f7a8c;
+        }
+
+        #btn-full-reset {
+            background: #b63f2a;
         }
     </style>
 </head>
@@ -142,10 +123,9 @@
             <span id="status-txt">未接続</span>
         </div>
         <div id="ip-area">
-            <input id="ws-ip" type="text" value="10.107.255.212" style="width:130px;background:#0f3460;color:#eee;border:1px solid #555;
-             padding:3px 6px;border-radius:4px;font-size:13px;" />
-            <button onclick="connectWS()" style="background:#2ecc71;color:#fff;border:none;padding:4px 8px;
-             border-radius:4px;font-size:13px;cursor:pointer;">接続</button>
+            <span id="ws-target" style="font-size:13px;color:#b8d6ff;"></span>
+            <button onclick="connectWS(true)" style="background:#2ecc71;color:#fff;border:none;padding:4px 8px;
+             border-radius:4px;font-size:13px;cursor:pointer;">再接続</button>
         </div>
     </div>
 
@@ -154,38 +134,75 @@
         <span>X: <b id="p-x">--</b> m</span>
         <span>Y: <b id="p-y">--</b> m</span>
         <span>θ: <b id="p-th">--</b>°</span>
-        <span>v: <b id="p-v">--</b> m/s</span>
-        <span>ω: <b id="p-w">--</b> r/s</span>
     </div>
 
-    <!-- ジョイスティック -->
-    <div id="joy-area">
-        <div id="joy-base">
-            <div id="joy-handle"></div>
+    <div id="main-area">
+        <div id="btn-row">
+            <button class="btn" id="btn-reset-pose" onclick="resetPose()">位置リセット</button>
+            <button class="btn" id="btn-full-reset" onclick="fullReset()">完全リセット（地図削除）</button>
         </div>
-        <div id="vel-display">linear: 0.00 m/s angular: 0.00 rad/s</div>
-        <div id="stop-btn" ontouchstart="emergencyStop()" onclick="emergencyStop()">STOP</div>
+
+        <div id="status-box">待機中...</div>
     </div>
 
     <script>
         // ─── 設定 ────────────────────────────────────────────────
-        const MAX_LINEAR = 2.0;   // m/s
-        const MAX_ANGULAR = 10.0;  // rad/s
-        const SEND_HZ = 10;    // 指令送信レート
+        const WS_PORT = 8876;
+        const RECONNECT_MS = 2000;
         let ws = null;
+        let reconnectTimer = null;
+
+        function wsHost() {
+            const host = window.location.hostname;
+            return host && host.length > 0 ? host : '127.0.0.1';
+        }
+
+        function wsUrl() {
+            const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+            return `${scheme}://${wsHost()}:${WS_PORT}`;
+        }
+
+        function updateTargetLabel() {
+            const el = document.getElementById('ws-target');
+            el.textContent = `接続先: ${wsHost()}:${WS_PORT}`;
+        }
+
+        function appendStatus(msg) {
+            const box = document.getElementById('status-box');
+            const now = new Date().toLocaleTimeString();
+            box.innerHTML = `[${now}] ${msg}<br>` + box.innerHTML;
+        }
 
         // ─── WebSocket ───────────────────────────────────────────
-        function connectWS() {
-            const ip = document.getElementById('ws-ip').value.trim();
-            const url = `ws://${ip}:8765`;
+        function connectWS(isManual = false) {
+            const url = wsUrl();
             const dot = document.getElementById('status-dot');
             const txt = document.getElementById('status-txt');
+            if (reconnectTimer) {
+                clearTimeout(reconnectTimer);
+                reconnectTimer = null;
+            }
             if (ws) { try { ws.close(); } catch (e) { } }
             txt.textContent = '接続中…';
             ws = new WebSocket(url);
-            ws.onopen = () => { dot.className = 'ok'; txt.textContent = `接続済 ${ip}`; };
-            ws.onclose = () => { dot.className = ''; txt.textContent = '切断'; ws = null; };
-            ws.onerror = () => { txt.textContent = '接続エラー'; };
+            ws.onopen = () => {
+                dot.className = 'ok';
+                txt.textContent = `接続済 ${wsHost()}:${WS_PORT}`;
+                appendStatus('WebSocket 接続に成功しました');
+            };
+            ws.onclose = () => {
+                dot.className = '';
+                txt.textContent = '切断';
+                appendStatus('WebSocket が切断されました');
+                ws = null;
+                reconnectTimer = setTimeout(() => connectWS(false), RECONNECT_MS);
+            };
+            ws.onerror = () => {
+                txt.textContent = '接続エラー';
+                if (isManual) {
+                    appendStatus('接続エラー');
+                }
+            };
             ws.onmessage = (e) => {
                 try {
                     const d = JSON.parse(e.data);
@@ -193,116 +210,32 @@
                         document.getElementById('p-x').textContent = d.x.toFixed(2);
                         document.getElementById('p-y').textContent = d.y.toFixed(2);
                         document.getElementById('p-th').textContent = (d.theta * 180 / Math.PI).toFixed(1);
-                        document.getElementById('p-v').textContent = d.v.toFixed(2);
-                        document.getElementById('p-w').textContent = d.w.toFixed(2);
+                    } else if (d.type === 'status') {
+                        appendStatus(`${d.ok ? 'OK' : 'NG'}: ${d.message}`);
                     }
                 } catch (err) { }
             };
         }
 
-        function sendCmd(lin, ang) {
+        function sendMessage(type) {
             if (!ws || ws.readyState !== WebSocket.OPEN) return;
-            ws.send(JSON.stringify({ type: 'cmd_vel', linear_x: lin, angular_z: ang }));
+            ws.send(JSON.stringify({ type }));
         }
 
-        function emergencyStop() {
-            if (ws && ws.readyState === WebSocket.OPEN)
-                ws.send(JSON.stringify({ type: 'stop' }));
+        function resetPose() {
+            sendMessage('reset_pose');
+            appendStatus('位置リセット要求を送信しました');
         }
 
-        // ─── バーチャルジョイスティック ──────────────────────────
-        const joyBase = document.getElementById('joy-base');
-        const joyHandle = document.getElementById('joy-handle');
-        const velDisp = document.getElementById('vel-display');
-
-        let touching = false;
-        let linear_x = 0, angular_z = 0;
-
-        function getCenter(el) {
-            const r = el.getBoundingClientRect();
-            return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        function fullReset() {
+            const ok = window.confirm('地図を含む完全リセットを実行します。よろしいですか？');
+            if (!ok) return;
+            sendMessage('full_reset');
+            appendStatus('完全リセット要求を送信しました');
         }
 
-        function updateJoy(cx, cy, pageX, pageY) {
-            const R = joyBase.clientWidth / 2;
-            const dead = 0.08;          // デッドゾーン (正規化単位)
-            let dx = pageX - cx;
-            let dy = pageY - cy;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist > R) {
-                dx *= R / dist;
-                dy *= R / dist;
-            }
-            // ハンドル移動
-            joyHandle.style.left = (joyBase.clientWidth / 2 + dx) + 'px';
-            joyHandle.style.top = (joyBase.clientHeight / 2 + dy) + 'px';
-            joyHandle.style.transform = 'translate(-50%, -50%)';
-
-            // 正規化 (−1〜+1, Y軸反転)
-            let nx = dx / R;  // 右=+
-            let ny = -dy / R;  // 上=+
-
-            // デッドゾーン
-            if (Math.abs(nx) < dead) nx = 0;
-            if (Math.abs(ny) < dead) ny = 0;
-
-            linear_x = ny * MAX_LINEAR;
-            angular_z = -nx * MAX_ANGULAR;   // 右スティック → 右回転(角速度負)
-        }
-
-        function resetJoy() {
-            joyHandle.style.left = '50%';
-            joyHandle.style.top = '50%';
-            joyHandle.style.transform = 'translate(-50%, -50%)';
-            linear_x = 0;
-            angular_z = 0;
-            sendCmd(0, 0);
-        }
-
-        joyBase.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            touching = true;
-            const c = getCenter(joyBase);
-            updateJoy(c.x, c.y, e.touches[0].clientX, e.touches[0].clientY);
-        }, { passive: false });
-
-        joyBase.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (!touching) return;
-            const c = getCenter(joyBase);
-            updateJoy(c.x, c.y, e.touches[0].clientX, e.touches[0].clientY);
-        }, { passive: false });
-
-        joyBase.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            touching = false;
-            resetJoy();
-        }, { passive: false });
-
-        // マウス対応 (PC デバッグ用)
-        joyBase.addEventListener('mousedown', (e) => {
-            touching = true;
-            const c = getCenter(joyBase);
-            updateJoy(c.x, c.y, e.clientX, e.clientY);
-        });
-        window.addEventListener('mousemove', (e) => {
-            if (!touching) return;
-            const c = getCenter(joyBase);
-            updateJoy(c.x, c.y, e.clientX, e.clientY);
-        });
-        window.addEventListener('mouseup', () => {
-            if (!touching) return;
-            touching = false;
-            resetJoy();
-        });
-
-        // ─── 定期送信ループ ──────────────────────────────────────
-        setInterval(() => {
-            if (!touching) return;
-            sendCmd(linear_x, angular_z);
-            velDisp.textContent =
-                `linear: ${linear_x.toFixed(2)} m/s  angular: ${angular_z.toFixed(2)} rad/s`;
-        }, 1000 / SEND_HZ);
+        updateTargetLabel();
+        connectWS(false);
     </script>
 </body>
 

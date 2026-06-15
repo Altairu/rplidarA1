@@ -63,6 +63,10 @@ class MddCanNode(Node):
         self.declare_parameter('pid_i',          0.0)
         self.declare_parameter('pid_d',          0.0)
         self.declare_parameter('max_rps',        20.0)
+        self.declare_parameter('cmd_vel_topic',  'cmd_vel')
+        self.declare_parameter('odom_topic',     'odom')
+        self.declare_parameter('odom_frame',     'rplidar_odom')
+        self.declare_parameter('base_frame',     'rplidar_base_link')
 
         channel           = self.get_parameter('can_channel').value
         bitrate           = self.get_parameter('can_bitrate').value
@@ -72,6 +76,10 @@ class MddCanNode(Node):
         self.pid_i        = self.get_parameter('pid_i').value
         self.pid_d        = self.get_parameter('pid_d').value
         self.max_rps      = self.get_parameter('max_rps').value
+        self.cmd_vel_topic = self.get_parameter('cmd_vel_topic').value
+        self.odom_topic    = self.get_parameter('odom_topic').value
+        self.odom_frame    = self.get_parameter('odom_frame').value
+        self.base_frame    = self.get_parameter('base_frame').value
         self.wheel_circum = math.pi * self.wheel_diam
 
         self.bus  = None
@@ -100,8 +108,8 @@ class MddCanNode(Node):
         self._cmd_w     = 0.0
 
         self.cmd_vel_sub = self.create_subscription(
-            Twist, '/cmd_vel', self._cmd_vel_cb, 10)
-        self.odom_pub    = self.create_publisher(Odometry, '/odom', 10)
+            Twist, self.cmd_vel_topic, self._cmd_vel_cb, 10)
+        self.odom_pub    = self.create_publisher(Odometry, self.odom_topic, 10)
         self.tf_bc       = TransformBroadcaster(self)
         self.odom_timer  = self.create_timer(0.05, self._publish_odom)
 
@@ -305,8 +313,8 @@ class MddCanNode(Node):
 
         tf = TransformStamped()
         tf.header.stamp        = stamp
-        tf.header.frame_id     = 'odom'
-        tf.child_frame_id      = 'base_link'
+        tf.header.frame_id     = self.odom_frame
+        tf.child_frame_id      = self.base_frame
         tf.transform.translation.x = self._odom_x
         tf.transform.translation.y = self._odom_y
         tf.transform.translation.z = 0.0
@@ -316,8 +324,8 @@ class MddCanNode(Node):
 
         odom = Odometry()
         odom.header.stamp            = stamp
-        odom.header.frame_id         = 'odom'
-        odom.child_frame_id          = 'base_link'
+        odom.header.frame_id         = self.odom_frame
+        odom.child_frame_id          = self.base_frame
         odom.pose.pose.position.x    = self._odom_x
         odom.pose.pose.position.y    = self._odom_y
         odom.pose.pose.orientation.z = qz

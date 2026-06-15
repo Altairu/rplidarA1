@@ -1,0 +1,1 @@
+/home/altair/rplidarA1/ros2_ws/build/lidar_processing/config/lidar_with_imu_2d.lua
