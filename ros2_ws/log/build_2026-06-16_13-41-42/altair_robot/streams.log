@@ -1,0 +1,21 @@
+[1.502s] Invoking command in '/home/altair/rplidarA1/ros2_ws/build/altair_robot': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/altair_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/altair_robot/build --no-deps symlink_data
+[2.110s] running develop
+[2.568s] running egg_info
+[2.568s] writing altair_robot.egg-info/PKG-INFO
+[2.569s] writing dependency_links to altair_robot.egg-info/dependency_links.txt
+[2.569s] writing entry points to altair_robot.egg-info/entry_points.txt
+[2.569s] writing requirements to altair_robot.egg-info/requires.txt
+[2.570s] writing top-level names to altair_robot.egg-info/top_level.txt
+[2.574s] reading manifest file 'altair_robot.egg-info/SOURCES.txt'
+[2.575s] writing manifest file 'altair_robot.egg-info/SOURCES.txt'
+[2.578s] running build_ext
+[2.579s] Creating /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair-robot.egg-link (link to .)
+[2.580s] Installing experiment_logger_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.581s] Installing map_marker_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.581s] Installing mdd_can_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.582s] Installing spresense_imu_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.582s] Installing websocket_bridge_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.582s] 
+[2.582s] Installed /home/altair/rplidarA1/ros2_ws/build/altair_robot
+[2.583s] running symlink_data
+[2.635s] Invoked command in '/home/altair/rplidarA1/ros2_ws/build/altair_robot' returned '0': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/altair_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/rplidarA1/ros2_ws/build/altair_robot/build --no-deps symlink_data

@@ -16,6 +16,10 @@ NAMESPACE="rplidar_localization"
 ENABLE_DRIVE="false"
 ENABLE_REALSENSE_IMU="false"
 RS_SERIAL_NO=""
+ENABLE_SPRESENSE_IMU="true"
+SPRESENSE_PORT="/dev/ttyUSB1"
+USE_FIXED_DELAY="false"
+FIXED_DELAY_SEC="0.2"
 
 print_help() {
   cat <<'EOF'
@@ -29,6 +33,12 @@ Options:
   --enable-realsense-imu Enable D435i IMU integration (default: disabled)
   --no-realsense-imu    Disable D435i IMU integration
   --rs-serial <serial>  RealSense serial number (optional)
+  --enable-spresense-imu Enable Spresense IMU fusion (default: enabled)
+  --no-spresense-imu    Disable Spresense IMU fusion
+  --spresense-port <path> Spresense IMU port (default: /dev/ttyUSB1)
+  --use-fixed-delay     Use fixed delay instead of SLAM stamp in DBF
+  --use-slam-delay      Use SLAM stamp in DBF (default)
+  --fixed-delay-sec <sec> Fixed delay seconds for DBF (default: 0.2)
   -h, --help            Show this help
 EOF
 }
@@ -61,6 +71,30 @@ while [[ $# -gt 0 ]]; do
       ;;
     --rs-serial)
       RS_SERIAL_NO="${2:-}"
+      shift 2
+      ;;
+    --enable-spresense-imu)
+      ENABLE_SPRESENSE_IMU="true"
+      shift
+      ;;
+    --no-spresense-imu)
+      ENABLE_SPRESENSE_IMU="false"
+      shift
+      ;;
+    --spresense-port)
+      SPRESENSE_PORT="${2:-}"
+      shift 2
+      ;;
+    --use-fixed-delay)
+      USE_FIXED_DELAY="true"
+      shift
+      ;;
+    --use-slam-delay)
+      USE_FIXED_DELAY="false"
+      shift
+      ;;
+    --fixed-delay-sec)
+      FIXED_DELAY_SEC="${2:-}"
       shift 2
       ;;
     -h|--help)
@@ -115,6 +149,9 @@ pkill -f "python3 -m http.server 8091" 2>/dev/null || true
 # Free serial device if another process still holds it.
 if command -v fuser >/dev/null 2>&1; then
   fuser -k "${SERIAL_PORT}" >/dev/null 2>&1 || true
+  if [[ "${ENABLE_SPRESENSE_IMU}" == "true" ]]; then
+    fuser -k "${SPRESENSE_PORT}" >/dev/null 2>&1 || true
+  fi
 fi
 
 if [[ "${ENABLE_REALSENSE_IMU}" == "true" ]]; then
@@ -137,6 +174,12 @@ echo "  can_channel=${CAN_CHANNEL}"
 echo "  namespace=${NAMESPACE}"
 echo "  enable_drive=${ENABLE_DRIVE}"
 echo "  enable_realsense_imu=${ENABLE_REALSENSE_IMU}"
+echo "  enable_spresense_imu=${ENABLE_SPRESENSE_IMU}"
+if [[ "${ENABLE_SPRESENSE_IMU}" == "true" ]]; then
+  echo "    spresense_port=${SPRESENSE_PORT}"
+  echo "    use_fixed_delay=${USE_FIXED_DELAY}"
+  echo "    fixed_delay_sec=${FIXED_DELAY_SEC}"
+fi
 if [[ -n "${RS_SERIAL_NO}" ]]; then
   echo "  rs_serial_no=${RS_SERIAL_NO}"
 fi
@@ -149,6 +192,10 @@ launch_args=(
   "namespace:=${NAMESPACE}"
   "enable_drive:=${ENABLE_DRIVE}"
   "enable_realsense_imu:=${ENABLE_REALSENSE_IMU}"
+  "enable_spresense_imu:=${ENABLE_SPRESENSE_IMU}"
+  "spresense_port:=${SPRESENSE_PORT}"
+  "use_fixed_delay:=${USE_FIXED_DELAY}"
+  "fixed_delay_sec:=${FIXED_DELAY_SEC}"
 )
 
 if [[ -n "${RS_SERIAL_NO}" ]]; then

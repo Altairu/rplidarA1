@@ -1,10 +1,13 @@
 Metadata-Version: 2.1
-Name: altair_robot
+Name: altair-robot
 Version: 0.1.0
 Summary: 差動二輪ロボット制御パッケージ (MDD CAN + WebSocket)
+Home-page: UNKNOWN
 Maintainer: altair
 Maintainer-email: Altairu@github.comu
 License: Apache-2.0
-Requires-Dist: setuptools
+Platform: UNKNOWN
 Provides-Extra: test
-Requires-Dist: pytest; extra == "test"
+
+UNKNOWN
+

@@ -28,6 +28,7 @@ from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import OccupancyGrid
 from sensor_msgs.msg import LaserScan
 from tf2_ros import Buffer, TransformListener, TransformException
+from std_srvs.srv import Trigger
 
 try:
         from cartographer_ros_msgs.srv import FinishTrajectory, StartTrajectory
@@ -73,6 +74,12 @@ class WebSocketBridgeNode(Node):
 
         self._pose_sub = self.create_subscription(
             PoseStamped, self._pose_topic, self._on_pose, 10)
+        self._imu_raw_sub = self.create_subscription(
+            PoseStamped, 'imu_pose_raw', self._on_imu_raw_pose, 10)
+        self._imu_kf_sub = self.create_subscription(
+            PoseStamped, 'imu_pose_kf', self._on_imu_kf_pose, 10)
+        self._imu_dbf_sub = self.create_subscription(
+            PoseStamped, 'imu_pose_dbf', self._on_imu_dbf_pose, 10)
         map_qos = QoSProfile(
             depth=1,
             reliability=ReliabilityPolicy.RELIABLE,
@@ -97,6 +104,12 @@ class WebSocketBridgeNode(Node):
         self._raw_y = 0.0
         self._raw_th = 0.0
         self._has_pose = False
+        
+        self._raw_imu_x = 0.0
+        self._raw_imu_y = 0.0
+        self._raw_imu_th = 0.0
+        self._has_imu_pose = False
+        
         self._last_pose_source = 'none'
         self._last_tf_warn_ns = 0
 
@@ -113,6 +126,11 @@ class WebSocketBridgeNode(Node):
         self._origin_x = 0.0
         self._origin_y = 0.0
         self._origin_th = 0.0
+        
+        self._imu_origin_x = 0.0
+        self._imu_origin_y = 0.0
+        self._imu_origin_th = 0.0
+        
         self._pose_seq = 0
 
         self._active_trajectory_id = 0
@@ -131,6 +149,9 @@ class WebSocketBridgeNode(Node):
             self._start_client = self.create_client(StartTrajectory, 'start_trajectory')
         else:
             self.get_logger().warn('cartographer_ros_msgs が未検出のため full_reset は無効です')
+
+        self._start_log_client = self.create_client(Trigger, 'experiment_logger_node/start')
+        self._stop_log_client = self.create_client(Trigger, 'experiment_logger_node/stop')
 
         if not WS_AVAILABLE:
             self.get_logger().error(
@@ -197,6 +218,10 @@ class WebSocketBridgeNode(Node):
                 self._reset_pose_origin()
             elif cmd == 'full_reset':
                 self._full_reset_map_and_pose()
+            elif cmd == 'start_logging':
+                self._call_log_service('start')
+            elif cmd == 'stop_logging':
+                self._call_log_service('stop')
 
     # ── WebSocket 受信 ───────────────────────────────────
     def _handle_ws_msg(self, raw: str):
@@ -205,11 +230,29 @@ class WebSocketBridgeNode(Node):
         except json.JSONDecodeError:
             return
         t = data.get('type', '')
-        if t in ('reset_pose', 'full_reset'):
+        if t in ('reset_pose', 'full_reset', 'start_logging', 'stop_logging'):
             try:
                 self._control_q.put_nowait(t)
             except queue.Full:
                 pass
+
+    def _call_log_service(self, action):
+        client = self._start_log_client if action == 'start' else self._stop_log_client
+        if not client.wait_for_service(timeout_sec=1.0):
+            self._enqueue_status(False, f'ロガーサービス ({action}) が見つかりません。ロガーノードを起動しているか確認してください。')
+            return
+        
+        req = Trigger.Request()
+        future = client.call_async(req)
+        
+        def done_callback(fut):
+            try:
+                res = fut.result()
+                self._enqueue_status(res.success, res.message)
+            except Exception as e:
+                self._enqueue_status(False, f'ロガーサービス呼び出しエラー: {e}')
+                
+        future.add_done_callback(done_callback)
     # ── OccupancyGrid 受信 ────────────────────────────────
     def _on_map(self, msg: OccupancyGrid):
         """OccupancyGrid メッセージを受信して キャッシュ"""
@@ -316,6 +359,48 @@ class WebSocketBridgeNode(Node):
 
         self._update_pose_state(x, y, theta)
 
+    def _on_imu_raw_pose(self, msg: PoseStamped):
+        self._send_imu_pose('imu_raw', msg)
+
+    def _on_imu_kf_pose(self, msg: PoseStamped):
+        self._send_imu_pose('imu_kf', msg)
+
+    def _on_imu_dbf_pose(self, msg: PoseStamped):
+        self._send_imu_pose('imu_dbf', msg)
+
+    def _send_imu_pose(self, subtype, msg: PoseStamped):
+        x = float(msg.pose.position.x)
+        y = float(msg.pose.position.y)
+        qz = float(msg.pose.orientation.z)
+        qw = float(msg.pose.orientation.w)
+        theta = 2.0 * math.atan2(qz, qw)
+        
+        # 共通の最新IMUポーズ（原点リセット用キャッシュ）
+        if subtype == 'imu_kf':
+            self._raw_imu_x = x
+            self._raw_imu_y = y
+            self._raw_imu_th = theta
+            self._has_imu_pose = True
+            
+        dx = x - self._imu_origin_x
+        dy = y - self._imu_origin_y
+        c = math.cos(self._imu_origin_th)
+        s = math.sin(self._imu_origin_th)
+        px = c * dx + s * dy
+        py = -s * dx + c * dy
+        pth = self._normalize_angle(theta - self._imu_origin_th)
+        
+        payload = json.dumps({
+            'type': subtype, # 'imu_raw', 'imu_kf', 'imu_dbf'
+            'x': round(px, 3),
+            'y': round(py, 3),
+            'theta': round(pth, 4)
+        })
+        try:
+            self._send_q.put_nowait(payload)
+        except queue.Full:
+            pass
+
     def _update_pose_from_tf(self):
         # Prefer topic data if available, but fall back to TF when no topic publisher exists.
         if self._last_pose_source == 'topic':
@@ -380,8 +465,15 @@ class WebSocketBridgeNode(Node):
         self._origin_x = self._raw_x
         self._origin_y = self._raw_y
         self._origin_th = self._raw_th
+        
+        # IMU 側の原点リセットも同期して実行
+        if self._has_imu_pose:
+            self._imu_origin_x = self._raw_imu_x
+            self._imu_origin_y = self._raw_imu_y
+            self._imu_origin_th = self._raw_imu_th
+            
         self._pose_seq += 1
-        self._enqueue_status(True, '自己位置原点をリセットしました')
+        self._enqueue_status(True, '自己位置原点（SLAMおよびIMU）をリセットしました')
 
     def _full_reset_map_and_pose(self):
         if self._full_reset_in_progress:

@@ -33,6 +33,8 @@ setup(
             'mdd_can_node = altair_robot.mdd_can_node:main',
             'websocket_bridge_node = altair_robot.websocket_bridge_node:main',
             'map_marker_node = altair_robot.map_marker_node:main',
+            'spresense_imu_node = altair_robot.spresense_imu_node:main',
+            'experiment_logger_node = altair_robot.experiment_logger_node:main',
         ],
     },
 )

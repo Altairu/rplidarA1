@@ -40,6 +40,10 @@ def generate_launch_description():
     namespace = LaunchConfiguration('namespace', default='rplidar_localization')
     enable_drive = LaunchConfiguration('enable_drive', default='false')
     enable_realsense_imu = LaunchConfiguration('enable_realsense_imu', default='false')
+    enable_spresense_imu = LaunchConfiguration('enable_spresense_imu', default='true')
+    spresense_port = LaunchConfiguration('spresense_port', default='/dev/ttyUSB1')
+    use_fixed_delay = LaunchConfiguration('use_fixed_delay', default='false')
+    fixed_delay_sec = LaunchConfiguration('fixed_delay_sec', default='0.2')
     rs_serial_no = LaunchConfiguration('rs_serial_no', default='')
     laser_to_camera_x = LaunchConfiguration('laser_to_camera_x', default='0.0')
     laser_to_camera_y = LaunchConfiguration('laser_to_camera_y', default='0.0')
@@ -90,6 +94,26 @@ def generate_launch_description():
             'rs_serial_no',
             default_value='',
             description='RealSense シリアル番号 (複数台時のみ指定)',
+        ),
+        DeclareLaunchArgument(
+            'enable_spresense_imu',
+            default_value='true',
+            description='true のとき Spresense IMU 自己位置推定ノードを起動',
+        ),
+        DeclareLaunchArgument(
+            'spresense_port',
+            default_value='/dev/ttyUSB1',
+            description='Spresense IMU シリアルポート',
+        ),
+        DeclareLaunchArgument(
+            'use_fixed_delay',
+            default_value='false',
+            description='true のとき、DBFにSLAMのタイムスタンプではなく固定遅延を使用する',
+        ),
+        DeclareLaunchArgument(
+            'fixed_delay_sec',
+            default_value='0.2',
+            description='DBFに適用する固定遅延時間 [s]',
         ),
         DeclareLaunchArgument('laser_to_camera_x', default_value='0.0', description='laser->camera_link [m] x'),
         DeclareLaunchArgument('laser_to_camera_y', default_value='0.0', description='laser->camera_link [m] y'),
@@ -240,6 +264,37 @@ def generate_launch_description():
                     'pid_i': 0.0,
                     'pid_d': 0.0,
                     'max_rps': 20.0,
+                }],
+            ),
+
+            # ── 5.3 Spresense IMU 自己位置推定 ─────────────────
+            Node(
+                condition=IfCondition(enable_spresense_imu),
+                package='altair_robot',
+                executable='spresense_imu_node',
+                name='spresense_imu_node',
+                output='screen',
+                parameters=[{
+                    'serial_port': spresense_port,
+                    'baudrate': 2000000,
+                    'odom_frame': 'imu_odom',
+                    'base_frame': 'imu_base_link',
+                    'publish_tf': True,
+                    'use_fixed_delay': use_fixed_delay,
+                    'fixed_delay_sec': fixed_delay_sec,
+                }],
+            ),
+
+            # ── 5.7 実験データロガー ──────────────────────────
+            Node(
+                condition=IfCondition(enable_spresense_imu),
+                package='altair_robot',
+                executable='experiment_logger_node',
+                name='experiment_logger_node',
+                output='screen',
+                parameters=[{
+                    'log_dir': '/home/altair/rplidarA1/experiment_logs',
+                    'log_rate': 20.0,
                 }],
             ),
 

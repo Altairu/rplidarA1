@@ -1,0 +1,19 @@
+running develop
+running egg_info
+writing altair_robot.egg-info/PKG-INFO
+writing dependency_links to altair_robot.egg-info/dependency_links.txt
+writing entry points to altair_robot.egg-info/entry_points.txt
+writing requirements to altair_robot.egg-info/requires.txt
+writing top-level names to altair_robot.egg-info/top_level.txt
+reading manifest file 'altair_robot.egg-info/SOURCES.txt'
+writing manifest file 'altair_robot.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair-robot.egg-link (link to .)
+Installing experiment_logger_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing map_marker_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing mdd_can_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing spresense_imu_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing websocket_bridge_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+
+Installed /home/altair/rplidarA1/ros2_ws/build/altair_robot
+running symlink_data

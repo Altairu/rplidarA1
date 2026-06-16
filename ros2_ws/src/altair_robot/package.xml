@@ -13,6 +13,7 @@
   <depend>tf2_ros</depend>
   <depend>std_msgs</depend>
   <depend>cartographer_ros_msgs</depend>
+  <depend>std_srvs</depend>
 
   <!-- Python 依存 (pip install) -->
   <!-- python3-can, websockets, numpy, Pillow は apt / pip で別途インストール -->

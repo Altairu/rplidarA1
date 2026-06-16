@@ -2,8 +2,10 @@ package.xml
 setup.cfg
 setup.py
 altair_robot/__init__.py
+altair_robot/experiment_logger_node.py
 altair_robot/map_marker_node.py
 altair_robot/mdd_can_node.py
+altair_robot/spresense_imu_node.py
 altair_robot/websocket_bridge_node.py
 altair_robot.egg-info/PKG-INFO
 altair_robot.egg-info/SOURCES.txt
