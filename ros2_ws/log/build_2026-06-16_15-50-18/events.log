@@ -1,0 +1,58 @@
+[0.000000] (-) TimerEvent: {}
+[0.000464] (-) JobUnselected: {'identifier': 'lidar_processing'}
+[0.000890] (-) JobUnselected: {'identifier': 'sllidar_ros2'}
+[0.001187] (altair_robot) JobQueued: {'identifier': 'altair_robot', 'dependencies': OrderedDict()}
+[0.001466] (altair_robot) JobStarted: {'identifier': 'altair_robot'}
+[0.099593] (-) TimerEvent: {}
+[0.199886] (-) TimerEvent: {}
+[0.300215] (-) TimerEvent: {}
+[0.400531] (-) TimerEvent: {}
+[0.500830] (-) TimerEvent: {}
+[0.601165] (-) TimerEvent: {}
+[0.701832] (-) TimerEvent: {}
+[0.802721] (-) TimerEvent: {}
+[0.904023] (-) TimerEvent: {}
+[1.004384] (-) TimerEvent: {}
+[1.105518] (-) TimerEvent: {}
+[1.205840] (-) TimerEvent: {}
+[1.306193] (-) TimerEvent: {}
+[1.406609] (-) TimerEvent: {}
+[1.506929] (-) TimerEvent: {}
+[1.562509] (altair_robot) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/altair_robot', 'build', '--build-base', '/home/altair/rplidarA1/ros2_ws/build/altair_robot/build', 'install', '--record', '/home/altair/rplidarA1/ros2_ws/build/altair_robot/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/altair/rplidarA1/ros2_ws/src/altair_robot', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/home/altair', 'USER': 'altair', 'ANTIGRAVITY_SOURCE_METADATA': '{"tool":{"conversationId":"6680dea4-05e0-497d-ae1b-fe0e3e6b19f0","stepIndex":750,"toolCall":{"id":"qvkqxc3k","name":"run_command","argumentsJson":"{\\"CommandLine\\":\\"python3 -m py_compile src/altair_robot/altair_robot/spresense_imu_node.py \\\\u0026\\\\u0026 colcon build --packages-select altair_robot\\",\\"Cwd\\":\\"/home/altair/rplidarA1/ros2_ws\\",\\"WaitMsBeforeAsync\\":10000,\\"toolAction\\":\\"Compiling python node and building ROS2 packages\\",\\"toolSummary\\":\\"Build workspace\\"}","thinkingSignature":"EsYBCsMBAQw51sdQCHtN8ao0bVLjKduPdOhUTuMmkiLvgVvq+HSIh8clXqzMwsxR3GAOsBedDnj5Ud8ikeq8zxqpeN7P3f9D3nrgzcWFFIv7b/w7AKoFWpAQy+N1NRkuakEdF3EMwm5N9DNL1jqvymlqqaTFwQXj0DPQXmhsTCdN2WRyvdFGcFNucbP4MLvD/HzBdzZRnl2WnpBraMqm2PkCQDdCSvVHMmEdNGZl1N6j43k+P6jyihjPFk/54pVVZqx95TzG5xin","originalName":"run_command"}}}', 'VSCODE_NLS_CONFIG': '{"userLocale":"ja","osLocale":"ja-jp","resolvedLanguage":"ja","defaultMessagesFile":"/opt/antigravity-ide/resources/app/out/nls.messages.json","languagePack":{"translationsConfigFile":"/home/altair/.config/Antigravity IDE/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","messagesFile":"/home/altair/.config/Antigravity IDE/clp/c079ae35ca5a109e941bb27abcf19a86.ja/bf9a033f33934fb4496d7eebed52486272437c3a/nls.messages.json","corruptMarkerFile":"/home/altair/.config/Antigravity IDE/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"},"locale":"ja","availableLanguages":{"*":"ja"},"_languagePackId":"c079ae35ca5a109e941bb27abcf19a86.ja","_languagePackSupport":true,"_translationsConfigFile":"/home/altair/.config/Antigravity IDE/clp/c079ae35ca5a109e941bb27abcf19a86.ja/tcf.json","_cacheRoot":"/home/altair/.config/Antigravity IDE/clp/c079ae35ca5a109e941bb27abcf19a86.ja","_resolvedLanguagePackCoreLocation":"/home/altair/.config/Antigravity IDE/clp/c079ae35ca5a109e941bb27abcf19a86.ja/bf9a033f33934fb4496d7eebed52486272437c3a","_corruptedFile":"/home/altair/.config/Antigravity IDE/clp/c079ae35ca5a109e941bb27abcf19a86.ja/corrupted.info"}', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '0', 'LD_LIBRARY_PATH': '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/altair', 'CHROME_DESKTOP': 'antigravity-ide.desktop', 'DESKTOP_SESSION': 'ubuntu', 'NVM_BIN': '/home/altair/.nvm/versions/node/v22.20.0/bin', 'NVM_INC': '/home/altair/.nvm/versions/node/v22.20.0/include/node', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-f3071572-1.10-main.sock', 'GIO_LAUNCHED_DESKTOP_FILE': '/home/altair/.local/share/applications/antigravity-ide.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'PAGER': 'cat', 'MANAGERPID': '933', 'SYSTEMD_EXEC_PID': '1084', 'IM_CONFIG_CHECK_ENV': '1', 'UNZIP': '-O CP932', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'ANTIGRAVITY_AGENT': '1', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '12097', 'NVM_DIR': '/home/altair/.nvm', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'altair', 'JOURNAL_STREAM': '8:9886', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'altair', 'TERM': 'dumb', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'FC_FONTATIONS': '1', 'ROS_LOCALHOST_ONLY': '0', 'ANTIGRAVITY_EDITOR_APP_ROOT': '/opt/antigravity-ide/resources/app', 'PATH': '/home/altair/.gemini/antigravity-ide/bin:/home/altair/.local/bin:/home/altair/.local/bin:/home/altair/.local/bin:/home/altair/.nvm/versions/node/v22.20.0/bin:/opt/ros/humble/bin:/home/altair/.local/bin:/home/altair/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/altair-ThinkPad-L580:@/tmp/.ICE-unix/1051,unix/altair-ThinkPad-L580:/tmp/.ICE-unix/1051', 'INVOCATION_ID': 'd083caa1ebde489d9b49f4feb62e3aaa', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'wayland', 'DISPLAY': ':0', 'LANG': 'ja_JP.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.ZQ71Q3', 'LS_COLORS': '', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'SHELL': '/bin/bash', 'ANTIGRAVITY_LS_ADDRESS': 'localhost:38809', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GJS_DEBUG_OUTPUT': 'stderr', 'QT_IM_MODULE': 'ibus', 'ANTIGRAVITY_TRAJECTORY_ID': 'd913029d-ab75-4e4f-9e8e-afb708d2ed26', 'PWD': '/home/altair/rplidarA1/ros2_ws/build/altair_robot', 'ZIPINFO': '-O CP932', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'VSCODE_CODE_CACHE_PATH': '/home/altair/.config/Antigravity IDE/CachedData/bf9a033f33934fb4496d7eebed52486272437c3a', 'NVM_CD_FLAGS': '', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/home/altair/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/altair/rplidarA1/ros2_ws/build/altair_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'ANTIGRAVITY_CSRF_TOKEN': '746352df-925a-46a2-ac84-f17ae6842ace', 'VSCODE_PID': '12097'}, 'shell': False}
+[1.607029] (-) TimerEvent: {}
+[1.707358] (-) TimerEvent: {}
+[1.807681] (-) TimerEvent: {}
+[1.908049] (-) TimerEvent: {}
+[2.009111] (-) TimerEvent: {}
+[2.109458] (-) TimerEvent: {}
+[2.185830] (altair_robot) StdoutLine: {'line': b'running egg_info\n'}
+[2.186725] (altair_robot) StdoutLine: {'line': b'writing ../../build/altair_robot/altair_robot.egg-info/PKG-INFO\n'}
+[2.187322] (altair_robot) StdoutLine: {'line': b'writing dependency_links to ../../build/altair_robot/altair_robot.egg-info/dependency_links.txt\n'}
+[2.187649] (altair_robot) StdoutLine: {'line': b'writing entry points to ../../build/altair_robot/altair_robot.egg-info/entry_points.txt\n'}
+[2.188147] (altair_robot) StdoutLine: {'line': b'writing requirements to ../../build/altair_robot/altair_robot.egg-info/requires.txt\n'}
+[2.189280] (altair_robot) StdoutLine: {'line': b'writing top-level names to ../../build/altair_robot/altair_robot.egg-info/top_level.txt\n'}
+[2.192820] (altair_robot) StdoutLine: {'line': b"reading manifest file '../../build/altair_robot/altair_robot.egg-info/SOURCES.txt'\n"}
+[2.195341] (altair_robot) StdoutLine: {'line': b"writing manifest file '../../build/altair_robot/altair_robot.egg-info/SOURCES.txt'\n"}
+[2.196739] (altair_robot) StdoutLine: {'line': b'running build\n'}
+[2.196985] (altair_robot) StdoutLine: {'line': b'running build_py\n'}
+[2.197347] (altair_robot) StdoutLine: {'line': b'copying altair_robot/spresense_imu_node.py -> /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot\n'}
+[2.197754] (altair_robot) StdoutLine: {'line': b'running install\n'}
+[2.198073] (altair_robot) StdoutLine: {'line': b'running install_lib\n'}
+[2.199451] (altair_robot) StdoutLine: {'line': b'copying /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot/spresense_imu_node.py -> /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot\n'}
+[2.200956] (altair_robot) StdoutLine: {'line': b'byte-compiling /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot/spresense_imu_node.py to spresense_imu_node.cpython-310.pyc\n'}
+[2.209793] (-) TimerEvent: {}
+[2.216839] (altair_robot) StdoutLine: {'line': b'running install_data\n'}
+[2.217338] (altair_robot) StdoutLine: {'line': b'running install_egg_info\n'}
+[2.221954] (altair_robot) StdoutLine: {'line': b"removing '/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot-0.1.0-py3.10.egg-info' (and everything under it)\n"}
+[2.222277] (altair_robot) StdoutLine: {'line': b'Copying ../../build/altair_robot/altair_robot.egg-info to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot-0.1.0-py3.10.egg-info\n'}
+[2.223459] (altair_robot) StdoutLine: {'line': b'running install_scripts\n'}
+[2.266356] (altair_robot) StdoutLine: {'line': b'Installing experiment_logger_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot\n'}
+[2.266732] (altair_robot) StdoutLine: {'line': b'Installing map_marker_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot\n'}
+[2.267111] (altair_robot) StdoutLine: {'line': b'Installing mdd_can_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot\n'}
+[2.267385] (altair_robot) StdoutLine: {'line': b'Installing spresense_imu_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot\n'}
+[2.267678] (altair_robot) StdoutLine: {'line': b'Installing websocket_bridge_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot\n'}
+[2.268245] (altair_robot) StdoutLine: {'line': b"writing list of installed files to '/home/altair/rplidarA1/ros2_ws/build/altair_robot/install.log'\n"}
+[2.309893] (-) TimerEvent: {}
+[2.318867] (altair_robot) CommandEnded: {'returncode': 0}
+[2.343011] (altair_robot) JobEnded: {'identifier': 'altair_robot', 'rc': 0}
+[2.343944] (-) EventReactorShutdown: {}

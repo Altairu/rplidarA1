@@ -683,6 +683,8 @@ class SpresenseImuNode(Node):
     def _connection_and_rx_loop(self):
         """シリアル接続と受信処理を行うメインループスレッド"""
         buffer = bytearray()
+        last_packet_time = time.perf_counter()
+        
         while self.running and rclpy.ok():
             if self.ser is None or not self.ser.is_open:
                 # 接続が切れている場合は自動探索を繰り返す
@@ -691,8 +693,13 @@ class SpresenseImuNode(Node):
                     time.sleep(1.0)
                     continue
                 buffer = bytearray()  # バッファをリセット
+                last_packet_time = time.perf_counter()
 
             try:
+                # 通信途絶（タイムアウト）の監視: 2秒以上パケットが届かなければ強制切断して再探索へ
+                if time.perf_counter() - last_packet_time > 2.0:
+                    raise IOError("シリアル通信が2秒以上途絶しました")
+
                 # データ読み込み
                 data = self.ser.read(self.ser.in_waiting or 1)
                 if not data:
@@ -704,13 +711,19 @@ class SpresenseImuNode(Node):
                 if len(buffer) > 2000:
                     del buffer[:-500]
 
+                packet_processed = False
                 while len(buffer) >= 34:
                     if buffer[0] == 0xAA and buffer[1] == 0x55:
                         raw_packet = buffer[2:34]
                         del buffer[:34]
                         self._process_imu_packet(raw_packet)
+                        packet_processed = True
                     else:
                         del buffer[0]
+
+                if packet_processed:
+                    last_packet_time = time.perf_counter()
+
             except Exception as e:
                 self.get_logger().warn(f'シリアル接続が切断されました: {e}')
                 if self.ser:
