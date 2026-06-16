@@ -99,9 +99,22 @@ source /opt/ros/humble/setup.bash
 source "${WS_DIR}/install/setup.bash"
 set -u
 
-if pgrep -f "ros2 launch altair_robot robot_drive_launch.py" >/dev/null; then
-  echo "Another SLAM launch is already running. Stop it first before starting a new one." >&2
-  exit 1
+# Workaround for some Intel/Mesa environments where RViz map shader fails.
+export LIBGL_ALWAYS_SOFTWARE=1
+
+echo "Stopping stale SLAM/visualization processes (if any)..."
+pkill -f "ros2 launch altair_robot robot_drive_launch.py" 2>/dev/null || true
+pkill -f "sllidar_ros2/sllidar_node" 2>/dev/null || true
+pkill -f "cartographer_ros/cartographer_node" 2>/dev/null || true
+pkill -f "cartographer_occupancy_grid_node" 2>/dev/null || true
+pkill -f "altair_robot/websocket_bridge_node" 2>/dev/null || true
+pkill -f "altair_robot/map_marker_node" 2>/dev/null || true
+pkill -f "rviz2 -d .*robot_drive.rviz" 2>/dev/null || true
+pkill -f "python3 -m http.server 8091" 2>/dev/null || true
+
+# Free serial device if another process still holds it.
+if command -v fuser >/dev/null 2>&1; then
+  fuser -k "${SERIAL_PORT}" >/dev/null 2>&1 || true
 fi
 
 if [[ "${ENABLE_REALSENSE_IMU}" == "true" ]]; then
@@ -110,6 +123,13 @@ if [[ "${ENABLE_REALSENSE_IMU}" == "true" ]]; then
     pkill -f "realsense2_camera_node" || true
   fi
 fi
+
+# Kill any stale processes on web/websocket ports to avoid "Address already in use" errors
+echo "Clearing port 8091 (HTTP) and 8876 (WebSocket) from stale processes..."
+if command -v fuser >/dev/null 2>&1; then
+  fuser -k 8091/tcp 8876/tcp >/dev/null 2>&1 || true
+fi
+sleep 1
 
 echo "Starting SLAM stack with:"
 echo "  serial_port=${SERIAL_PORT}"

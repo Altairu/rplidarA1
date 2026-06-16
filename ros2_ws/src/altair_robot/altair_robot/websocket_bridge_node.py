@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-WebSocket ブリッジノード (ROS2) - 自己位置可視化専用
+WebSocket ブリッジノード (ROS2) - 自己位置可視化 & 地図配信
 
 クライアント → ロボット (JSON):
     {"type": "reset_pose"}  # 表示上の自己位置原点を現在位置へリセット
@@ -10,9 +10,11 @@ WebSocket ブリッジノード (ROS2) - 自己位置可視化専用
 ロボット → クライアント (JSON):
     {"type": "pose", "x": X, "y": Y, "theta": T}
     {"type": "status", "ok": true/false, "message": "..."}
+    {"type": "map", "width": W, "height": H, "resolution": RES, "originX": OX, "originY": OY, "data": "base64_encoded_occupancy_grid"}
 """
 
 import asyncio
+import base64
 import json
 import math
 import queue
@@ -21,7 +23,10 @@ import threading
 import rclpy
 from rclpy.node import Node
 from rclpy.time import Time
+from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 from geometry_msgs.msg import PoseStamped
+from nav_msgs.msg import OccupancyGrid
+from sensor_msgs.msg import LaserScan
 from tf2_ros import Buffer, TransformListener, TransformException
 
 try:
@@ -44,25 +49,49 @@ class WebSocketBridgeNode(Node):
 
         self.declare_parameter('port', 8876)
         self.declare_parameter('pose_topic', 'tracked_pose')
+        self.declare_parameter('map_topic', 'map')
+        self.declare_parameter('scan_topic', 'scan')
         self.declare_parameter('cartographer_config_dir', '')
         self.declare_parameter('cartographer_config_basename', 'lidar_only_2d.lua')
         self.declare_parameter('map_frame', 'map')
         self.declare_parameter('tracking_frame', 'laser')
         self.declare_parameter('pose_publish_period_sec', 0.1)
+        self.declare_parameter('map_publish_period_sec', 0.5)
+        self.declare_parameter('scan_publish_period_sec', 0.1)
 
         self._port = int(self.get_parameter('port').value)
         self._pose_topic = str(self.get_parameter('pose_topic').value)
+        self._map_topic = str(self.get_parameter('map_topic').value)
+        self._scan_topic = str(self.get_parameter('scan_topic').value)
         self._cfg_dir = str(self.get_parameter('cartographer_config_dir').value)
         self._cfg_base = str(self.get_parameter('cartographer_config_basename').value)
         self._map_frame = str(self.get_parameter('map_frame').value)
         self._tracking_frame = str(self.get_parameter('tracking_frame').value)
         self._pose_publish_period_sec = float(self.get_parameter('pose_publish_period_sec').value)
+        self._map_publish_period_sec = float(self.get_parameter('map_publish_period_sec').value)
+        self._scan_publish_period_sec = float(self.get_parameter('scan_publish_period_sec').value)
 
         self._pose_sub = self.create_subscription(
             PoseStamped, self._pose_topic, self._on_pose, 10)
+        map_qos = QoSProfile(
+            depth=1,
+            reliability=ReliabilityPolicy.RELIABLE,
+            durability=DurabilityPolicy.TRANSIENT_LOCAL,
+        )
+        self._map_sub = self.create_subscription(
+            OccupancyGrid, self._map_topic, self._on_map, map_qos)
+        scan_qos = QoSProfile(
+            depth=10,
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            durability=DurabilityPolicy.VOLATILE,
+        )
+        self._scan_sub = self.create_subscription(
+            LaserScan, self._scan_topic, self._on_scan, scan_qos)
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
         self._tf_pose_timer = self.create_timer(self._pose_publish_period_sec, self._update_pose_from_tf)
+        self._map_publish_timer = self.create_timer(self._map_publish_period_sec, self._publish_map)
+        self._scan_publish_timer = self.create_timer(self._scan_publish_period_sec, self._publish_scan)
 
         self._raw_x = 0.0
         self._raw_y = 0.0
@@ -70,6 +99,16 @@ class WebSocketBridgeNode(Node):
         self._has_pose = False
         self._last_pose_source = 'none'
         self._last_tf_warn_ns = 0
+
+        # Map data cache
+        self._map_data = None
+        self._map_lock = threading.Lock()
+        self._map_rx_logged = False
+        self._map_tx_logged = False
+        self._scan_data = None
+        self._scan_lock = threading.Lock()
+        self._scan_rx_logged = False
+        self._scan_tx_logged = False
 
         self._origin_x = 0.0
         self._origin_y = 0.0
@@ -171,7 +210,100 @@ class WebSocketBridgeNode(Node):
                 self._control_q.put_nowait(t)
             except queue.Full:
                 pass
+    # ── OccupancyGrid 受信 ────────────────────────────────
+    def _on_map(self, msg: OccupancyGrid):
+        """OccupancyGrid メッセージを受信して キャッシュ"""
+        with self._map_lock:
+            self._map_data = msg
+        if not self._map_rx_logged:
+            self._map_rx_logged = True
+            self.get_logger().info(
+                f'地図受信開始: {msg.info.width}×{msg.info.height} @ {msg.info.resolution:.3f}m/px')
 
+    def _publish_map(self):
+        """定期的に地図データを圧縮してクライアントに送信"""
+        try:
+            with self._map_lock:
+                if self._map_data is None:
+                    return
+                msg = self._map_data
+
+            width = msg.info.width
+            height = msg.info.height
+            resolution = msg.info.resolution
+            origin_x = msg.info.origin.position.x
+            origin_y = msg.info.origin.position.y
+
+            # OccupancyGrid data は int8 (-1..100) なので、
+            # Base64 送信用に 0..255 の byte 列へ正規化する。
+            data_bytes = bytes((v & 0xFF) for v in msg.data)
+            data_b64 = base64.b64encode(data_bytes).decode('utf-8')
+
+            payload = json.dumps({
+                'type': 'map',
+                'width': width,
+                'height': height,
+                'resolution': resolution,
+                'originX': origin_x,
+                'originY': origin_y,
+                'data': data_b64,
+            })
+            self._send_q.put_nowait(payload)
+            if not self._map_tx_logged:
+                self._map_tx_logged = True
+                self.get_logger().info(
+                    f'地図配信開始: {width}×{height} @ {resolution:.3f}m/px')
+        except queue.Full:
+            pass
+        except Exception as exc:
+            self.get_logger().error(f'地図配信エラー: {exc}')
+
+    # ── LaserScan 受信/配信 ────────────────────────────────
+    def _on_scan(self, msg: LaserScan):
+        with self._scan_lock:
+            self._scan_data = msg
+        if not self._scan_rx_logged:
+            self._scan_rx_logged = True
+            self.get_logger().info(
+                f'LiDAR受信開始: points={len(msg.ranges)}, range=[{msg.range_min:.2f}, {msg.range_max:.2f}]m')
+
+    def _publish_scan(self):
+        try:
+            with self._scan_lock:
+                if self._scan_data is None:
+                    return
+                msg = self._scan_data
+
+            angle = float(msg.angle_min)
+            inc = float(msg.angle_increment)
+            points = []
+            valid_count = 0
+            for r in msg.ranges:
+                rv = float(r)
+                if math.isfinite(rv) and msg.range_min <= rv <= msg.range_max:
+                    x = rv * math.cos(angle)
+                    y = rv * math.sin(angle)
+                    points.append([round(x, 3), round(y, 3)])
+                    valid_count += 1
+                angle += inc
+
+            payload = json.dumps({
+                'type': 'scan',
+                'frame': msg.header.frame_id,
+                'rangeMin': round(float(msg.range_min), 3),
+                'rangeMax': round(float(msg.range_max), 3),
+                'pointCount': valid_count,
+                'points': points,
+            })
+            self._send_q.put_nowait(payload)
+            if not self._scan_tx_logged:
+                self._scan_tx_logged = True
+                self.get_logger().info(
+                    f'LiDAR配信開始: points={valid_count}, frame={msg.header.frame_id}')
+        except queue.Full:
+            pass
+        except Exception as exc:
+            self.get_logger().error(f'LiDAR配信エラー: {exc}')
     # ── tracked_pose 受信 ─────────────────────────────────
     def _on_pose(self, msg: PoseStamped):
         x = float(msg.pose.position.x)

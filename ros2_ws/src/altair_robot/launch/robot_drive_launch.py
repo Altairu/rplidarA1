@@ -106,6 +106,8 @@ def generate_launch_description():
                 package='sllidar_ros2',
                 executable='sllidar_node',
                 name='sllidar_node',
+                respawn=True,
+                respawn_delay=2.0,
                 output='screen',
                 parameters=[{
                     'channel_type': 'serial',
@@ -114,7 +116,7 @@ def generate_launch_description():
                     'frame_id': 'laser',
                     'inverted': False,
                     'angle_compensate': True,
-                    'scan_mode': 'Sensitivity',
+                    'scan_mode': 'Standard',
                 }],
             ),
 
@@ -183,6 +185,7 @@ def generate_launch_description():
                         package='cartographer_ros',
                         executable='cartographer_occupancy_grid_node',
                         name='cartographer_occupancy_grid_node',
+                        namespace=namespace,
                         output='screen',
                         arguments=[
                             '-resolution', '0.05',
@@ -192,7 +195,7 @@ def generate_launch_description():
                 ],
             ),
 
-            # ── 4. WebSocket ブリッジ (自己位置配信専用) ─────
+            # ── 4. WebSocket ブリッジ (自己位置配信 & 地図配信) ─────
             Node(
                 package='altair_robot',
                 executable='websocket_bridge_node',
@@ -201,8 +204,23 @@ def generate_launch_description():
                 parameters=[{
                     'port': 8876,
                     'pose_topic': 'tracked_pose',
+                    'map_topic': 'map',
                     'cartographer_config_dir': cartographer_cfg_dir,
                     'cartographer_config_basename': cartographer_config_basename,
+                }],
+            ),
+
+            # ── 4.5 地図マーカー可視化 (RViz Map描画互換用) ───
+            Node(
+                package='altair_robot',
+                executable='map_marker_node',
+                name='map_marker_node',
+                output='screen',
+                parameters=[{
+                    'map_topic': 'map',
+                    'marker_topic': 'map_marker',
+                    'occupied_threshold': 50,
+                    'cell_skip': 2,
                 }],
             ),
 
@@ -230,6 +248,13 @@ def generate_launch_description():
                 package='rviz2',
                 executable='rviz2',
                 name='rviz2',
+                additional_env={
+                    'LIBGL_ALWAYS_SOFTWARE': '1',
+                    'MESA_GL_VERSION_OVERRIDE': '3.3',
+                    'MESA_GLSL_VERSION_OVERRIDE': '330',
+                    'QT_XCB_GL_INTEGRATION': 'none',
+                    'OGRE_RTT_MODE': 'Copy',
+                },
                 output='screen',
                 arguments=[
                     '-d', os.path.join(

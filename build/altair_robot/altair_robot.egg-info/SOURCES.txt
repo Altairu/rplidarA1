@@ -2,6 +2,7 @@ package.xml
 setup.cfg
 setup.py
 altair_robot/__init__.py
+altair_robot/map_marker_node.py
 altair_robot/mdd_can_node.py
 altair_robot/websocket_bridge_node.py
 altair_robot.egg-info/PKG-INFO
@@ -11,6 +12,7 @@ altair_robot.egg-info/entry_points.txt
 altair_robot.egg-info/requires.txt
 altair_robot.egg-info/top_level.txt
 altair_robot.egg-info/zip-safe
+config/robot_drive.rviz
 html/index.html
 launch/robot_drive_launch.py
 resource/altair_robot
