@@ -185,8 +185,14 @@ class SpresenseImuNode(Node):
         self.declare_parameter('kf_q_bias', 1e-4)
         self.declare_parameter('kf_r_pos', 0.1)
         
-        # ジャイロの単位設定（度/秒 dps の場合は True にして内部でラジアンに変換）
-        self.declare_parameter('gyro_in_deg_sec', True)
+        # ジャイロの単位設定（度/秒 dps の場合は True にして内部でラジアンに変換。Spresenseは既にrad/sのためFalseがデフォルト）
+        self.declare_parameter('gyro_in_deg_sec', False)
+        
+        # ZUPT（静止時リセット）用のパラメータ
+        self.declare_parameter('zupt_mode', 'auto')
+        self.declare_parameter('gyro_still_thresh', 0.05)
+        self.declare_parameter('acc_still_thresh', 0.2)
+        self.declare_parameter('still_delay_samples', 960)
         
         # 推定アルゴリズム切り替えパラメータ
         # yaw_source: 'gyro' (ジャイロ積分), 'slam' (SLAMのYaw), 'cmd' (指令角速度積分)
@@ -220,6 +226,12 @@ class SpresenseImuNode(Node):
         self.kf_q_vel = self.get_parameter('kf_q_vel').value
         self.kf_q_bias = self.get_parameter('kf_q_bias').value
         self.kf_r_pos = self.get_parameter('kf_r_pos').value
+        
+        self.zupt_mode = self.get_parameter('zupt_mode').value
+        self.gyro_still_thresh = self.get_parameter('gyro_still_thresh').value
+        self.acc_still_thresh = self.get_parameter('acc_still_thresh').value
+        self.still_delay_samples = self.get_parameter('still_delay_samples').value
+        self.still_counter = 0
         
         self.gyro_in_deg_sec = self.get_parameter('gyro_in_deg_sec').value
         self.yaw_source = self.get_parameter('yaw_source').value
@@ -288,17 +300,23 @@ class SpresenseImuNode(Node):
         self.v_raw = 0.0
         self.theta = 0.0
 
-        # 2. カルマンフィルタ (KF)
-        self.kf_x = PositionKalmanFilter2D(
+        # 2. カルマンフィルタ (KF) - 進行方向1次元モデル
+        self.kf = PositionKalmanFilter2D(
             q_pos=self.kf_q_pos, q_vel=self.kf_q_vel, q_bias=self.kf_q_bias, r_pos=self.kf_r_pos)
-        self.kf_y = PositionKalmanFilter2D(
-            q_pos=self.kf_q_pos, q_vel=self.kf_q_vel, q_bias=self.kf_q_bias, r_pos=self.kf_r_pos)
-        self.imu_history = collections.deque(maxlen=10000)
-        self.kf_history = collections.deque(maxlen=10000)
+        self.x_kf = 0.0
+        self.y_kf = 0.0
+        self.imu_history = collections.deque(maxlen=10000)  # (ts, a_forward, dt)
+        self.kf_history = collections.deque(maxlen=10000)   # (ts, state, P)
 
-        # 3. 遅延バイアスフィードバック (DBF)
-        self.dbf_x = DelayedBiasFeedback2D(delay_sec=self.fixed_delay_sec)
-        self.dbf_y = DelayedBiasFeedback2D(delay_sec=self.fixed_delay_sec)
+        # 3. 遅延バイアスフィードバック (DBF) - 進行方向1次元モデル
+        self.dbf = DelayedBiasFeedback2D(delay_sec=self.fixed_delay_sec)
+        self.x_dbf = 0.0
+        self.y_dbf = 0.0
+
+        # SLAM観測用の累積移動距離と座標キャッシュ
+        self.slam_accum_dist = 0.0
+        self.last_slam_raw_x = None
+        self.last_slam_raw_y = None
 
         # 起動時は初期キャリブレーションが未完了とする
         self.is_calibrated = False
@@ -442,32 +460,39 @@ class SpresenseImuNode(Node):
                 self.fixed_delay_sec = param.value
                 self.get_logger().info(f'パラメータ更新: fixed_delay_sec = {self.fixed_delay_sec}')
                 # DBF の遅延設定も同期
-                self.dbf_x.delay_sec = self.fixed_delay_sec
-                self.dbf_y.delay_sec = self.fixed_delay_sec
+                self.dbf.delay_sec = self.fixed_delay_sec
             elif param.name == 'exclude_port':
                 self.exclude_port = param.value
                 self.get_logger().info(f'パラメータ更新: exclude_port = {self.exclude_port}')
             # KF パラメータの動的更新
             elif param.name == 'kf_q_pos':
                 self.kf_q_pos = param.value
-                self.kf_x.Q[0][0] = self.kf_q_pos
-                self.kf_y.Q[0][0] = self.kf_q_pos
+                self.kf.Q[0][0] = self.kf_q_pos
                 self.get_logger().info(f'パラメータ更新: kf_q_pos = {self.kf_q_pos}')
             elif param.name == 'kf_q_vel':
                 self.kf_q_vel = param.value
-                self.kf_x.Q[1][1] = self.kf_q_vel
-                self.kf_y.Q[1][1] = self.kf_q_vel
+                self.kf.Q[1][1] = self.kf_q_vel
                 self.get_logger().info(f'パラメータ更新: kf_q_vel = {self.kf_q_vel}')
             elif param.name == 'kf_q_bias':
                 self.kf_q_bias = param.value
-                self.kf_x.Q[2][2] = self.kf_q_bias
-                self.kf_y.Q[2][2] = self.kf_q_bias
+                self.kf.Q[2][2] = self.kf_q_bias
                 self.get_logger().info(f'パラメータ更新: kf_q_bias = {self.kf_q_bias}')
             elif param.name == 'kf_r_pos':
                 self.kf_r_pos = param.value
-                self.kf_x.R = self.kf_r_pos
-                self.kf_y.R = self.kf_r_pos
+                self.kf.R = self.kf_r_pos
                 self.get_logger().info(f'パラメータ更新: kf_r_pos = {self.kf_r_pos}')
+            elif param.name == 'zupt_mode':
+                self.zupt_mode = param.value
+                self.get_logger().info(f'パラメータ更新: zupt_mode = {self.zupt_mode}')
+            elif param.name == 'gyro_still_thresh':
+                self.gyro_still_thresh = param.value
+                self.get_logger().info(f'パラメータ更新: gyro_still_thresh = {self.gyro_still_thresh}')
+            elif param.name == 'acc_still_thresh':
+                self.acc_still_thresh = param.value
+                self.get_logger().info(f'パラメータ更新: acc_still_thresh = {self.acc_still_thresh}')
+            elif param.name == 'still_delay_samples':
+                self.still_delay_samples = param.value
+                self.get_logger().info(f'パラメータ更新: still_delay_samples = {self.still_delay_samples}')
         return SetParametersResult(successful=True)
 
     def _connect_serial(self):
@@ -499,50 +524,79 @@ class SpresenseImuNode(Node):
             if not self.is_calibrated or self.pos_source != 'acc':
                 return
 
-            # A. 遅延カルマンフィルタ (再伝搬)
+            # A. SLAM位置増分の進行方向（ロボットの現在の推定 Yaw 角度）への射影と累積距離の計算
+            if self.last_slam_raw_x is None:
+                self.last_slam_raw_x = x
+                self.last_slam_raw_y = y
+                self.slam_accum_dist = 0.0
+                # KF と DBF の初期位置を現在の SLAM 2次元座標に同期
+                self.x_kf = x
+                self.y_kf = y
+                self.x_dbf = x
+                self.y_dbf = y
+                return
+
+            dx = x - self.last_slam_raw_x
+            dy = y - self.last_slam_raw_y
+            self.last_slam_raw_x = x
+            self.last_slam_raw_y = y
+
+            # 進行方向（現在の推定角度 theta）への投影
+            ds = dx * math.cos(self.theta) + dy * math.sin(self.theta)
+            self.slam_accum_dist += ds
+
+            # B. 遅延カルマンフィルタ (再伝搬)
             if len(self.kf_history) >= 2:
                 current_time = self.get_clock().now().nanoseconds / 1e9
                 target_time = current_time - self.fixed_delay_sec if self.use_fixed_delay else stamp
                 
                 best_idx = 0
                 min_diff = float('inf')
-                for idx, (t_hist, _, _, _, _) in enumerate(self.kf_history):
+                for idx, (t_hist, _, _) in enumerate(self.kf_history):
                     diff = abs(t_hist - target_time)
                     if diff < min_diff:
                         min_diff = diff
                         best_idx = idx
                 
-                t_match, x_state, x_P, y_state, y_P = self.kf_history[best_idx]
+                t_match, state_match, P_match = self.kf_history[best_idx]
                 
-                temp_kf_x = PositionKalmanFilter2D()
-                temp_kf_y = PositionKalmanFilter2D()
-                temp_kf_x.set_state(x_state, x_P)
-                temp_kf_y.set_state(y_state, y_P)
+                temp_kf = PositionKalmanFilter2D()
+                temp_kf.set_state(state_match, P_match)
                 
-                temp_kf_x.update(x)
-                temp_kf_y.update(y)
+                # 遅延観測更新 (1次元累積距離)
+                temp_kf.update(self.slam_accum_dist)
                 
                 reprop_started = False
-                for t_imu, ax_w, ay_w, dt_imu in self.imu_history:
+                for t_imu, a_f, dt_imu in self.imu_history:
                     if t_imu > t_match:
                         reprop_started = True
-                        temp_kf_x.predict(ax_w, dt_imu)
-                        temp_kf_y.predict(ay_w, dt_imu)
+                        temp_kf.predict(a_f, dt_imu)
                 
                 if reprop_started:
-                    self.kf_x.set_state(temp_kf_x.x, temp_kf_x.P)
-                    self.kf_y.set_state(temp_kf_y.x, temp_kf_y.P)
+                    # 1次元の補正量を計算し、現在の2次元位置を補正
+                    ds_corr = temp_kf.x[0] - self.kf.x[0]
+                    self.x_kf += ds_corr * math.cos(self.theta)
+                    self.y_kf += ds_corr * math.sin(self.theta)
+                    
+                    self.kf.set_state(temp_kf.x, temp_kf.P)
                 else:
-                    self.kf_x.update(x)
-                    self.kf_y.update(y)
+                    ds_corr = temp_kf.x[0] - self.kf.x[0]
+                    self.x_kf += ds_corr * math.cos(self.theta)
+                    self.y_kf += ds_corr * math.sin(self.theta)
+                    self.kf.update(self.slam_accum_dist)
             else:
-                self.kf_x.update(x)
-                self.kf_y.update(y)
+                ds_corr = self.slam_accum_dist - self.kf.x[0]
+                self.x_kf += ds_corr * math.cos(self.theta)
+                self.y_kf += ds_corr * math.sin(self.theta)
+                self.kf.update(self.slam_accum_dist)
 
-            # B. 遅延バイアスフィードバック (DBF)
+            # C. 遅延バイアスフィードバック (DBF)
             current_time = self.get_clock().now().nanoseconds / 1e9
-            self.dbf_x.update(x, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
-            self.dbf_y.update(y, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
+            pos_dbf_before = self.dbf.pos
+            self.dbf.update(self.slam_accum_dist, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
+            ds_dbf_corr = self.dbf.pos - pos_dbf_before
+            self.x_dbf += ds_dbf_corr * math.cos(self.theta)
+            self.y_dbf += ds_dbf_corr * math.sin(self.theta)
 
     def _find_and_connect_imu_sync(self):
         """システム内のUSBシリアルポートを自動探索して接続する"""
@@ -744,16 +798,6 @@ class SpresenseImuNode(Node):
         ay_corr = ay
         az_corr = az
 
-        # 指令値と静止判定
-        with self.lock:
-            cmd_v = self.cmd_v
-            cmd_w = self.cmd_w
-            slam_x = self.slam_x
-            slam_y = self.slam_y
-            slam_yaw = self.slam_yaw
-            time_since_cmd = time.perf_counter() - self.last_cmd_time
-        is_still = (abs(cmd_v) < 0.001 and abs(cmd_w) < 0.001) or (time_since_cmd > 1.0)
-
         # 3次元姿勢 Mahony フィルタの更新
         self._update_mahony_filter(ax, ay, az, gx_corr, gy_corr, gz_corr, dt)
         roll, pitch, yaw = self._get_euler_angles()
@@ -762,9 +806,13 @@ class SpresenseImuNode(Node):
         if self.yaw_source == 'gyro':
             self.theta = yaw
         elif self.yaw_source == 'slam':
+            with self.lock:
+                slam_yaw = self.slam_yaw
             self.theta = slam_yaw
         elif self.yaw_source == 'cmd':
-            self.theta += cmd_w * dt
+            with self.lock:
+                cmd_w_val = self.cmd_w
+            self.theta += cmd_w_val * dt
             
         self.theta = math.atan2(math.sin(self.theta), math.cos(self.theta))
 
@@ -783,18 +831,66 @@ class SpresenseImuNode(Node):
                 cr*cp*sy - sr*sp*sy
             ]
 
-        # ----------------- 2. ワールド運動加速度の計算 -----------------
-        # クオータニオン姿勢を用いて加速度ベクトルをワールド座標系に回転投影
-        ax_w, ay_w, az_w = self._rotate_vector_by_quaternion([ax, ay, az], self.q)
-        # 重力加速度を差し引いて純粋な運動加速度を求める
-        ax_world = ax_w
-        ay_world = ay_w
-        # az_world = az_w - self.g_calib
+        # ----------------- 2. 進行方向（ローカル x 軸）運動加速度の計算 -----------------
+        # クオータニオン姿勢を用いて、重力方向（ワールド Z 軸）がロボットのローカル座標に投影されたベクトルを求める
+        qw, qx, qy, qz = self.q
+        vx = 2.0 * (qx * qz - qw * qy)
+        vy = 2.0 * (qy * qz + qw * qx)
+        vz = qw * qw - qx * qx - qy * qy + qz * qz
 
-        # ロボット進行方向 (Yaw) における運動加速度
-        a_forward = ax_world * math.cos(self.theta) + ay_world * math.sin(self.theta)
+        # ローカル座標における重力加速度ベクトルは g_calib * v
+        # ローカル運動加速度 = 測定値 - 重力成分
+        ax_local_mot = ax - self.g_calib * vx
+        ay_local_mot = ay - self.g_calib * vy
+        az_local_mot = az - self.g_calib * vz
 
-        # ----------------- 3. 位置更新 (pos_source に基づく) -----------------
+        # ロボットのローカル x 軸方向（進行方向）の純粋な運動加速度
+        a_forward = ax_local_mot
+
+        # ----------------- 3. 静止判定 (ZUPT判定) -----------------
+        # A. センサーベースの静止検知 (一定時間変動が閾値未満であること)
+        sensor_is_still = (
+            abs(gx_corr) < self.gyro_still_thresh and
+            abs(gy_corr) < self.gyro_still_thresh and
+            abs(gz_corr) < self.gyro_still_thresh and
+            abs(ax_local_mot) < self.acc_still_thresh and
+            abs(ay_local_mot) < self.acc_still_thresh and
+            abs(az_local_mot) < self.acc_still_thresh
+        )
+        
+        if sensor_is_still:
+            if self.still_counter < self.still_delay_samples:
+                self.still_counter += 1
+        else:
+            self.still_counter = 0
+            
+        sensor_still_flag = (self.still_counter >= self.still_delay_samples)
+
+        # B. 指令値ベースの静止検知
+        with self.lock:
+            cmd_v = self.cmd_v
+            cmd_w = self.cmd_w
+            slam_x = self.slam_x
+            slam_y = self.slam_y
+            time_since_cmd = time.perf_counter() - self.last_cmd_time
+            
+        cmd_still_flag = (abs(cmd_v) < 0.001 and abs(cmd_w) < 0.001) or (time_since_cmd > 1.0)
+
+        # C. モード別の統合判定
+        if self.zupt_mode == 'cmd_vel':
+            is_still = cmd_still_flag
+        elif self.zupt_mode == 'sensor':
+            is_still = sensor_still_flag
+        elif self.zupt_mode == 'none':
+            is_still = False
+        else: # 'auto'
+            # 指令値が配信されていれば指令値ベース、配信が途絶えていればセンサーベース
+            if time_since_cmd <= 1.0:
+                is_still = cmd_still_flag
+            else:
+                is_still = sensor_still_flag
+
+        # ----------------- 4. 位置更新 (pos_source に基づく) -----------------
         if self.pos_source == 'acc':
             # 加速度の二重積分 (ZUPTあり)
             if is_still:
@@ -806,16 +902,12 @@ class SpresenseImuNode(Node):
                 self.gz_bias = alpha * self.gz_bias + (1.0 - alpha) * gz
                 
                 # ZUPT: 静止時は入力加速度を 0 にし、速度もリセットしてドリフトを防止
-                ax_input = 0.0
-                ay_input = 0.0
-                self.kf_x.x[1] = 0.0
-                self.kf_y.x[1] = 0.0
-                self.dbf_x.vel = 0.0
-                self.dbf_y.vel = 0.0
+                a_input = 0.0
+                self.kf.x[1] = 0.0
+                self.dbf.vel = 0.0
             else:
                 self.v_raw += a_forward * dt
-                ax_input = ax_world
-                ay_input = ay_world
+                a_input = a_forward
                 
             dist_raw = self.v_raw * dt
             self.x_raw += dist_raw * math.cos(self.theta)
@@ -823,17 +915,27 @@ class SpresenseImuNode(Node):
             
             # 加速度ベースのときのみ KF と DBF の予測を進める
             current_time = self.get_clock().now().nanoseconds / 1e9
-            self.kf_x.predict(ax_input, dt)
-            self.kf_y.predict(ay_input, dt)
-            self.imu_history.append((current_time, ax_input, ay_input, dt))
+            
+            # KFの予測と2次元座標への復元積算
+            pos_kf_before = self.kf.x[0]
+            self.kf.predict(a_input, dt)
+            ds_kf = self.kf.x[0] - pos_kf_before
+            self.x_kf += ds_kf * math.cos(self.theta)
+            self.y_kf += ds_kf * math.sin(self.theta)
+            
+            # 履歴の保存
+            self.imu_history.append((current_time, a_input, dt))
             self.kf_history.append((
                 current_time,
-                list(self.kf_x.x), [list(row) for row in self.kf_x.P],
-                list(self.kf_y.x), [list(row) for row in self.kf_y.P]
+                list(self.kf.x), [list(row) for row in self.kf.P]
             ))
             
-            self.dbf_x.predict(ax_input, dt, current_time)
-            self.dbf_y.predict(ay_input, dt, current_time)
+            # DBFの予測と2次元座標への復元積算
+            pos_dbf_before = self.dbf.pos
+            self.dbf.predict(a_input, dt, current_time)
+            ds_dbf = self.dbf.pos - pos_dbf_before
+            self.x_dbf += ds_dbf * math.cos(self.theta)
+            self.y_dbf += ds_dbf * math.sin(self.theta)
 
         elif self.pos_source == 'slam':
             # SLAM位置をそのまま適用
@@ -842,10 +944,13 @@ class SpresenseImuNode(Node):
             self.v_raw = 0.0
             
             # KF と DBF にも SLAM 位置を直接セット
-            self.kf_x.x = [slam_x, 0.0, 0.0]
-            self.kf_y.x = [slam_y, 0.0, 0.0]
-            self.dbf_x.pos = slam_x
-            self.dbf_y.pos = slam_y
+            self.x_kf = slam_x
+            self.y_kf = slam_y
+            self.x_dbf = slam_x
+            self.y_dbf = slam_y
+            
+            self.kf.x = [self.slam_accum_dist, 0.0, 0.0]
+            self.dbf.pos = self.slam_accum_dist
 
         elif self.pos_source == 'cmd':
             # 指令速度からデッドレコニング (ダミーオドメトリ)
@@ -855,10 +960,14 @@ class SpresenseImuNode(Node):
             self.v_raw = cmd_v
             
             # KF と DBF にも指令値結果をセット
-            self.kf_x.x = [self.x_raw, cmd_v * math.cos(self.theta), 0.0]
-            self.kf_y.x = [self.y_raw, cmd_v * math.sin(self.theta), 0.0]
-            self.dbf_x.pos = self.x_raw
-            self.dbf_y.pos = self.y_raw
+            self.x_kf = self.x_raw
+            self.y_kf = self.y_raw
+            self.x_dbf = self.x_raw
+            self.y_dbf = self.y_raw
+            
+            self.kf.x = [self.slam_accum_dist, cmd_v, 0.0]
+            self.dbf.pos = self.slam_accum_dist
+            self.dbf.vel = cmd_v
 
         # ----------------- 4. 生IMUデータ配信 (間引き) -----------------
         self.imu_raw_pub_counter += 1
@@ -900,8 +1009,8 @@ class SpresenseImuNode(Node):
         pose_kf = PoseStamped()
         pose_kf.header.stamp = stamp
         pose_kf.header.frame_id = self.odom_frame
-        pose_kf.pose.position.x = self.kf_x.x[0]
-        pose_kf.pose.position.y = self.kf_y.x[0]
+        pose_kf.pose.position.x = self.x_kf
+        pose_kf.pose.position.y = self.y_kf
         pose_kf.pose.orientation.z = qz
         pose_kf.pose.orientation.w = qw
         self.pose_kf_pub.publish(pose_kf)
@@ -910,8 +1019,8 @@ class SpresenseImuNode(Node):
         pose_dbf = PoseStamped()
         pose_dbf.header.stamp = stamp
         pose_dbf.header.frame_id = self.odom_frame
-        pose_dbf.pose.position.x = self.dbf_x.pos
-        pose_dbf.pose.position.y = self.dbf_y.pos
+        pose_dbf.pose.position.x = self.x_dbf
+        pose_dbf.pose.position.y = self.y_dbf
         pose_dbf.pose.orientation.z = qz
         pose_dbf.pose.orientation.w = qw
         self.pose_dbf_pub.publish(pose_dbf)
@@ -921,11 +1030,11 @@ class SpresenseImuNode(Node):
         odom_msg.header.stamp = stamp
         odom_msg.header.frame_id = self.odom_frame
         odom_msg.child_frame_id = self.base_frame
-        odom_msg.pose.pose.position.x = self.kf_x.x[0]
-        odom_msg.pose.pose.position.y = self.kf_y.x[0]
+        odom_msg.pose.pose.position.x = self.x_kf
+        odom_msg.pose.pose.position.y = self.y_kf
         odom_msg.pose.pose.orientation.z = qz
         odom_msg.pose.pose.orientation.w = qw
-        odom_msg.twist.twist.linear.x = self.kf_x.x[1]
+        odom_msg.twist.twist.linear.x = self.kf.x[1]
         self.odom_pub.publish(odom_msg)
 
         if self.publish_tf:
@@ -933,8 +1042,8 @@ class SpresenseImuNode(Node):
             tf.header.stamp = stamp
             tf.header.frame_id = self.odom_frame
             tf.child_frame_id = self.base_frame
-            tf.transform.translation.x = self.kf_x.x[0]
-            tf.transform.translation.y = self.kf_y.x[0]
+            tf.transform.translation.x = self.x_kf
+            tf.transform.translation.y = self.y_kf
             tf.transform.translation.z = 0.0
             tf.transform.rotation.z = qz
             tf.transform.rotation.w = qw
