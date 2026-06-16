@@ -1,0 +1,29 @@
+running egg_info
+writing ../../build/altair_robot/altair_robot.egg-info/PKG-INFO
+writing dependency_links to ../../build/altair_robot/altair_robot.egg-info/dependency_links.txt
+writing entry points to ../../build/altair_robot/altair_robot.egg-info/entry_points.txt
+writing requirements to ../../build/altair_robot/altair_robot.egg-info/requires.txt
+writing top-level names to ../../build/altair_robot/altair_robot.egg-info/top_level.txt
+reading manifest file '../../build/altair_robot/altair_robot.egg-info/SOURCES.txt'
+writing manifest file '../../build/altair_robot/altair_robot.egg-info/SOURCES.txt'
+running build
+running build_py
+copying altair_robot/spresense_imu_node.py -> /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot
+copying altair_robot/websocket_bridge_node.py -> /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot
+running install
+running install_lib
+copying /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot/spresense_imu_node.py -> /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot
+copying /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot/websocket_bridge_node.py -> /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot
+byte-compiling /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot/spresense_imu_node.py to spresense_imu_node.cpython-310.pyc
+byte-compiling /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot/websocket_bridge_node.py to websocket_bridge_node.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot-0.1.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/altair_robot/altair_robot.egg-info to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot-0.1.0-py3.10.egg-info
+running install_scripts
+Installing experiment_logger_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing map_marker_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing mdd_can_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing spresense_imu_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+Installing websocket_bridge_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+writing list of installed files to '/home/altair/rplidarA1/ros2_ws/build/altair_robot/install.log'

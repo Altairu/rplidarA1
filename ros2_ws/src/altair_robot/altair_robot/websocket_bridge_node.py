@@ -31,6 +31,7 @@ from tf2_ros import Buffer, TransformListener, TransformException
 from std_srvs.srv import Trigger
 from rcl_interfaces.srv import SetParameters
 from rcl_interfaces.msg import Parameter, ParameterValue, ParameterType
+from std_msgs.msg import Float32
 
 try:
         from cartographer_ros_msgs.srv import FinishTrajectory, StartTrajectory
@@ -84,6 +85,8 @@ class WebSocketBridgeNode(Node):
             PoseStamped, 'imu_pose_dbf', self._on_imu_dbf_pose, 10)
         self._imu_raw_sensor_sub = self.create_subscription(
             Imu, 'imu_raw', self._on_imu_sensor_raw, 10)
+        self._calib_status_sub = self.create_subscription(
+            Float32, 'imu_calib_status', self._on_calib_status, 10)
             
         map_qos = QoSProfile(
             depth=1,
@@ -453,6 +456,7 @@ class WebSocketBridgeNode(Node):
         qw = float(transform.transform.rotation.w)
         theta = 2.0 * math.atan2(qz, qw)
         self._last_pose_source = 'tf'
+        self._last_slam_msg_time = self.get_clock().now().nanoseconds / 1e9
         self._update_pose_state(x, y, theta)
 
     def _update_pose_state(self, x: float, y: float, theta: float):
@@ -586,6 +590,12 @@ class WebSocketBridgeNode(Node):
 
     def _on_imu_sensor_raw(self, msg: Imu):
         self._last_imu_msg_time = self.get_clock().now().nanoseconds / 1e9
+
+    def _on_calib_status(self, msg: Float32):
+        if msg.data < 0.0:
+            self._calib_seconds_left = 0.0
+        else:
+            self._calib_seconds_left = msg.data
 
     def _publish_system_status(self):
         now = self.get_clock().now().nanoseconds / 1e9

@@ -22,6 +22,7 @@ from rcl_interfaces.msg import SetParametersResult
 from geometry_msgs.msg import PoseStamped, Twist, TransformStamped
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
+from std_msgs.msg import Float32
 from std_srvs.srv import Trigger
 from tf2_ros import TransformBroadcaster
 
@@ -226,6 +227,7 @@ class SpresenseImuNode(Node):
         self.pose_dbf_pub = self.create_publisher(PoseStamped, 'imu_pose_dbf', 10)
         self.odom_pub = self.create_publisher(Odometry, 'imu_odom', 10)
         self.imu_raw_pub = self.create_publisher(Imu, 'imu_raw', 10)
+        self.calib_status_pub = self.create_publisher(Float32, 'imu_calib_status', 10)
         
         self.tf_bc = TransformBroadcaster(self)
 
@@ -306,14 +308,12 @@ class SpresenseImuNode(Node):
             self.is_calibrated = False
             self.e_int = [0.0, 0.0, 0.0]
             
-            # 動的パラメータに実行中ステータスをセット
-            from rclpy.parameter import Parameter
-            self.set_parameters([
-                Parameter('calib_in_progress', Parameter.Type.BOOL, True),
-                Parameter('calib_seconds_left', Parameter.Type.DOUBLE, 10.0)
-            ])
+            # パブリッシャでステータス送信 (10.0秒)
+            status_msg = Float32()
+            status_msg.data = 10.0
+            self.calib_status_pub.publish(status_msg)
             
-            self.get_logger().info('IMU 10秒キャリブレーションを開始しました。ロボットを完全に静止させてください。')
+            self.get_logger().info('IMU 10秒キャリブレーションを開始します。ロボットを完全に静止させてください。')
         
         response.success = True
         response.message = 'IMU 10秒キャリブレーションを開始しました。静止してください。'
@@ -586,13 +586,11 @@ class SpresenseImuNode(Node):
                 self.ser = None
                 self.is_calibrated = False
                 
-                # パラメータ状態の更新
-                from rclpy.parameter import Parameter
+                # トピックで停止通知
                 try:
-                    self.set_parameters([
-                        Parameter('calib_in_progress', Parameter.Type.BOOL, False),
-                        Parameter('calib_seconds_left', Parameter.Type.DOUBLE, 0.0)
-                    ])
+                    status_msg = Float32()
+                    status_msg.data = -1.0
+                    self.calib_status_pub.publish(status_msg)
                 except Exception:
                     pass
                 time.sleep(1.0)
@@ -618,27 +616,39 @@ class SpresenseImuNode(Node):
             gy = math.radians(gy)
             gz = math.radians(gz)
 
+        # タイムスタンプ差分 dt（キャリブレーション実行中も常に更新するため先頭へ移動）
+        if self.last_imu_ts is None:
+            self.last_imu_ts = ts_raw
+            return
+
+        if ts_raw >= self.last_imu_ts:
+            dt = (ts_raw - self.last_imu_ts) / 19200000.0
+        else:
+            dt = ((0xFFFFFFFF - self.last_imu_ts) + ts_raw + 1) / 19200000.0
+        self.last_imu_ts = ts_raw
+
+        if dt <= 0.0 or dt > 0.05:
+            return
+
         # キャリブレーション
         if not self.is_calibrated or self.calib_in_progress:
             if not self.calib_in_progress:
                 self.calib_in_progress = True
                 self.calib_samples = []
-                from rclpy.parameter import Parameter
-                self.set_parameters([
-                    Parameter('calib_in_progress', Parameter.Type.BOOL, True),
-                    Parameter('calib_seconds_left', Parameter.Type.DOUBLE, 10.0)
-                ])
+                # トピックで配信 (10.0秒)
+                status_msg = Float32()
+                status_msg.data = 10.0
+                self.calib_status_pub.publish(status_msg)
                 self.get_logger().info('IMU 10秒キャリブレーションを開始します。')
 
             self.calib_samples.append((ax, ay, az, gx, gy, gz))
             
-            # 約0.1秒(200サンプル)ごとに残り時間をパラメータに更新して配信
+            # 約0.1秒(200サンプル)ごとに残り時間をトピックで配信
             if len(self.calib_samples) % 200 == 0:
                 seconds_left = max(0.0, 10.0 - len(self.calib_samples) / 1920.0)
-                from rclpy.parameter import Parameter
-                self.set_parameters([
-                    Parameter('calib_seconds_left', Parameter.Type.DOUBLE, round(seconds_left, 1))
-                ])
+                status_msg = Float32()
+                status_msg.data = round(seconds_left, 1)
+                self.calib_status_pub.publish(status_msg)
 
             if len(self.calib_samples) >= self.calib_required_count:
                 ax_avg = sum(s[0] for s in self.calib_samples) / len(self.calib_samples)
@@ -677,29 +687,15 @@ class SpresenseImuNode(Node):
                 self.is_calibrated = True
                 self.calib_in_progress = False
                 
-                from rclpy.parameter import Parameter
-                self.set_parameters([
-                    Parameter('calib_in_progress', Parameter.Type.BOOL, False),
-                    Parameter('calib_seconds_left', Parameter.Type.DOUBLE, 0.0)
-                ])
+                # トピックで完了通知 (-1.0)
+                status_msg = Float32()
+                status_msg.data = -1.0
+                self.calib_status_pub.publish(status_msg)
+                
                 self.get_logger().info(
                     f'IMUキャリブレーション完了: g_calib={self.g_calib:.5f}, '
                     f'roll_init={math.degrees(roll_init):.2f}°, pitch_init={math.degrees(pitch_init):.2f}°, '
                     f'gx_bias={self.gx_bias:.5f}, gy_bias={self.gy_bias:.5f}, gz_bias={self.gz_bias:.5f}')
-            return
-
-        # タイムスタンプ差分 dt
-        if self.last_imu_ts is None:
-            self.last_imu_ts = ts_raw
-            return
-
-        if ts_raw >= self.last_imu_ts:
-            dt = (ts_raw - self.last_imu_ts) / 19200000.0
-        else:
-            dt = ((0xFFFFFFFF - self.last_imu_ts) + ts_raw + 1) / 19200000.0
-        self.last_imu_ts = ts_raw
-
-        if dt <= 0.0 or dt > 0.05:
             return
 
         # バイアス補正
