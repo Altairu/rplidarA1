@@ -701,9 +701,15 @@ class SpresenseImuNode(Node):
                     raise IOError("シリアル通信が2秒以上途絶しました")
 
                 # データ読み込み
-                data = self.ser.read(self.ser.in_waiting or 1)
+                # データ読み込み（ブロックを防ぐため、バッファにデータがある場合のみ read を呼ぶ）
+                waiting = self.ser.in_waiting
+                if waiting > 0:
+                    data = self.ser.read(waiting)
+                else:
+                    data = b''
+                    time.sleep(0.002) # 約500Hzでポーリング
+                    
                 if not data:
-                    time.sleep(0.001)
                     continue
                 
                 buffer.extend(data)
