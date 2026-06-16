@@ -175,9 +175,15 @@ class SpresenseImuNode(Node):
         self.declare_parameter('base_frame', 'imu_base_link')
         self.declare_parameter('publish_tf', True)
         
-        # 遅延補正用のパラメータ
-        self.declare_parameter('use_fixed_delay', False)
-        self.declare_parameter('fixed_delay_sec', 0.2)
+        # 遅延補正用のパラメータ（デフォルトを1.0秒固定遅延に設定）
+        self.declare_parameter('use_fixed_delay', True)
+        self.declare_parameter('fixed_delay_sec', 1.0)
+        
+        # カルマンフィルター共分散用パラメータ
+        self.declare_parameter('kf_q_pos', 0.1)
+        self.declare_parameter('kf_q_vel', 0.1)
+        self.declare_parameter('kf_q_bias', 1e-4)
+        self.declare_parameter('kf_r_pos', 0.1)
         
         # ジャイロの単位設定（度/秒 dps の場合は True にして内部でラジアンに変換）
         self.declare_parameter('gyro_in_deg_sec', True)
@@ -209,6 +215,12 @@ class SpresenseImuNode(Node):
         self.publish_tf = self.get_parameter('publish_tf').value
         self.use_fixed_delay = self.get_parameter('use_fixed_delay').value
         self.fixed_delay_sec = self.get_parameter('fixed_delay_sec').value
+        
+        self.kf_q_pos = self.get_parameter('kf_q_pos').value
+        self.kf_q_vel = self.get_parameter('kf_q_vel').value
+        self.kf_q_bias = self.get_parameter('kf_q_bias').value
+        self.kf_r_pos = self.get_parameter('kf_r_pos').value
+        
         self.gyro_in_deg_sec = self.get_parameter('gyro_in_deg_sec').value
         self.yaw_source = self.get_parameter('yaw_source').value
         self.pos_source = self.get_parameter('pos_source').value
@@ -277,14 +289,16 @@ class SpresenseImuNode(Node):
         self.theta = 0.0
 
         # 2. カルマンフィルタ (KF)
-        self.kf_x = PositionKalmanFilter2D(q_pos=1e-3, q_vel=1e-2, q_bias=1e-5, r_pos=5.0)
-        self.kf_y = PositionKalmanFilter2D(q_pos=1e-3, q_vel=1e-2, q_bias=1e-5, r_pos=5.0)
+        self.kf_x = PositionKalmanFilter2D(
+            q_pos=self.kf_q_pos, q_vel=self.kf_q_vel, q_bias=self.kf_q_bias, r_pos=self.kf_r_pos)
+        self.kf_y = PositionKalmanFilter2D(
+            q_pos=self.kf_q_pos, q_vel=self.kf_q_vel, q_bias=self.kf_q_bias, r_pos=self.kf_r_pos)
         self.imu_history = collections.deque(maxlen=10000)
         self.kf_history = collections.deque(maxlen=10000)
 
         # 3. 遅延バイアスフィードバック (DBF)
-        self.dbf_x = DelayedBiasFeedback2D(delay_sec=0.1)
-        self.dbf_y = DelayedBiasFeedback2D(delay_sec=0.1)
+        self.dbf_x = DelayedBiasFeedback2D(delay_sec=self.fixed_delay_sec)
+        self.dbf_y = DelayedBiasFeedback2D(delay_sec=self.fixed_delay_sec)
 
         # 起動時は初期キャリブレーションが未完了とする
         self.is_calibrated = False
@@ -427,9 +441,33 @@ class SpresenseImuNode(Node):
             elif param.name == 'fixed_delay_sec':
                 self.fixed_delay_sec = param.value
                 self.get_logger().info(f'パラメータ更新: fixed_delay_sec = {self.fixed_delay_sec}')
+                # DBF の遅延設定も同期
+                self.dbf_x.delay_sec = self.fixed_delay_sec
+                self.dbf_y.delay_sec = self.fixed_delay_sec
             elif param.name == 'exclude_port':
                 self.exclude_port = param.value
                 self.get_logger().info(f'パラメータ更新: exclude_port = {self.exclude_port}')
+            # KF パラメータの動的更新
+            elif param.name == 'kf_q_pos':
+                self.kf_q_pos = param.value
+                self.kf_x.Q[0][0] = self.kf_q_pos
+                self.kf_y.Q[0][0] = self.kf_q_pos
+                self.get_logger().info(f'パラメータ更新: kf_q_pos = {self.kf_q_pos}')
+            elif param.name == 'kf_q_vel':
+                self.kf_q_vel = param.value
+                self.kf_x.Q[1][1] = self.kf_q_vel
+                self.kf_y.Q[1][1] = self.kf_q_vel
+                self.get_logger().info(f'パラメータ更新: kf_q_vel = {self.kf_q_vel}')
+            elif param.name == 'kf_q_bias':
+                self.kf_q_bias = param.value
+                self.kf_x.Q[2][2] = self.kf_q_bias
+                self.kf_y.Q[2][2] = self.kf_q_bias
+                self.get_logger().info(f'パラメータ更新: kf_q_bias = {self.kf_q_bias}')
+            elif param.name == 'kf_r_pos':
+                self.kf_r_pos = param.value
+                self.kf_x.R = self.kf_r_pos
+                self.kf_y.R = self.kf_r_pos
+                self.get_logger().info(f'パラメータ更新: kf_r_pos = {self.kf_r_pos}')
         return SetParametersResult(successful=True)
 
     def _connect_serial(self):
@@ -766,8 +804,18 @@ class SpresenseImuNode(Node):
                 self.gx_bias = alpha * self.gx_bias + (1.0 - alpha) * gx
                 self.gy_bias = alpha * self.gy_bias + (1.0 - alpha) * gy
                 self.gz_bias = alpha * self.gz_bias + (1.0 - alpha) * gz
+                
+                # ZUPT: 静止時は入力加速度を 0 にし、速度もリセットしてドリフトを防止
+                ax_input = 0.0
+                ay_input = 0.0
+                self.kf_x.x[1] = 0.0
+                self.kf_y.x[1] = 0.0
+                self.dbf_x.vel = 0.0
+                self.dbf_y.vel = 0.0
             else:
                 self.v_raw += a_forward * dt
+                ax_input = ax_world
+                ay_input = ay_world
                 
             dist_raw = self.v_raw * dt
             self.x_raw += dist_raw * math.cos(self.theta)
@@ -775,17 +823,17 @@ class SpresenseImuNode(Node):
             
             # 加速度ベースのときのみ KF と DBF の予測を進める
             current_time = self.get_clock().now().nanoseconds / 1e9
-            self.kf_x.predict(ax_world, dt)
-            self.kf_y.predict(ay_world, dt)
-            self.imu_history.append((current_time, ax_world, ay_world, dt))
+            self.kf_x.predict(ax_input, dt)
+            self.kf_y.predict(ay_input, dt)
+            self.imu_history.append((current_time, ax_input, ay_input, dt))
             self.kf_history.append((
                 current_time,
                 list(self.kf_x.x), [list(row) for row in self.kf_x.P],
                 list(self.kf_y.x), [list(row) for row in self.kf_y.P]
             ))
             
-            self.dbf_x.predict(ax_world, dt, current_time)
-            self.dbf_y.predict(ay_world, dt, current_time)
+            self.dbf_x.predict(ax_input, dt, current_time)
+            self.dbf_y.predict(ay_input, dt, current_time)
 
         elif self.pos_source == 'slam':
             # SLAM位置をそのまま適用
