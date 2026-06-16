@@ -190,6 +190,7 @@ class SpresenseImuNode(Node):
         # キャリブレーション進捗用の動的パラメータ
         self.declare_parameter('calib_in_progress', False)
         self.declare_parameter('calib_seconds_left', 0.0)
+        self.declare_parameter('exclude_port', '/dev/ttyUSB0')
 
         # センサ極性パラメータ
         self.declare_parameter('invert_ax', True)
@@ -210,6 +211,7 @@ class SpresenseImuNode(Node):
         self.gyro_in_deg_sec = self.get_parameter('gyro_in_deg_sec').value
         self.yaw_source = self.get_parameter('yaw_source').value
         self.pos_source = self.get_parameter('pos_source').value
+        self.exclude_port = self.get_parameter('exclude_port').value
         
         self.invert_ax = self.get_parameter('invert_ax').value
         self.invert_ay = self.get_parameter('invert_ay').value
@@ -425,6 +427,9 @@ class SpresenseImuNode(Node):
             elif param.name == 'fixed_delay_sec':
                 self.fixed_delay_sec = param.value
                 self.get_logger().info(f'パラメータ更新: fixed_delay_sec = {self.fixed_delay_sec}')
+            elif param.name == 'exclude_port':
+                self.exclude_port = param.value
+                self.get_logger().info(f'パラメータ更新: exclude_port = {self.exclude_port}')
         return SetParametersResult(successful=True)
 
     def _connect_serial(self):
@@ -514,6 +519,8 @@ class SpresenseImuNode(Node):
                 ports.append(p)
 
         for p in ports:
+            if self.exclude_port and p == self.exclude_port:
+                continue
             try:
                 import serial
                 # 短いタイムアウトで接続テスト

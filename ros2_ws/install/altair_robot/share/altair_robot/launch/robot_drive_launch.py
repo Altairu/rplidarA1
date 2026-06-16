@@ -282,6 +282,7 @@ def generate_launch_description():
                     'publish_tf': True,
                     'use_fixed_delay': use_fixed_delay,
                     'fixed_delay_sec': fixed_delay_sec,
+                    'exclude_port': serial_port,
                 }],
             ),
 
