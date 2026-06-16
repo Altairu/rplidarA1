@@ -1,0 +1,28 @@
+[1.695s] Invoking command in '/home/altair/rplidarA1/ros2_ws/src/altair_robot': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/altair_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/altair_robot build --build-base /home/altair/rplidarA1/ros2_ws/build/altair_robot/build install --record /home/altair/rplidarA1/ros2_ws/build/altair_robot/install.log --single-version-externally-managed install_data
+[2.365s] running egg_info
+[2.369s] writing ../../build/altair_robot/altair_robot.egg-info/PKG-INFO
+[2.369s] writing dependency_links to ../../build/altair_robot/altair_robot.egg-info/dependency_links.txt
+[2.369s] writing entry points to ../../build/altair_robot/altair_robot.egg-info/entry_points.txt
+[2.369s] writing requirements to ../../build/altair_robot/altair_robot.egg-info/requires.txt
+[2.369s] writing top-level names to ../../build/altair_robot/altair_robot.egg-info/top_level.txt
+[2.373s] reading manifest file '../../build/altair_robot/altair_robot.egg-info/SOURCES.txt'
+[2.375s] writing manifest file '../../build/altair_robot/altair_robot.egg-info/SOURCES.txt'
+[2.376s] running build
+[2.376s] running build_py
+[2.376s] copying altair_robot/spresense_imu_node.py -> /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot
+[2.378s] running install
+[2.378s] running install_lib
+[2.380s] copying /home/altair/rplidarA1/ros2_ws/build/altair_robot/build/lib/altair_robot/spresense_imu_node.py -> /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot
+[2.381s] byte-compiling /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot/spresense_imu_node.py to spresense_imu_node.cpython-310.pyc
+[2.396s] running install_data
+[2.396s] running install_egg_info
+[2.400s] removing '/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot-0.1.0-py3.10.egg-info' (and everything under it)
+[2.401s] Copying ../../build/altair_robot/altair_robot.egg-info to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages/altair_robot-0.1.0-py3.10.egg-info
+[2.403s] running install_scripts
+[2.450s] Installing experiment_logger_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.452s] Installing map_marker_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.453s] Installing mdd_can_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.453s] Installing spresense_imu_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.453s] Installing websocket_bridge_node script to /home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/altair_robot
+[2.453s] writing list of installed files to '/home/altair/rplidarA1/ros2_ws/build/altair_robot/install.log'
+[2.510s] Invoked command in '/home/altair/rplidarA1/ros2_ws/src/altair_robot' returned '0': PYTHONPATH=/home/altair/rplidarA1/ros2_ws/build/altair_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/rplidarA1/ros2_ws/install/altair_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/altair_robot build --build-base /home/altair/rplidarA1/ros2_ws/build/altair_robot/build install --record /home/altair/rplidarA1/ros2_ws/build/altair_robot/install.log --single-version-externally-managed install_data

@@ -190,9 +190,9 @@ class SpresenseImuNode(Node):
         
         # ZUPT（静止時リセット）用のパラメータ
         self.declare_parameter('zupt_mode', 'auto')
-        self.declare_parameter('gyro_still_thresh', 0.05)
-        self.declare_parameter('acc_still_thresh', 0.2)
-        self.declare_parameter('still_delay_samples', 960)
+        self.declare_parameter('gyro_still_thresh', 0.02)
+        self.declare_parameter('acc_still_thresh', 0.05)
+        self.declare_parameter('still_delay_samples', 200)
         
         # 推定アルゴリズム切り替えパラメータ
         # yaw_source: 'gyro' (ジャイロ積分), 'slam' (SLAMのYaw), 'cmd' (指令角速度積分)
