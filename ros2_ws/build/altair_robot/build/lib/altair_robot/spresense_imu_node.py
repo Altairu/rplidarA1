@@ -24,7 +24,7 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 from std_msgs.msg import Float32
 from std_srvs.srv import Trigger
-from tf2_ros import TransformBroadcaster
+from tf2_ros import TransformBroadcaster, Buffer, TransformListener, TransformException
 
 
 class PositionKalmanFilter2D:
@@ -204,6 +204,8 @@ class SpresenseImuNode(Node):
         self.declare_parameter('calib_in_progress', False)
         self.declare_parameter('calib_seconds_left', 0.0)
         self.declare_parameter('exclude_port', '/dev/ttyUSB0')
+        self.declare_parameter('map_frame', 'map')
+        self.declare_parameter('tracking_frame', 'laser')
 
         # センサ極性パラメータ
         self.declare_parameter('invert_ax', True)
@@ -232,11 +234,14 @@ class SpresenseImuNode(Node):
         self.acc_still_thresh = self.get_parameter('acc_still_thresh').value
         self.still_delay_samples = self.get_parameter('still_delay_samples').value
         self.still_counter = 0
+        self.is_still = True
         
         self.gyro_in_deg_sec = self.get_parameter('gyro_in_deg_sec').value
         self.yaw_source = self.get_parameter('yaw_source').value
         self.pos_source = self.get_parameter('pos_source').value
         self.exclude_port = self.get_parameter('exclude_port').value
+        self.map_frame = self.get_parameter('map_frame').value
+        self.tracking_frame = self.get_parameter('tracking_frame').value
         
         self.invert_ax = self.get_parameter('invert_ax').value
         self.invert_ay = self.get_parameter('invert_ay').value
@@ -254,6 +259,11 @@ class SpresenseImuNode(Node):
         self.calib_status_pub = self.create_publisher(Float32, 'imu_calib_status', 10)
         
         self.tf_bc = TransformBroadcaster(self)
+        
+        # TFによるSLAM自己位置の取得とリスナー
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self, spin_thread=True)
+        self.tf_timer = self.create_timer(0.1, self._update_pose_from_tf)
 
         # サブスクライバの作成
         self.cmd_vel_sub = self.create_subscription(
@@ -514,6 +524,34 @@ class SpresenseImuNode(Node):
         yaw = 2.0 * math.atan2(qz, qw)
         stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
 
+        self._apply_slam_update(x, y, yaw, stamp)
+
+    def _update_pose_from_tf(self):
+        # トピックからの受信が最近（過去1.0秒以内）あった場合は、TFからの同期は行わない
+        current_time = self.get_clock().now().nanoseconds / 1e9
+        if self.slam_received and (current_time - self.last_slam_time < 1.0):
+            return
+
+        try:
+            # map_frame から tracking_frame への座標変換をTFから取得
+            transform = self.tf_buffer.lookup_transform(
+                self.map_frame,
+                self.tracking_frame,
+                rclpy.time.Time())
+        except TransformException:
+            # TFの取得に失敗した場合は無視
+            return
+
+        x = float(transform.transform.translation.x)
+        y = float(transform.transform.translation.y)
+        qz = float(transform.transform.rotation.z)
+        qw = float(transform.transform.rotation.w)
+        yaw = 2.0 * math.atan2(qz, qw)
+        stamp = transform.header.stamp.sec + transform.header.stamp.nanosec * 1e-9
+
+        self._apply_slam_update(x, y, yaw, stamp)
+
+    def _apply_slam_update(self, x, y, yaw, stamp):
         with self.lock:
             self.slam_x = x
             self.slam_y = y
@@ -543,6 +581,11 @@ class SpresenseImuNode(Node):
 
             # 進行方向（現在の推定角度 theta）への投影
             ds = dx * math.cos(self.theta) + dy * math.sin(self.theta)
+            
+            # ZUPT静止中、または1cm(0.01m)未満の微小な位置変動（SLAMノイズ）は移動量0とみなす（デッドバンド）
+            if self.is_still or (abs(ds) < 0.01):
+                ds = 0.0
+                
             self.slam_accum_dist += ds
 
             # B. 遅延カルマンフィルタ (再伝搬)
@@ -889,6 +932,8 @@ class SpresenseImuNode(Node):
                 is_still = cmd_still_flag
             else:
                 is_still = sensor_still_flag
+        
+        self.is_still = is_still
 
         # ----------------- 4. 位置更新 (pos_source に基づく) -----------------
         if self.pos_source == 'acc':
