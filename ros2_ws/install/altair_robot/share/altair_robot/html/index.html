@@ -1,1 +1,998 @@
-/home/altair/rplidarA1/ros2_ws/build/altair_robot/html/index.html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>RPLidar & Spresense IMU 比較実験システム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        /* ── ヘッダー ── */
+        #header {
+            background: #161b22;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #30363d;
+            flex-shrink: 0;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f85149;
+            display: inline-block;
+            margin-right: 6px;
+            box-shadow: 0 0 6px #f85149;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .status-dot.ok {
+            background: #3fb950;
+            box-shadow: 0 0 6px #3fb950;
+        }
+
+        .status-label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        /* ── メジャースケール (進行方向 X軸 インジケータ) ── */
+        #measure-panel {
+            background: #161b22;
+            margin: 10px 15px 5px 15px;
+            padding: 15px;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .panel-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #8b949e;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #ruler-container {
+            position: relative;
+            height: 55px;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        /* 定規の目盛り */
+        .ruler-tick {
+            position: absolute;
+            bottom: 0;
+            width: 1px;
+            background: #8b949e;
+        }
+        .ruler-tick.major {
+            height: 18px;
+            width: 2px;
+            background: #c9d1d9;
+        }
+        .ruler-tick.medium {
+            height: 12px;
+        }
+        .ruler-tick.minor {
+            height: 6px;
+            background: #484f58;
+        }
+
+        .ruler-label {
+            position: absolute;
+            top: 4px;
+            font-size: 10px;
+            color: #8b949e;
+            transform: translateX(-50%);
+        }
+
+        /* 走行位置マーカー */
+        .pos-marker {
+            position: absolute;
+            bottom: 18px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            transition: left 0.1s ease-out;
+            box-shadow: 0 0 6px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        .pos-marker::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 6px;
+            width: 2px;
+            height: 6px;
+            background: inherit;
+        }
+
+        #marker-slam { background: #ff7b72; box-shadow: 0 0 8px #ff7b72; }     /* SLAM: 赤 */
+        #marker-raw { background: #8b949e; box-shadow: 0 0 8px #8b949e; }      /* IMU生: 灰 */
+        #marker-kf { background: #58a6ff; box-shadow: 0 0 8px #58a6ff; }       /* IMU KF: 青 */
+        #marker-dbf { background: #3fb950; box-shadow: 0 0 8px #3fb950; }      /* IMU DBF: 緑 */
+
+        /* ── メインエリア ── */
+        #main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            padding: 10px 15px 15px 15px;
+            min-height: 0;
+        }
+
+        /* キャンバスコンテナ */
+        .canvas-card {
+            flex: 1;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .canvas-header {
+            padding: 8px 12px;
+            background: #21262d;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .canvas-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c9d1d9;
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0d1117;
+            min-height: 0;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* 右側コントロールパネル */
+        #control-panel {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-shrink: 0;
+            min-height: 0;
+        }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        /* ロギングコントローラ */
+        #logger-status {
+            font-size: 11px;
+            margin-top: 6px;
+            color: #8b949e;
+            word-break: break-all;
+        }
+
+        .btn-logger {
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .btn-logger.start {
+            background: #238636;
+        }
+        .btn-logger.start:hover {
+            background: #2ea043;
+        }
+        .btn-logger.stop {
+            background: #da3633;
+        }
+        .btn-logger.stop:hover {
+            background: #f85149;
+        }
+
+        /* 数値表示ボード */
+        .pose-grid {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr 1fr;
+            gap: 6px;
+            font-size: 12px;
+            align-items: center;
+        }
+        .pose-row-header {
+            font-weight: 600;
+            color: #8b949e;
+            text-align: center;
+        }
+        .pose-label {
+            font-weight: bold;
+            padding-right: 6px;
+        }
+        .pose-val {
+            font-family: monospace;
+            background: #0d1117;
+            padding: 4px 6px;
+            border-radius: 4px;
+            text-align: right;
+            border: 1px solid #21262d;
+        }
+        .color-slam { color: #ff7b72; }
+        .color-raw { color: #8b949e; }
+        .color-kf { color: #58a6ff; }
+        .color-dbf { color: #3fb950; }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-action:hover {
+            background: #30363d;
+        }
+
+        #log-console {
+            flex: 1;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 11px;
+            font-family: monospace;
+            overflow-y: auto;
+            min-height: 0;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 1024px) {
+            #main-area {
+                flex-direction: column;
+            }
+            #control-panel {
+                width: auto;
+            }
+            .canvas-wrapper {
+                aspect-ratio: 4/3;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <div id="header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="display: flex; align-items: center;">
+                <span id="status-dot-ws" class="status-dot"></span>
+                <span class="status-label">WS: <b id="status-txt-ws">未接続</b></span>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <span id="status-dot-imu" class="status-dot"></span>
+                <span class="status-label">IMU: <b id="status-txt-imu">停止</b></span>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <span id="status-dot-slam" class="status-dot"></span>
+                <span class="status-label">SLAM: <b id="status-txt-slam">停止</b></span>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span id="ws-target" style="font-size: 12px; color: #8b949e;"></span>
+            <button onclick="connectWS(true)" class="btn-action" style="padding: 3px 8px; font-size: 11px;">再接続</button>
+        </div>
+    </div>
+
+    <!-- メジャースケール (直進実験用メーター定規) -->
+    <div id="measure-panel">
+        <div class="panel-title" style="display: flex; justify-content: space-between;">
+            <span>X軸進行距離メーター (メジャー比較用)</span>
+            <span style="font-size: 11px;">
+                <span class="color-slam">■ SLAM</span> / 
+                <span class="color-raw">■ IMU生</span> / 
+                <span class="color-kf">■ KF融合</span> / 
+                <span class="color-dbf">■ DBF融合</span>
+            </span>
+        </div>
+        <div id="ruler-container">
+            <!-- マーカー -->
+            <div class="pos-marker" id="marker-slam" style="left: 0%;"></div>
+            <div class="pos-marker" id="marker-raw" style="left: 0%;"></div>
+            <div class="pos-marker" id="marker-kf" style="left: 0%;"></div>
+            <div class="pos-marker" id="marker-dbf" style="left: 0%;"></div>
+            <!-- 動的目盛りはJSで生成 -->
+            <div id="ruler-ticks-wrapper"></div>
+        </div>
+    </div>
+
+    <!-- メインエリア -->
+    <div id="main-area">
+        <!-- 左: SLAM & LiDAR 2D 表示 -->
+        <div class="canvas-card">
+            <div class="canvas-header">
+                <span class="canvas-title">LiDAR スキャン (ロボット中心座標)</span>
+                <span id="scan-info" style="font-size: 11px; color: #8b949e;">--</span>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas id="scan-canvas" width="600" height="600"></canvas>
+            </div>
+        </div>
+
+        <!-- 中: ワールド軌跡 2D プロット -->
+        <div class="canvas-card">
+            <div class="canvas-header">
+                <span class="canvas-title">2D 推定軌跡比較 (ワールド座標)</span>
+                <button onclick="clearTrajectories()" class="btn-action" style="padding: 2px 6px; font-size: 11px;">軌跡クリア</button>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas id="trajectory-canvas" width="600" height="600"></canvas>
+            </div>
+        </div>
+
+        <!-- 右: 制御パネル -->
+        <div id="control-panel">
+            <!-- 実験ロギング制御 -->
+            <div class="card" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="panel-title">実験データ記録</div>
+                <button id="btn-log" class="btn-logger start" onclick="toggleLogging()">
+                    <span id="log-btn-icon">⏺</span> <span id="log-btn-text">実験データの記録開始</span>
+                </button>
+                <div id="logger-status">ステータス: 待機中</div>
+            </div>
+
+            <!-- 自己位置数値表示 -->
+            <div class="card">
+                <div class="panel-title" style="margin-bottom: 8px;">現在位置数値 (x, y [m], yaw [deg])</div>
+                <div class="pose-grid">
+                    <div></div>
+                    <div class="pose-row-header">X</div>
+                    <div class="pose-row-header">Y</div>
+                    <div class="pose-row-header">Yaw</div>
+
+                    <div class="pose-label color-slam">SLAM</div>
+                    <div class="pose-val color-slam" id="slam-x">0.000</div>
+                    <div class="pose-val color-slam" id="slam-y">0.000</div>
+                    <div class="pose-val color-slam" id="slam-yaw">0.0</div>
+
+                    <div class="pose-label color-raw">IMU生</div>
+                    <div class="pose-val color-raw" id="raw-x">0.000</div>
+                    <div class="pose-val color-raw" id="raw-y">0.000</div>
+                    <div class="pose-val color-raw" id="raw-yaw">0.0</div>
+
+                    <div class="pose-label color-kf">IMU KF</div>
+                    <div class="pose-val color-kf" id="kf-x">0.000</div>
+                    <div class="pose-val color-kf" id="kf-y">0.000</div>
+                    <div class="pose-val color-kf" id="kf-yaw">0.0</div>
+
+                    <div class="pose-label color-dbf">IMU DBF</div>
+                    <div class="pose-val color-dbf" id="dbf-x">0.000</div>
+                    <div class="pose-val color-dbf" id="dbf-y">0.000</div>
+                    <div class="pose-val color-dbf" id="dbf-yaw">0.0</div>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn-action" onclick="resetPose()">原点リセット</button>
+                    <button class="btn-action" style="border-color: #f85149; color: #f85149;" onclick="fullReset()">完全リセット</button>
+                </div>
+            </div>
+
+            <!-- 推定アルゴリズム設定 -->
+            <div class="card" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="panel-title">推定アルゴリズム設定</div>
+                <div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; font-size: 12px;">
+                    <span style="font-weight: 600; color: #8b949e;">角度ソース:</span>
+                    <select id="select-yaw-source" onchange="changeParam('yaw_source', this.value)" style="background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; padding: 5px; border-radius: 4px; font-size: 11px;">
+                        <option value="gyro">ジャイロ積分 (Gyro)</option>
+                        <option value="slam">SLAMのYaw</option>
+                        <option value="cmd">指令角速度積分 (cmd_vel)</option>
+                    </select>
+                    
+                    <span style="font-weight: 600; color: #8b949e;">位置ソース:</span>
+                    <select id="select-pos-source" onchange="changeParam('pos_source', this.value)" style="background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; padding: 5px; border-radius: 4px; font-size: 11px;">
+                        <option value="acc">加速度積分 (KF/DBF)</option>
+                        <option value="slam">SLAMの位置</option>
+                        <option value="cmd">指令速度デッドレコ</option>
+                    </select>
+                </div>
+                <button id="btn-calib" class="btn-action" style="margin-top: 6px; width: 100%; border-color: #58a6ff; color: #58a6ff;" onclick="calibrateIMU()">
+                    IMUキャリブレーション (10秒静止)
+                </button>
+            </div>
+
+            <!-- ログコンソール -->
+            <div class="card" style="flex: 1; display: flex; flex-direction: column; min-height: 0; gap: 6px;">
+                <div class="panel-title">コンソール出力</div>
+                <div id="log-console">システム準備完了...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ─── WebSocket設定 ─────────────────────────────────────
+        const WS_PORT = 8876;
+        const RECONNECT_MS = 2000;
+        let ws = null;
+        let reconnectTimer = null;
+
+        // データロギング状態
+        let isLogging = false;
+
+        // 軌跡プロットデータ
+        let slamPath = [];
+        let imuRawPath = [];
+        let imuKfPath = [];
+        let imuDbfPath = [];
+        const MAX_PATH_LEN = 1000;
+
+        // 現在位置キャッシュ [x, y, theta]
+        let currentSlam = [0.0, 0.0, 0.0];
+        let currentRaw = [0.0, 0.0, 0.0];
+        let currentKf = [0.0, 0.0, 0.0];
+        let currentDbf = [0.0, 0.0, 0.0];
+
+        // LiDARスキャンキャッシュ
+        let scanData = null;
+        let sweepPhase = 0;
+
+        // 定規パラメータ
+        const RULER_MIN_M = -0.5;
+        const RULER_MAX_M = 5.5;  // 5m走行実験に合わせ、5.5mまで表示可能
+
+        function wsHost() {
+            return window.location.hostname || '127.0.0.1';
+        }
+
+        function wsUrl() {
+            const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+            return `${scheme}://${wsHost()}:${WS_PORT}`;
+        }
+
+        function appendLog(msg) {
+            const el = document.getElementById('log-console');
+            const now = new Date().toLocaleTimeString();
+            el.innerHTML = `[${now}] ${msg}<br>${el.innerHTML}`;
+            // ログの最大行数制限
+            const lines = el.innerHTML.split('<br>').slice(0, 50).join('<br>');
+            el.innerHTML = lines;
+        }
+
+        // ─── 定規目盛りの生成 ─────────────────────────────────────
+        function generateRuler() {
+            const wrapper = document.getElementById('ruler-ticks-wrapper');
+            wrapper.innerHTML = '';
+            
+            const totalWidthM = RULER_MAX_M - RULER_MIN_M;
+            
+            // 1cm (0.01m) 刻みで目盛りを生成
+            for (let x = RULER_MIN_M; x <= RULER_MAX_M; x = Math.round((x + 0.01) * 100) / 100) {
+                const pct = ((x - RULER_MIN_M) / totalWidthM) * 100;
+                if (pct < 0 || pct > 100) continue;
+
+                const tick = document.createElement('div');
+                tick.style.left = `${pct}%`;
+                
+                // メジャーらしく 10cm, 5cm, 1cm で目盛りの高さを分ける
+                const x_cm = Math.round(x * 100);
+                if (x_cm % 10 === 0) {
+                    tick.className = 'ruler-tick major';
+                    
+                    // 数値ラベル (10cm 刻み)
+                    const label = document.createElement('div');
+                    label.className = 'ruler-label';
+                    label.style.left = `${pct}%`;
+                    label.textContent = `${x.toFixed(1)}m`;
+                    wrapper.appendChild(label);
+                } else if (x_cm % 5 === 0) {
+                    tick.className = 'ruler-tick medium';
+                } else {
+                    tick.className = 'ruler-tick minor';
+                }
+                wrapper.appendChild(tick);
+            }
+        }
+
+        // マーカー位置の更新
+        function updateRulerMarkers() {
+            const totalWidthM = RULER_MAX_M - RULER_MIN_M;
+
+            const updateMarker = (elId, xVal) => {
+                const el = document.getElementById(elId);
+                let pct = ((xVal - RULER_MIN_M) / totalWidthM) * 100;
+                pct = Math.max(0, Math.min(100, pct)); // 画面外に飛び出さないようにクリップ
+                el.style.left = `${pct}%`;
+            };
+
+            updateMarker('marker-slam', currentSlam[0]);
+            updateMarker('marker-raw', currentRaw[0]);
+            updateMarker('marker-kf', currentKf[0]);
+            updateMarker('marker-dbf', currentDbf[0]);
+        }
+
+        // ─── 2D スキャン描画 (ロボット座標系) ─────────────────────
+        function drawScan() {
+            const canvas = document.getElementById('scan-canvas');
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const radius = Math.min(w, h) * 0.45;
+
+            // 背景クリア
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#0d1117';
+            ctx.fillRect(0, 0, w, h);
+
+            // 同心円ガイド
+            ctx.strokeStyle = 'rgba(56, 139, 253, 0.15)';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 4; i++) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, (radius * i) / 4, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // 十字十字ガイド
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - radius); ctx.lineTo(cx, cy + radius);
+            ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
+            ctx.stroke();
+
+            // レーダースイープアニメーション
+            sweepPhase += 0.02;
+            if (sweepPhase > Math.PI * 2) sweepPhase -= Math.PI * 2;
+            ctx.strokeStyle = 'rgba(56, 139, 253, 0.08)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + Math.cos(sweepPhase)*radius, cy + Math.sin(sweepPhase)*radius);
+            ctx.stroke();
+
+            // ロボット中心インジケータ
+            ctx.fillStyle = '#f85149';
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // LiDAR 点群の描画 (上が前進 X 軸)
+            if (scanData && scanData.points) {
+                const rangeMax = scanData.rangeMax || 8.0;
+                const scale = radius / rangeMax;
+
+                ctx.fillStyle = '#58a6ff';
+                for (const p of scanData.points) {
+                    const px = p[0];
+                    const py = p[1];
+                    // ロボット前方 X 軸を上方向にするための変換
+                    // ROS は X が右、Y が上（または X 前方、Y 左）
+                    // ここでは ROS 座標 (X前, Y左) を上が前進 (Y_canvas = cy - X_ros*scale, X_canvas = cx - Y_ros*scale) にマッピング
+                    const sx = cx - py * scale;
+                    const sy = cy - px * scale;
+                    ctx.fillRect(sx - 1, sy - 1, 2, 2);
+                }
+            }
+        }
+
+        // ─── 2D ワールド軌跡プロット ──────────────────────────────
+        function drawTrajectories() {
+            const canvas = document.getElementById('trajectory-canvas');
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#0d1117';
+            ctx.fillRect(0, 0, w, h);
+
+            // ワールド座標格子線の描画 (0.5m 刻み)
+            // 実験エリアは X: -0.5m 〜 5.5m, Y: -1.0m 〜 1.0m を想定
+            const viewMinX = -0.5, viewMaxX = 5.5;
+            const viewMinY = -1.0, viewMaxY = 1.0;
+            
+            const toCanvasX = (valX) => ((valX - viewMinX) / (viewMaxX - viewMinX)) * w;
+            // キャンバス上側が Y の負方向、下側が正方向になるように変換 (Y_canvas = h - pct*h)
+            const toCanvasY = (valY) => h - ((valY - viewMinY) / (viewMaxY - viewMinY)) * h;
+
+            // 格子線
+            ctx.strokeStyle = '#21262d';
+            ctx.lineWidth = 1;
+            for (let lx = -0.5; lx <= 5.5; lx += 0.5) {
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(lx), 0);
+                ctx.lineTo(toCanvasX(lx), h);
+                ctx.stroke();
+                
+                // グリッドラベル
+                ctx.fillStyle = '#8b949e';
+                ctx.font = '10px monospace';
+                ctx.fillText(`${lx.toFixed(1)}m`, toCanvasX(lx) + 2, h - 5);
+            }
+            for (let ly = -1.0; ly <= 1.0; ly += 0.5) {
+                ctx.beginPath();
+                ctx.moveTo(0, toCanvasY(ly));
+                ctx.lineTo(w, toCanvasY(ly));
+                ctx.stroke();
+                
+                ctx.fillStyle = '#8b949e';
+                ctx.fillText(`${ly.toFixed(1)}m`, 5, toCanvasY(ly) - 2);
+            }
+
+            // 原点 (0,0) 十字ハイライト
+            ctx.strokeStyle = '#30363d';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(0), 0); ctx.lineTo(toCanvasX(0), h);
+            ctx.moveTo(0, toCanvasY(0)); ctx.lineTo(w, toCanvasY(0));
+            ctx.stroke();
+
+            // 軌跡を描画するヘルパー
+            const drawPath = (path, color, lineWidth = 2) => {
+                if (path.length < 2) return;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(path[0][0]), toCanvasY(path[0][1]));
+                for (let i = 1; i < path.length; i++) {
+                    ctx.lineTo(toCanvasX(path[i][0]), toCanvasY(path[i][1]));
+                }
+                ctx.stroke();
+            };
+
+            // 各軌跡の描画
+            drawPath(imuRawPath, '#8b949e', 1.5); // 生積分: 灰
+            drawPath(slamPath, '#ff7b72', 2.5);   // SLAM: 赤
+            drawPath(imuKfPath, '#58a6ff', 2);    // KF: 青
+            drawPath(imuDbfPath, '#3fb950', 2);   // DBF: 緑
+
+            // 各手法の現在位置に矢印マーカーを描画
+            const drawHeadingMarker = (pose, color) => {
+                const cx = toCanvasX(pose[0]);
+                const cy = toCanvasY(pose[1]);
+                const th = pose[2];
+                const len = 12;
+
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                // 矢印の先端
+                ctx.moveTo(cx + Math.cos(th)*len, cy - Math.sin(th)*len);
+                // 後部翼端1
+                ctx.lineTo(cx + Math.cos(th + 2.5)*len, cy - Math.sin(th + 2.5)*len);
+                // 中心側くぼみ
+                ctx.lineTo(cx + Math.cos(th + Math.PI)*len*0.6, cy - Math.sin(th + Math.PI)*len*0.6);
+                // 後部翼端2
+                ctx.lineTo(cx + Math.cos(th - 2.5)*len, cy - Math.sin(th - 2.5)*len);
+                ctx.closePath();
+                ctx.fill();
+            };
+
+            drawHeadingMarker(currentRaw, '#8b949e');
+            drawHeadingMarker(currentSlam, '#ff7b72');
+            drawHeadingMarker(currentKf, '#58a6ff');
+            drawHeadingMarker(currentDbf, '#3fb950');
+        }
+
+        function clearTrajectories() {
+            slamPath = [];
+            imuRawPath = [];
+            imuKfPath = [];
+            imuDbfPath = [];
+            appendLog('表示上の軌跡履歴をクリアしました。');
+        }
+
+        // ─── WebSocket通信・受信 ────────────────────────────────
+        function connectWS(isManual = false) {
+            const url = wsUrl();
+            const dot = document.getElementById('status-dot-ws');
+            const txt = document.getElementById('status-txt-ws');
+            
+            if (reconnectTimer) {
+                clearTimeout(reconnectTimer);
+                reconnectTimer = null;
+            }
+            if (ws) {
+                try { ws.close(); } catch(e) {}
+            }
+            
+            txt.textContent = '接続中...';
+            document.getElementById('ws-target').textContent = `ホスト: ${wsHost()}:${WS_PORT}`;
+
+            ws = new WebSocket(url);
+            
+            ws.onopen = () => {
+                dot.className = 'status-dot ok';
+                txt.textContent = '接続完了';
+                appendLog('WebSocket ブリッジサーバーに接続しました。');
+            };
+
+            ws.onclose = () => {
+                dot.className = 'status-dot';
+                txt.textContent = '切断';
+                // WS切断時はIMUとSLAMのランプも停止にする
+                document.getElementById('status-dot-imu').className = 'status-dot';
+                document.getElementById('status-txt-imu').textContent = '停止';
+                document.getElementById('status-dot-slam').className = 'status-dot';
+                document.getElementById('status-txt-slam').textContent = '停止';
+                
+                ws = null;
+                reconnectTimer = setTimeout(() => connectWS(false), RECONNECT_MS);
+            };
+
+            ws.onerror = (e) => {
+                txt.textContent = '通信エラー';
+            };
+
+            ws.onmessage = (e) => {
+                try {
+                    const data = JSON.parse(e.data);
+                    
+                    if (data.type === 'pose') {
+                        // SLAM 位置更新
+                        currentSlam = [data.x, data.y, data.theta];
+                        document.getElementById('slam-x').textContent = data.x.toFixed(3);
+                        document.getElementById('slam-y').textContent = data.y.toFixed(3);
+                        document.getElementById('slam-yaw').textContent = (data.theta * 180 / Math.PI).toFixed(1);
+                        
+                        slamPath.push([data.x, data.y]);
+                        if (slamPath.length > MAX_PATH_LEN) slamPath.shift();
+                        
+                        updateRulerMarkers();
+                    }
+                    else if (data.type === 'imu_raw') {
+                        // IMU 生積分位置更新
+                        currentRaw = [data.x, data.y, data.theta];
+                        document.getElementById('raw-x').textContent = data.x.toFixed(3);
+                        document.getElementById('raw-y').textContent = data.y.toFixed(3);
+                        document.getElementById('raw-yaw').textContent = (data.theta * 180 / Math.PI).toFixed(1);
+                        
+                        imuRawPath.push([data.x, data.y]);
+                        if (imuRawPath.length > MAX_PATH_LEN) imuRawPath.shift();
+                        
+                        updateRulerMarkers();
+                    }
+                    else if (data.type === 'imu_kf') {
+                        // IMU KF融合位置更新
+                        currentKf = [data.x, data.y, data.theta];
+                        document.getElementById('kf-x').textContent = data.x.toFixed(3);
+                        document.getElementById('kf-y').textContent = data.y.toFixed(3);
+                        document.getElementById('kf-yaw').textContent = (data.theta * 180 / Math.PI).toFixed(1);
+                        
+                        imuKfPath.push([data.x, data.y]);
+                        if (imuKfPath.length > MAX_PATH_LEN) imuKfPath.shift();
+                        
+                        updateRulerMarkers();
+                    }
+                    else if (data.type === 'imu_dbf') {
+                        // IMU DBF融合位置更新
+                        currentDbf = [data.x, data.y, data.theta];
+                        document.getElementById('dbf-x').textContent = data.x.toFixed(3);
+                        document.getElementById('dbf-y').textContent = data.y.toFixed(3);
+                        document.getElementById('dbf-yaw').textContent = (data.theta * 180 / Math.PI).toFixed(1);
+                        
+                        imuDbfPath.push([data.x, data.y]);
+                        if (imuDbfPath.length > MAX_PATH_LEN) imuDbfPath.shift();
+                        
+                        updateRulerMarkers();
+                    }
+                    else if (data.type === 'scan') {
+                        scanData = data;
+                        document.getElementById('scan-info').textContent = `${data.pointCount}点 / ${data.rangeMax.toFixed(1)}m`;
+                    }
+                    else if (data.type === 'status') {
+                        appendLog(`${data.ok ? 'SUCCESS' : 'WARNING'}: ${data.message}`);
+                        // ログファイルの作成/保存結果を反映
+                        if (data.message.includes('保存先:')) {
+                            isLogging = true;
+                            updateLoggerUI(true, data.message);
+                        } else if (data.message.includes('保存しました')) {
+                            isLogging = false;
+                            updateLoggerUI(false, '待機中');
+                        }
+                    }
+                    else if (data.type === 'sys_status') {
+                        // ステータスランプ更新 (WS, IMU, SLAM)
+                        const dotWs = document.getElementById('status-dot-ws');
+                        const txtWs = document.getElementById('status-txt-ws');
+                        const dotImu = document.getElementById('status-dot-imu');
+                        const txtImu = document.getElementById('status-txt-imu');
+                        const dotSlam = document.getElementById('status-dot-slam');
+                        const txtSlam = document.getElementById('status-txt-slam');
+
+                        if (data.ws_ok) {
+                            dotWs.className = 'status-dot ok';
+                            txtWs.textContent = '接続完了';
+                        } else {
+                            dotWs.className = 'status-dot';
+                            txtWs.textContent = '未接続';
+                        }
+
+                        if (data.imu_ok) {
+                            dotImu.className = 'status-dot ok';
+                            txtImu.textContent = '受信中';
+                        } else {
+                            dotImu.className = 'status-dot';
+                            txtImu.textContent = '停止';
+                        }
+
+                        if (data.slam_ok) {
+                            dotSlam.className = 'status-dot ok';
+                            txtSlam.textContent = '受信中';
+                        } else {
+                            dotSlam.className = 'status-dot';
+                            txtSlam.textContent = '停止';
+                        }
+
+                        // アルゴリズムパラメータ選択の同期
+                        if (data.yaw_source && document.activeElement !== document.getElementById('select-yaw-source')) {
+                            document.getElementById('select-yaw-source').value = data.yaw_source;
+                        }
+                        if (data.pos_source && document.activeElement !== document.getElementById('select-pos-source')) {
+                            document.getElementById('select-pos-source').value = data.pos_source;
+                        }
+
+                        // キャリブレーションカウントダウンの反映
+                        const overlay = document.getElementById('calib-overlay');
+                        const countEl = document.getElementById('calib-countdown');
+                        const secondsLeft = data.calib_seconds_left || 0.0;
+                        
+                        if (secondsLeft > 0) {
+                            overlay.style.display = 'flex';
+                            countEl.textContent = Math.ceil(secondsLeft);
+                        } else {
+                            overlay.style.display = 'none';
+                        }
+                    }
+                } catch(err) {
+                    console.error('WebSocketデコードエラー:', err);
+                }
+            };
+        }
+
+        // ─── パラメータ設定 ────────────────────────────────────
+        function changeParam(name, val) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'set_param', name: name, value: val }));
+                appendLog(`設定変更送信: ${name} = ${val}`);
+            } else {
+                appendLog('エラー: サーバーと接続されていません。');
+            }
+        }
+
+        // ─── ロギング制御 ──────────────────────────────────────
+        function toggleLogging() {
+            const cmd = isLogging ? 'stop_logging' : 'start_logging';
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: cmd }));
+                appendLog(`ロギング指示 [${cmd}] を送信しました...`);
+            } else {
+                appendLog('エラー: サーバーと接続されていません。');
+            }
+        }
+
+        function updateLoggerUI(active, statusText) {
+            const btn = document.getElementById('btn-log');
+            const icon = document.getElementById('log-btn-icon');
+            const text = document.getElementById('log-btn-text');
+            const status = document.getElementById('logger-status');
+
+            if (active) {
+                btn.className = 'btn-logger stop';
+                icon.textContent = '⏹';
+                text.textContent = '記録の停止とCSV保存';
+                status.textContent = `記録中: ${statusText}`;
+            } else {
+                btn.className = 'btn-logger start';
+                icon.textContent = '⏺';
+                text.textContent = '実験データの記録開始';
+                status.textContent = `ステータス: ${statusText}`;
+            }
+        }
+
+        // ─── ボタンコマンド ────────────────────────────────────
+        function resetPose() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'reset_pose' }));
+                clearTrajectories();
+            }
+        }
+
+        function fullReset() {
+            const res = confirm("地図の初期化とポーズ原点リセットを行います。よろしいですか？");
+            if (res && ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'full_reset' }));
+                clearTrajectories();
+            }
+        }
+
+        function calibrateIMU() {
+            const res = confirm("IMUキャリブレーションを開始します。ロボットが10秒間完全に静止することを確認してください。よろしいですか？");
+            if (res && ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'calibrate_imu' }));
+                appendLog('IMUキャリブレーション開始要求を送信しました。10秒間静止してください。');
+            }
+        }
+
+        // ─── アニメーション・描画スレッド ─────────────────────────
+        function drawLoop() {
+            drawScan();
+            drawTrajectories();
+            requestAnimationFrame(drawLoop);
+        }
+
+        // 初期化
+        generateRuler();
+        connectWS(false);
+        requestAnimationFrame(drawLoop);
+    </script>
+
+    <!-- キャリブレーション用カウントダウンオーバーレイ -->
+    <div id="calib-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 17, 23, 0.85); backdrop-filter: blur(4px); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; gap: 20px; color: #c9d1d9;">
+        <div style="font-size: 24px; font-weight: bold; color: #58a6ff; text-align: center; line-height: 1.6;">
+            IMUキャリブレーション中...<br>
+            <span style="font-size: 16px; font-weight: normal; color: #8b949e;">ロボットを完全に静止した状態にしてください</span>
+        </div>
+        <div id="calib-countdown" style="font-size: 64px; font-weight: 800; color: #3fb950; font-family: monospace;">10</div>
+    </div>
+</body>
+</html>

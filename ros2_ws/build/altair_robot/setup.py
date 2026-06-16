@@ -1,1 +1,0 @@
-/home/altair/rplidarA1/ros2_ws/src/altair_robot/setup.py

@@ -4,6 +4,3 @@ source;share/altair_robot/hook/pythonpath.sh
 source;share/altair_robot/hook/ament_prefix_path.ps1
 source;share/altair_robot/hook/ament_prefix_path.dsv
 source;share/altair_robot/hook/ament_prefix_path.sh
-source;../../build/altair_robot/share/altair_robot/hook/pythonpath_develop.ps1
-source;../../build/altair_robot/share/altair_robot/hook/pythonpath_develop.dsv
-source;../../build/altair_robot/share/altair_robot/hook/pythonpath_develop.sh

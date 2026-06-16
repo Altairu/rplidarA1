@@ -32,24 +32,26 @@
             flex-shrink: 0;
         }
 
-        #status-dot {
-            width: 12px;
-            height: 12px;
+        .status-dot {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: #f85149;
             display: inline-block;
-            margin-right: 8px;
-            box-shadow: 0 0 8px #f85149;
+            margin-right: 6px;
+            box-shadow: 0 0 6px #f85149;
+            transition: background 0.3s, box-shadow 0.3s;
         }
 
-        #status-dot.ok {
+        .status-dot.ok {
             background: #3fb950;
-            box-shadow: 0 0 8px #3fb950;
+            box-shadow: 0 0 6px #3fb950;
         }
 
-        #status-txt {
-            font-size: 14px;
+        .status-label {
+            font-size: 13px;
             font-weight: 600;
+            margin-right: 15px;
         }
 
         /* ── メジャースケール (進行方向 X軸 インジケータ) ── */
@@ -180,6 +182,7 @@
             align-items: center;
             justify-content: center;
             background: #0d1117;
+            min-height: 0;
         }
 
         canvas {
@@ -194,6 +197,7 @@
             flex-direction: column;
             gap: 12px;
             flex-shrink: 0;
+            min-height: 0;
         }
 
         .card {
@@ -321,9 +325,19 @@
 
     <!-- ヘッダー -->
     <div id="header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span id="status-dot"></span>
-            <span id="status-txt">未接続</span>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="display: flex; align-items: center;">
+                <span id="status-dot-ws" class="status-dot"></span>
+                <span class="status-label">WS: <b id="status-txt-ws">未接続</b></span>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <span id="status-dot-imu" class="status-dot"></span>
+                <span class="status-label">IMU: <b id="status-txt-imu">停止</b></span>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <span id="status-dot-slam" class="status-dot"></span>
+                <span class="status-label">SLAM: <b id="status-txt-slam">停止</b></span>
+            </div>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
             <span id="ws-target" style="font-size: 12px; color: #8b949e;"></span>
@@ -424,6 +438,29 @@
                 </div>
             </div>
 
+            <!-- 推定アルゴリズム設定 -->
+            <div class="card" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="panel-title">推定アルゴリズム設定</div>
+                <div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; font-size: 12px;">
+                    <span style="font-weight: 600; color: #8b949e;">角度ソース:</span>
+                    <select id="select-yaw-source" onchange="changeParam('yaw_source', this.value)" style="background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; padding: 5px; border-radius: 4px; font-size: 11px;">
+                        <option value="gyro">ジャイロ積分 (Gyro)</option>
+                        <option value="slam">SLAMのYaw</option>
+                        <option value="cmd">指令角速度積分 (cmd_vel)</option>
+                    </select>
+                    
+                    <span style="font-weight: 600; color: #8b949e;">位置ソース:</span>
+                    <select id="select-pos-source" onchange="changeParam('pos_source', this.value)" style="background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; padding: 5px; border-radius: 4px; font-size: 11px;">
+                        <option value="acc">加速度積分 (KF/DBF)</option>
+                        <option value="slam">SLAMの位置</option>
+                        <option value="cmd">指令速度デッドレコ</option>
+                    </select>
+                </div>
+                <button id="btn-calib" class="btn-action" style="margin-top: 6px; width: 100%; border-color: #58a6ff; color: #58a6ff;" onclick="calibrateIMU()">
+                    IMUキャリブレーション (10秒静止)
+                </button>
+            </div>
+
             <!-- ログコンソール -->
             <div class="card" style="flex: 1; display: flex; flex-direction: column; min-height: 0; gap: 6px;">
                 <div class="panel-title">コンソール出力</div>
@@ -461,7 +498,7 @@
 
         // 定規パラメータ
         const RULER_MIN_M = -0.5;
-        const RULER_MAX_M = 3.5;  // メジャーに合わせて 3.5m まで表示可能
+        const RULER_MAX_M = 5.5;  // 5m走行実験に合わせ、5.5mまで表示可能
 
         function wsHost() {
             return window.location.hostname || '127.0.0.1';
@@ -610,8 +647,8 @@
             ctx.fillRect(0, 0, w, h);
 
             // ワールド座標格子線の描画 (0.5m 刻み)
-            // 実験エリアは X: -0.5m 〜 3.5m, Y: -1.0m 〜 1.0m を想定
-            const viewMinX = -0.5, viewMaxX = 3.5;
+            // 実験エリアは X: -0.5m 〜 5.5m, Y: -1.0m 〜 1.0m を想定
+            const viewMinX = -0.5, viewMaxX = 5.5;
             const viewMinY = -1.0, viewMaxY = 1.0;
             
             const toCanvasX = (valX) => ((valX - viewMinX) / (viewMaxX - viewMinX)) * w;
@@ -621,7 +658,7 @@
             // 格子線
             ctx.strokeStyle = '#21262d';
             ctx.lineWidth = 1;
-            for (let lx = -0.5; lx <= 3.5; lx += 0.5) {
+            for (let lx = -0.5; lx <= 5.5; lx += 0.5) {
                 ctx.beginPath();
                 ctx.moveTo(toCanvasX(lx), 0);
                 ctx.lineTo(toCanvasX(lx), h);
@@ -707,8 +744,8 @@
         // ─── WebSocket通信・受信 ────────────────────────────────
         function connectWS(isManual = false) {
             const url = wsUrl();
-            const dot = document.getElementById('status-dot');
-            const txt = document.getElementById('status-txt');
+            const dot = document.getElementById('status-dot-ws');
+            const txt = document.getElementById('status-txt-ws');
             
             if (reconnectTimer) {
                 clearTimeout(reconnectTimer);
@@ -724,14 +761,20 @@
             ws = new WebSocket(url);
             
             ws.onopen = () => {
-                dot.className = 'ok';
+                dot.className = 'status-dot ok';
                 txt.textContent = '接続完了';
                 appendLog('WebSocket ブリッジサーバーに接続しました。');
             };
 
             ws.onclose = () => {
-                dot.className = '';
+                dot.className = 'status-dot';
                 txt.textContent = '切断';
+                // WS切断時はIMUとSLAMのランプも停止にする
+                document.getElementById('status-dot-imu').className = 'status-dot';
+                document.getElementById('status-txt-imu').textContent = '停止';
+                document.getElementById('status-dot-slam').className = 'status-dot';
+                document.getElementById('status-txt-slam').textContent = '停止';
+                
                 ws = null;
                 reconnectTimer = setTimeout(() => connectWS(false), RECONNECT_MS);
             };
@@ -807,10 +850,73 @@
                             updateLoggerUI(false, '待機中');
                         }
                     }
+                    else if (data.type === 'sys_status') {
+                        // ステータスランプ更新 (WS, IMU, SLAM)
+                        const dotWs = document.getElementById('status-dot-ws');
+                        const txtWs = document.getElementById('status-txt-ws');
+                        const dotImu = document.getElementById('status-dot-imu');
+                        const txtImu = document.getElementById('status-txt-imu');
+                        const dotSlam = document.getElementById('status-dot-slam');
+                        const txtSlam = document.getElementById('status-txt-slam');
+
+                        if (data.ws_ok) {
+                            dotWs.className = 'status-dot ok';
+                            txtWs.textContent = '接続完了';
+                        } else {
+                            dotWs.className = 'status-dot';
+                            txtWs.textContent = '未接続';
+                        }
+
+                        if (data.imu_ok) {
+                            dotImu.className = 'status-dot ok';
+                            txtImu.textContent = '受信中';
+                        } else {
+                            dotImu.className = 'status-dot';
+                            txtImu.textContent = '停止';
+                        }
+
+                        if (data.slam_ok) {
+                            dotSlam.className = 'status-dot ok';
+                            txtSlam.textContent = '受信中';
+                        } else {
+                            dotSlam.className = 'status-dot';
+                            txtSlam.textContent = '停止';
+                        }
+
+                        // アルゴリズムパラメータ選択の同期
+                        if (data.yaw_source && document.activeElement !== document.getElementById('select-yaw-source')) {
+                            document.getElementById('select-yaw-source').value = data.yaw_source;
+                        }
+                        if (data.pos_source && document.activeElement !== document.getElementById('select-pos-source')) {
+                            document.getElementById('select-pos-source').value = data.pos_source;
+                        }
+
+                        // キャリブレーションカウントダウンの反映
+                        const overlay = document.getElementById('calib-overlay');
+                        const countEl = document.getElementById('calib-countdown');
+                        const secondsLeft = data.calib_seconds_left || 0.0;
+                        
+                        if (secondsLeft > 0) {
+                            overlay.style.display = 'flex';
+                            countEl.textContent = Math.ceil(secondsLeft);
+                        } else {
+                            overlay.style.display = 'none';
+                        }
+                    }
                 } catch(err) {
                     console.error('WebSocketデコードエラー:', err);
                 }
             };
+        }
+
+        // ─── パラメータ設定 ────────────────────────────────────
+        function changeParam(name, val) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'set_param', name: name, value: val }));
+                appendLog(`設定変更送信: ${name} = ${val}`);
+            } else {
+                appendLog('エラー: サーバーと接続されていません。');
+            }
         }
 
         // ─── ロギング制御 ──────────────────────────────────────
@@ -859,6 +965,14 @@
             }
         }
 
+        function calibrateIMU() {
+            const res = confirm("IMUキャリブレーションを開始します。ロボットが10秒間完全に静止することを確認してください。よろしいですか？");
+            if (res && ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'calibrate_imu' }));
+                appendLog('IMUキャリブレーション開始要求を送信しました。10秒間静止してください。');
+            }
+        }
+
         // ─── アニメーション・描画スレッド ─────────────────────────
         function drawLoop() {
             drawScan();
@@ -871,5 +985,14 @@
         connectWS(false);
         requestAnimationFrame(drawLoop);
     </script>
+
+    <!-- キャリブレーション用カウントダウンオーバーレイ -->
+    <div id="calib-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 17, 23, 0.85); backdrop-filter: blur(4px); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; gap: 20px; color: #c9d1d9;">
+        <div style="font-size: 24px; font-weight: bold; color: #58a6ff; text-align: center; line-height: 1.6;">
+            IMUキャリブレーション中...<br>
+            <span style="font-size: 16px; font-weight: normal; color: #8b949e;">ロボットを完全に静止した状態にしてください</span>
+        </div>
+        <div id="calib-countdown" style="font-size: 64px; font-weight: 800; color: #3fb950; font-family: monospace;">10</div>
+    </div>
 </body>
 </html>
