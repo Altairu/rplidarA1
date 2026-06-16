@@ -15,6 +15,7 @@ import struct
 import threading
 import time
 import collections
+import glob
 import rclpy
 from rclpy.node import Node
 from rcl_interfaces.msg import SetParametersResult
@@ -427,15 +428,9 @@ class SpresenseImuNode(Node):
         return SetParametersResult(successful=True)
 
     def _connect_serial(self):
-        try:
-            import serial
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=1.0)
-            self.get_logger().info(f'Spresense シリアル接続成功: {self.port} @ {self.baudrate} bps')
-            self.running = True
-            self.rx_thread = threading.Thread(target=self._rx_loop, daemon=True)
-            self.rx_thread.start()
-        except Exception as e:
-            self.get_logger().error(f'Spresense シリアル接続失敗 ({self.port}): {e}')
+        self.running = True
+        self.rx_thread = threading.Thread(target=self._connection_and_rx_loop, daemon=True)
+        self.rx_thread.start()
 
     def _cmd_vel_cb(self, msg: Twist):
         with self.lock:
@@ -506,15 +501,67 @@ class SpresenseImuNode(Node):
             self.dbf_x.update(x, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
             self.dbf_y.update(y, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
 
-    def _rx_loop(self):
+    def _find_and_connect_imu_sync(self):
+        """システム内のUSBシリアルポートを自動探索して接続する"""
+        ports = [self.port] if self.port else []
+        usb_ports = sorted(glob.glob('/dev/ttyUSB*'))
+        for p in usb_ports:
+            if p not in ports:
+                ports.append(p)
+        acm_ports = sorted(glob.glob('/dev/ttyACM*'))
+        for p in acm_ports:
+            if p not in ports:
+                ports.append(p)
+
+        for p in ports:
+            try:
+                import serial
+                # 短いタイムアウトで接続テスト
+                ser_test = serial.Serial(p, self.baudrate, timeout=0.1)
+                time.sleep(0.05)
+                read_data = ser_test.read(300)
+                
+                header_found = False
+                for i in range(len(read_data) - 1):
+                    if read_data[i] == 0xAA and read_data[i+1] == 0x55:
+                        header_found = True
+                        break
+                
+                if header_found:
+                    ser_test.timeout = 1.0  # 切断判定用のタイムアウトを設定
+                    self.ser = ser_test
+                    self.port = p
+                    self.get_logger().info(f'Spresense IMU 自動接続成功: {p} @ {self.baudrate} bps')
+                    return
+                else:
+                    ser_test.close()
+            except Exception:
+                continue
+
+    def _connection_and_rx_loop(self):
+        """シリアル接続と受信処理を行うメインループスレッド"""
         buffer = bytearray()
         while self.running and rclpy.ok():
+            if self.ser is None or not self.ser.is_open:
+                # 接続が切れている場合は自動探索を繰り返す
+                self._find_and_connect_imu_sync()
+                if self.ser is None or not self.ser.is_open:
+                    time.sleep(1.0)
+                    continue
+                buffer = bytearray()  # バッファをリセット
+
             try:
+                # データ読み込み
                 data = self.ser.read(self.ser.in_waiting or 1)
                 if not data:
                     time.sleep(0.001)
                     continue
+                
                 buffer.extend(data)
+                # バッファ容量制限
+                if len(buffer) > 2000:
+                    del buffer[:-500]
+
                 while len(buffer) >= 34:
                     if buffer[0] == 0xAA and buffer[1] == 0x55:
                         raw_packet = buffer[2:34]
@@ -523,8 +570,25 @@ class SpresenseImuNode(Node):
                     else:
                         del buffer[0]
             except Exception as e:
-                self.get_logger().warn(f'シリアル受信エラー: {e}')
-                time.sleep(0.1)
+                self.get_logger().warn(f'シリアル接続が切断されました: {e}')
+                if self.ser:
+                    try:
+                        self.ser.close()
+                    except Exception:
+                        pass
+                self.ser = None
+                self.is_calibrated = False
+                
+                # パラメータ状態の更新
+                from rclpy.parameter import Parameter
+                try:
+                    self.set_parameters([
+                        Parameter('calib_in_progress', Parameter.Type.BOOL, False),
+                        Parameter('calib_seconds_left', Parameter.Type.DOUBLE, 0.0)
+                    ])
+                except Exception:
+                    pass
+                time.sleep(1.0)
 
     def _process_imu_packet(self, raw):
         try:
