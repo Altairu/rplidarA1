@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Spresense IMU 自己位置推定・融合 (SLAM Fusion) ノード (ROS2)
+Spresense IMU 自己位置推定・融合 (SLAM Fusion - Delayed Measurement 対応) ノード (ROS2)
 
-Spresense IMU の加速度積分・ジャイロ積分による生自己位置推定に加え、
-LiDAR SLAM (Cartographer) の自己位置トピックを観測値として購読し、
-1. リアルタイムカルマンフィルタ (KF)
-2. 遅延バイアスフィードバック (DBF)
-によってリアルタイムに補正・融合された自己位置を推定して配信します。
+SLAM (Cartographer) の自己位置推定値が数秒レベルで遅れて届く（可変遅延）現象に対応するため、
+過去約 5 秒分の IMU 積分データおよびカルマンフィルタ状態を履歴バッファに保持し、
+SLAM が届いた際に過去の該当時刻に遡って観測更新を行い、そこから現在時刻まで
+IMU 加速度を用いて再伝搬（再計算 / Re-propagation）を行う遅延カルマンフィルタを実装しています。
+遅延バイアスフィードバック (DBF) もバッファを拡張して追従性を向上させています。
 """
 
 import math
@@ -28,7 +28,7 @@ class PositionKalmanFilter2D:
     1次元カルマンフィルタをX, Y独立に適用するためのクラス
     状態: x = [pos, vel, acc_bias]^T
     """
-    def __init__(self, q_pos=1e-4, q_vel=1e-3, q_bias=1e-6, r_pos=10.0):
+    def __init__(self, q_pos=1e-3, q_vel=1e-2, q_bias=1e-5, r_pos=5.0):
         self.x = [0.0, 0.0, 0.0]  # pos, vel, bias
         self.P = [
             [0.1, 0.0, 0.0],
@@ -41,6 +41,17 @@ class PositionKalmanFilter2D:
             [0.0, 0.0, q_bias]
         ]
         self.R = r_pos
+
+    def copy(self):
+        """状態のディープコピーを作成して返す（再伝搬時のバックアップや履歴保存用）"""
+        new_kf = PositionKalmanFilter2D(self.Q[0][0], self.Q[1][1], self.Q[2][2], self.R)
+        new_kf.x = list(self.x)
+        new_kf.P = [list(row) for row in self.P]
+        return new_kf
+
+    def set_state(self, x, P):
+        self.x = list(x)
+        self.P = [list(row) for row in P]
 
     def predict(self, acc_input, dt):
         # 状態遷移行列 F と入力行列 B
@@ -114,7 +125,7 @@ class DelayedBiasFeedback2D:
     def __init__(self, delay_sec=0.5):
         self.pos = 0.0
         self.vel = 0.0
-        self.history = collections.deque(maxlen=1000)  # (timestamp, pos, vel) の履歴
+        self.history = collections.deque(maxlen=10000)  # 約5秒分の履歴に拡張 (1920Hz * 5s = 9600)
         self.last_update_time = None
         self.delay_sec = delay_sec
 
@@ -172,7 +183,7 @@ class DelayedBiasFeedback2D:
         self.last_update_time = t_hist
         
         # 履歴バッファも補正を反映
-        new_history = collections.deque(maxlen=1000)
+        new_history = collections.deque(maxlen=10000)
         for t_h, p_h, v_h in self.history:
             dt_h = t_h - t_hist
             p_corrected = p_h - delta_p - v_bias * dt_h
@@ -261,6 +272,12 @@ class SpresenseImuNode(Node):
         self.kf_x = PositionKalmanFilter2D(q_pos=1e-3, q_vel=1e-2, q_bias=1e-5, r_pos=5.0)
         self.kf_y = PositionKalmanFilter2D(q_pos=1e-3, q_vel=1e-2, q_bias=1e-5, r_pos=5.0)
 
+        # カルマンフィルタ用履歴バッファ（再伝搬処理用）
+        # imu_history: (timestamp, acc_world_x, acc_world_y, dt)
+        self.imu_history = collections.deque(maxlen=10000)  # 約5秒分
+        # kf_history: (timestamp, kf_x_state, kf_x_P, kf_y_state, kf_y_P)
+        self.kf_history = collections.deque(maxlen=10000)
+
         # 3. 遅延バイアスフィードバック (DBF) による位置
         self.dbf_x = DelayedBiasFeedback2D(delay_sec=0.1)
         self.dbf_y = DelayedBiasFeedback2D(delay_sec=0.1)
@@ -314,15 +331,67 @@ class SpresenseImuNode(Node):
             self.slam_received = True
             self.last_slam_time = stamp
 
-            # リアルタイムカルマンフィルタ (KF) の観測更新を適用
-            if self.is_calibrated:
+            if not self.is_calibrated:
+                return
+
+            # ----------------- A. 遅延カルマンフィルタ (再伝搬 Re-propagation) -----------------
+            if len(self.kf_history) >= 2:
+                # 照合先ターゲット時刻の決定
+                current_time = self.get_clock().now().nanoseconds / 1e9
+                if self.use_fixed_delay:
+                    target_time = current_time - self.fixed_delay_sec
+                else:
+                    target_time = stamp
+                
+                # SLAMデータ時刻に最も近い過去の KF 状態を履歴から探す
+                best_idx = 0
+                min_diff = float('inf')
+                for idx, (t_hist, _, _, _, _) in enumerate(self.kf_history):
+                    diff = abs(t_hist - target_time)
+                    if diff < min_diff:
+                        min_diff = diff
+                        best_idx = idx
+                
+                t_match, x_state, x_P, y_state, y_P = self.kf_history[best_idx]
+                
+                # 1. 過去時点の状態を一時的な KF クラスにセット
+                temp_kf_x = PositionKalmanFilter2D()
+                temp_kf_y = PositionKalmanFilter2D()
+                temp_kf_x.set_state(x_state, x_P)
+                temp_kf_y.set_state(y_state, y_P)
+                
+                # 2. 過去時点の状態に対して SLAM 観測値 z = [x, y] を使って update を適用
+                temp_kf_x.update(x)
+                temp_kf_y.update(y)
+                
+                # 3. 過去時点から現在までの IMU 加速度入力を使い、順番に predict を再実行（再伝搬）
+                # imu_history には (timestamp, ax_world, ay_world, dt) が格納されている
+                # 過去マッチング時刻 t_match 以降の IMU 入力を探し出して再積分する
+                reprop_started = False
+                for t_imu, ax_w, ay_w, dt_imu in self.imu_history:
+                    if t_imu > t_match:
+                        reprop_started = True
+                        temp_kf_x.predict(ax_w, dt_imu)
+                        temp_kf_y.predict(ay_w, dt_imu)
+                
+                # 4. 再計算された最新状態を現在のメイン KF クラスへ適用
+                if reprop_started:
+                    self.kf_x.set_state(temp_kf_x.x, temp_kf_x.P)
+                    self.kf_y.set_state(temp_kf_y.x, temp_kf_y.P)
+                else:
+                    # 履歴が現在に極めて近い、またはマッチングしなかった場合はそのまま直接アップデート
+                    self.kf_x.update(x)
+                    self.kf_y.update(y)
+
+            else:
+                # 履歴が不十分な場合は直接アップデート
                 self.kf_x.update(x)
                 self.kf_y.update(y)
-                
-                # 遅延バイアスフィードバック (DBF) の観測更新を適用
-                current_time = self.get_clock().now().nanoseconds / 1e9
-                self.dbf_x.update(x, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
-                self.dbf_y.update(y, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
+
+            # ----------------- B. 遅延バイアスフィードバック (DBF) -----------------
+            current_time = self.get_clock().now().nanoseconds / 1e9
+            self.dbf_x.update(x, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
+            self.dbf_y.update(y, stamp, current_time, self.use_fixed_delay, self.fixed_delay_sec)
 
     def _rx_loop(self):
         buffer = bytearray()
@@ -420,13 +489,22 @@ class SpresenseImuNode(Node):
         self.x_raw += dist_raw * math.cos(self.theta)
         self.y_raw += dist_raw * math.sin(self.theta)
 
-        # ----------------- 2. カルマンフィルタ (KF) -----------------
+        # ----------------- 2. カルマンフィルタ (KF - 再伝搬対応) -----------------
+        current_time = self.get_clock().now().nanoseconds / 1e9
+        
         # ワールド系の加速度を入力として予測ステップを実行
         self.kf_x.predict(ax_world, dt)
         self.kf_y.predict(ay_world, dt)
 
+        # 予測ステップ実行後の KF の状態と IMU 入力を履歴バッファに積む
+        self.imu_history.append((current_time, ax_world, ay_world, dt))
+        self.kf_history.append((
+            current_time,
+            list(self.kf_x.x), [list(row) for row in self.kf_x.P],
+            list(self.kf_y.x), [list(row) for row in self.kf_y.P]
+        ))
+
         # ----------------- 3. 遅延バイアスフィードバック (DBF) -----------------
-        current_time = self.get_clock().now().nanoseconds / 1e9
         self.dbf_x.predict(ax_world, dt, current_time)
         self.dbf_y.predict(ay_world, dt, current_time)
 
