@@ -1,8 +1,21 @@
-# RPLIDAR A1 と Cartographer を用いた 2D SLAM およびモーター制御システム
+# RPLIDAR A1 と Spresense IMU を用いた 2D SLAM および自己位置推定融合システム
 
-このリポジトリは、ROS2 Humbleの環境においてRPLIDAR A1のスキャンデータを用いて2Dの自己位置推定および地図生成を行うパッケージ群と、モータードライブを制御するツールの構成です。
-自己位置推定のアルゴリズムにはCartographerを採用しており、車輪のエンコーダー情報などのオドメトリ情報を用いずに地図の作成が可能です。
-レーザースキャンデータから壁などの直線情報を抽出する機能や、モータードライブをCAN通信で制御するGUIツールも含みます。
+このリポジトリは、ROS2 Humbleの環境においてRPLIDAR A1のスキャンデータを用いた2Dの自己位置推定および地図生成を行うパッケージ群と、Spresense IMUやRealSense D435iの慣性計測ユニットを用いた高頻度な自己位置推定および融合システムです。
+また、モータードライブを制御するツールや、自己位置推定結果の比較を行うためのウェブインターフェースも含みます。
+
+## 主な機能
+
+* Cartographerを用いた自己位置推定および地図生成
+  RPLIDAR A1のスキャンデータを用いて地図の作成が可能です。
+* 複数の自己位置推定の計算と融合
+  Spresense IMUモジュールから取得した加速度と角速度の情報を用いて、生積分による軌跡、カルマンフィルターを適用した軌跡、遅延バイアスフィードバックを適用した軌跡の3種類を算出します。
+  Cartographerによる地図生成の結果を観測値として取り込み、カルマンフィルターや遅延バイアスフィードバックを用いてIMUのドリフト誤差を動的に補正および融合します。
+* 実験用ウェブインターフェース
+  WebSocket通信を経由して、各自己位置推定の手法（生積分、カルマンフィルター、遅延バイアスフィードバック、SLAM単体）による軌跡をリアルタイムでブラウザ上に描画し、比較実験を行うことができます。
+* 壁面直線抽出
+  レーザースキャンデータから直線情報を抽出して配信します。
+* モータードライブ制御
+  モータードライブをCAN通信経由で制御および監視するためのGUIツールとROS2ノードを含みます。
 
 ## システムの構成図
 
@@ -12,40 +25,58 @@
 flowchart TD
     subgraph hardware["ハードウェア"]
         LiDAR["RPLIDAR A1"]
+        Spresense["Spresense IMU"]
+        D435i["RealSense D435i"]
         MDD["モータードライブ"]
     end
 
     subgraph ros["ROS2 Humble ワークスペース"]
         Driver["sllidar_node / sllidar_ros2"]
+        RS["realsense2_camera_node"]
         Cartographer["cartographer_node / Cartographer"]
         RANSAC["ransac_node / lidar_processing"]
-        WebBridge["websocket_bridge_node"]
-        MapMarker["map_marker_node"]
+        SpresenseNode["spresense_imu_node / altair_robot"]
+        WebBridge["websocket_bridge_node / altair_robot"]
+        MDDNode["mdd_can_node / altair_robot"]
     end
 
     subgraph interface["ユーザーインターフェース"]
         RViz["RViz2"]
-        WebUI["Web UI"]
+        WebUI["Web UI / ポート 8091"]
         GUI["mdd_gui_ubuntu.py"]
     end
 
     LiDAR -->|"USB接続"| Driver
+    Spresense -->|"USBシリアル接続"| SpresenseNode
+    D435i -->|"USB接続"| RS
+    
     Driver -->|"/scan トピック"| Cartographer
     Driver -->|"/scan トピック"| RANSAC
-    Cartographer -->|"/map トピック"| RViz
-    Cartographer -->|"/map トピック"| MapMarker
+    RS -->|"/camera/camera/imu トピック"| Cartographer
+    
+    Cartographer -->|"/tracked_pose トピック"| SpresenseNode
+    
+    SpresenseNode -->|"/imu_pose_raw トピック"| WebBridge
+    SpresenseNode -->|"/imu_pose_kf トピック"| WebBridge
+    SpresenseNode -->|"/imu_pose_dbf トピック"| WebBridge
+    SpresenseNode -->|"/imu_odom トピック"| WebBridge
+    
+    Cartographer -->|"/map トピック"| WebBridge
     RANSAC -->|"/ransac_lines トピック"| RViz
+    
     WebBridge <-->|"WebSocketポート 8876"| WebUI
-    GUI -->|"socketcanポート can0"| MDD
+    
+    GUI -->|"socketcan can0"| MDD
+    MDDNode <-->|"socketcan can0"| MDD
 ```
 
 ## ディレクトリとファイルの構成
 
 * ros2_ws: ROS2 Humble向けのワークスペースです
-  * src/altair_robot: ロボット全体の起動やWebブラウザ向けのインターフェースを提供します
+  * src/altair_robot: ロボット全体の起動設定、Spresense IMUを用いた位置推定および融合処理のノード、Webブラウザ向けインターフェース、モーター制御用のCANノードを含みます
   * src/lidar_processing: レーザースキャンから直線情報を抽出するノードを含みます
-  * src/sllidar_ros2: RPLIDARのROS2用ドライバーです
-* run_slam.sh: SLAMのシステムと可視化用のノードを一括で起動するシェルスクリプトです
+  * src/sllidar_ros2: RPLIDAR of ROS2用ドライバーです
+* run_slam.sh: SLAMのシステムとIMUの処理、可視化用のノードを一括で起動するシェルスクリプトです
 * mdd_gui_ubuntu.py: モータードライブをCAN通信経由で制御および監視するGUIアプリケーションです
 
 ## 環境構築の手順
@@ -56,7 +87,7 @@ flowchart TD
   ```bash
   sudo apt update
   sudo apt install ros-humble-cartographer-ros
-  pip3 install scikit-learn numpy scipy python-can
+  pip3 install scikit-learn numpy scipy python-can pyserial
   ```
 
 * ワークスペースのビルド
@@ -68,20 +99,25 @@ flowchart TD
   source install/setup.bash
   ```
 
-* シリアルポートの権限設定
-  RPLIDARを接続するシリアルポートに対して読み書きの権限を付与します。
+* ポートの権限設定
+  RPLIDARやSpresenseを接続するUSBポートに対して読み書きの権限を付与します。
   ```bash
   sudo chmod 666 /dev/ttyUSB0
+  sudo chmod 666 /dev/ttyUSB1
   ```
 
 ## 使用方法
 
-* SLAMシステムの起動
-  一括起動スクリプトを実行することで、LiDARの通信やCartographer、直線抽出ノード、RViz2が立ち上がります。
+* SLAMシステムおよびIMUノードの起動
+  一括起動スクリプトを実行することで、各種センサーの通信、Cartographer、直線抽出ノード、Spresense IMU融合ノード、Webソケットブリッジ、Webサーバー、RViz2が立ち上がります。
   ```bash
-  ./run_slam.sh --serial /dev/ttyUSB0
+  ./run_slam.sh --serial /dev/ttyUSB0 --spresense-port /dev/ttyUSB1
   ```
-  詳細なオプションはヘルプコマンドで確認できます。
+  RealSense D435iのIMUを利用する場合は、起動時のオプションを変更します。
+  ```bash
+  ./run_slam.sh --enable-realsense-imu
+  ```
+  詳細な起動オプションはヘルプコマンドで確認できます。
   ```bash
   ./run_slam.sh --help
   ```
