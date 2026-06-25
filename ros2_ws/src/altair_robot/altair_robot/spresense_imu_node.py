@@ -582,8 +582,8 @@ class SpresenseImuNode(Node):
             # 進行方向（現在の推定角度 theta）への投影
             ds = dx * math.cos(self.theta) + dy * math.sin(self.theta)
             
-            # ZUPT静止中、または1cm(0.01m)未満の微小な位置変動（SLAMノイズ）は移動量0とみなす（デッドバンド）
-            if self.is_still or (abs(ds) < 0.01):
+            # ZUPT静止中の場合は移動量0とみなす（静止時ノイズカット）
+            if self.is_still:
                 ds = 0.0
                 
             self.slam_accum_dist += ds
@@ -781,7 +781,7 @@ class SpresenseImuNode(Node):
             dt = ((0xFFFFFFFF - self.last_imu_ts) + ts_raw + 1) / 19200000.0
         self.last_imu_ts = ts_raw
 
-        if dt <= 0.0 or dt > 0.05:
+        if dt <= 0.0 or dt > 0.05 or math.isnan(dt) or math.isinf(dt):
             return
 
         # キャリブレーション
@@ -1033,6 +1033,39 @@ class SpresenseImuNode(Node):
             self.dbf.pos = self.slam_accum_dist
             self.dbf.vel = cmd_v
 
+        # 姿勢クオータニオンおよび推定状態の NaN 検知と自己修復
+        if any(math.isnan(v) or math.isinf(v) for v in self.q):
+            self.get_logger().error("姿勢クオータニオンに NaN が検出されたため、初期姿勢にリセットします。")
+            self.q = [1.0, 0.0, 0.0, 0.0]
+            self.e_int = [0.0, 0.0, 0.0]
+            self.theta = 0.0
+
+        if (math.isnan(self.x_kf) or math.isnan(self.y_kf) or 
+            math.isnan(self.kf.x[0]) or math.isnan(self.kf.x[1]) or math.isnan(self.kf.x[2])):
+            self.get_logger().error("KF状態に NaN が検出されたため、フィルター状態をリセットします。")
+            self.x_kf = self.slam_x
+            self.y_kf = self.slam_y
+            self.kf.x = [self.slam_accum_dist, 0.0, 0.0]
+            self.kf.P = [
+                [0.1, 0.0, 0.0],
+                [0.0, 0.1, 0.0],
+                [0.0, 0.0, 0.1]
+            ]
+
+        if math.isnan(self.x_dbf) or math.isnan(self.y_dbf) or math.isnan(self.dbf.pos) or math.isnan(self.dbf.vel):
+            self.get_logger().error("DBF状態に NaN が検出されたため、状態をリセットします。")
+            self.x_dbf = self.slam_x
+            self.y_dbf = self.slam_y
+            self.dbf.pos = self.slam_accum_dist
+            self.dbf.vel = 0.0
+            
+        if math.isnan(self.x_raw) or math.isnan(self.y_raw) or math.isnan(self.v_raw) or math.isnan(self.theta):
+            self.get_logger().error("生積分状態に NaN が検出されたため、状態をリセットします。")
+            self.x_raw = self.slam_x
+            self.y_raw = self.slam_y
+            self.v_raw = 0.0
+            self.theta = self.slam_yaw
+
         # ----------------- 4. 生IMUデータ配信 (間引き) -----------------
         self.imu_raw_pub_counter += 1
         if self.imu_raw_pub_counter >= 19:
@@ -1058,6 +1091,13 @@ class SpresenseImuNode(Node):
         stamp = self.get_clock().now().to_msg()
         qz = math.sin(self.theta / 2.0)
         qw = math.cos(self.theta / 2.0)
+
+        # 配信する値に NaN が含まれる場合はパブリッシュをスキップして防衛
+        if (math.isnan(self.x_raw) or math.isnan(self.y_raw) or 
+            math.isnan(self.x_kf) or math.isnan(self.y_kf) or 
+            math.isnan(self.x_dbf) or math.isnan(self.y_dbf) or 
+            math.isnan(qz) or math.isnan(qw)):
+            return
 
         # 1. 生積分/推定ソース Pose
         pose_raw = PoseStamped()

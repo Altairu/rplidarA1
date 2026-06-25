@@ -582,8 +582,8 @@ class SpresenseImuNode(Node):
             # 進行方向（現在の推定角度 theta）への投影
             ds = dx * math.cos(self.theta) + dy * math.sin(self.theta)
             
-            # ZUPT静止中、または1cm(0.01m)未満の微小な位置変動（SLAMノイズ）は移動量0とみなす（デッドバンド）
-            if self.is_still or (abs(ds) < 0.01):
+            # ZUPT静止中の場合は移動量0とみなす（静止時ノイズカット）
+            if self.is_still:
                 ds = 0.0
                 
             self.slam_accum_dist += ds
